@@ -124,6 +124,7 @@
     <Compile Include="Assets\Scripts\Projectile.cs" />
     <Compile Include="Assets\Scripts\SoftPlatform.cs" />
     <Compile Include="Assets\Scripts\StartOver.cs" />
+    <Compile Include="Assets\Scripts\TestScript.cs" />
     <Compile Include="Assets\Scripts\YureiLvl1.cs" />
     <Compile Include="Assets\Scripts\YureiLvl2.cs" />
     <Compile Include="Assets\TempScripts\Movement.cs" />
