@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <RootNamespace></RootNamespace>
+    <ProjectGuid>{66434DAC-43BF-B23A-6F7A-FDCC271C55CB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <BaseDirectory>Assets</BaseDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Temp\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_4_3;UNITY_5_4;UNITY_5;ENABLE_NEW_BUGREPORTER;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_EDITOR_RETINA;ENABLE_RETINA_GUISTYLES;ENABLE_FRAME_DEBUGGER;ENABLE_GENERICS;ENABLE_HOME_SCREEN;ENABLE_IMAGEEFFECTS;ENABLE_LIGHT_PROBES_LEGACY;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_PLUGIN_INSPECTOR;ENABLE_SHADOWS;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_SPRITE_POLYGON;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;INCLUDE_IL2CPP;INCLUDE_DIRECTX12;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_LOCALIZATION;ENABLE_ANDROID_ATLAS_ETC1_COMPRESSION;ENABLE_EDITOR_TESTS_RUNNER;UNITY_STANDALONE_OSX;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_GAMECENTER;ENABLE_TEXTUREID_MAP;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLUSTERINPUT;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_OSX;UNITY_TEAM_LICENSE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>0169</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Temp\bin\Release\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>0169</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="UnityEngine">
+      <HintPath>/Applications/Unity/Unity.app/Contents/Managed/UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor">
+      <HintPath>/Applications/Unity/Unity.app/Contents/Managed/UnityEditor.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+     <Compile Include="Assets\2D Enemy Pack\Scripts\Actions.cs" />
+     <Compile Include="Assets\2D Enemy Pack\Scripts\AnimatorChanger.cs" />
+     <Compile Include="Assets\Cosmic Lady\Script\Actions.cs" />
+     <Compile Include="Assets\Cosmic Lady\Script\AnimatorChanger.cs" />
+     <Compile Include="Assets\Cosmic Lady\Script\Desactive.cs" />
+     <Compile Include="Assets\GE Common Assets\GE Orbit Camera\Scripts\GE_OrbitCamera.cs" />
+     <Compile Include="Assets\GE Common Assets\GE Orbit Camera\Scripts\GE_OrbitCameraUI.cs" />
+     <Compile Include="Assets\GE Common Assets\GE Toggle Full Screen\Scripts\GE_ToggleFullScreenUI.cs" />
+     <Compile Include="Assets\GUI Animator\GUI Animator FREE\Demo (CSharp)\Scripts\GA_FREE_Demo00.cs" />
+     <Compile Include="Assets\GUI Animator\GUI Animator FREE\Demo (CSharp)\Scripts\GA_FREE_Demo01.cs" />
+     <Compile Include="Assets\GUI Animator\GUI Animator FREE\Demo (CSharp)\Scripts\GA_FREE_Demo02.cs" />
+     <Compile Include="Assets\GUI Animator\GUI Animator FREE\Demo (CSharp)\Scripts\GA_FREE_Demo03.cs" />
+     <Compile Include="Assets\GUI Animator\GUI Animator FREE\Demo (CSharp)\Scripts\GA_FREE_Demo04.cs" />
+     <Compile Include="Assets\GUI Animator\GUI Animator FREE\Demo (CSharp)\Scripts\GA_FREE_Demo05.cs" />
+     <Compile Include="Assets\GUI Animator\GUI Animator FREE\Demo (CSharp)\Scripts\GA_FREE_Demo06.cs" />
+     <Compile Include="Assets\GUI Animator\GUI Animator FREE\Demo (CSharp)\Scripts\GA_FREE_Demo07.cs" />
+     <Compile Include="Assets\GUI Animator\GUI Animator FREE\Demo (CSharp)\Scripts\GA_FREE_Demo08.cs" />
+     <Compile Include="Assets\GUI Animator\GUI Animator FREE\Demo (CSharp)\Scripts\GA_FREE_DemoPlaySound.cs" />
+     <Compile Include="Assets\GUI Animator\GUI Animator FREE\Demo (CSharp)\Scripts\GA_FREE_OpenOtherScene.cs" />
+     <Compile Include="Assets\GUI Animator\GUI Animator FREE\Demo Basic (CSharp)\Scripts\GUIAnimatorFREEDemo.cs" />
+     <Compile Include="Assets\Introloop\Demo\Scripts\IntroloopFadeTmeText.cs" />
+     <Compile Include="Assets\Introloop\Demo\Scripts\IntroloopReporter.cs" />
+     <Compile Include="Assets\Introloop\Demo\Scripts\IntroloopTestSwitches.cs" />
+     <Compile Include="Assets\Introloop\Demo\Scripts\IntroloopTester.cs" />
+     <Compile Include="Assets\Introloop\Scripts\IntroloopAudio.cs" />
+     <Compile Include="Assets\Introloop\Scripts\IntroloopLogger.cs" />
+     <Compile Include="Assets\Introloop\Scripts\IntroloopPlayer.cs" />
+     <Compile Include="Assets\Introloop\Scripts\IntroloopSettings.cs" />
+     <Compile Include="Assets\Introloop\Scripts\IntroloopTrack.cs" />
+     <Compile Include="Assets\Introloop\Scripts\PositiveFloatAttribute.cs" />
+     <Compile Include="Assets\JumpPhysics\JumpPhysics.cs" />
+     <Compile Include="Assets\JumpPhysics\JumpPhysics2D.cs" />
+     <Compile Include="Assets\Scripts\Base_Enemy.cs" />
+     <Compile Include="Assets\Scripts\Boss.cs" />
+     <Compile Include="Assets\Scripts\BossGenerator.cs" />
+     <Compile Include="Assets\Scripts\BossHealth.cs" />
+     <Compile Include="Assets\Scripts\BossWall.cs" />
+     <Compile Include="Assets\Scripts\ButtonHandler.cs" />
+     <Compile Include="Assets\Scripts\CameraFollow.cs" />
+     <Compile Include="Assets\Scripts\CharacterChanger.cs" />
+     <Compile Include="Assets\Scripts\EnemyGenerator.cs" />
+     <Compile Include="Assets\Scripts\FadeScene.cs" />
+     <Compile Include="Assets\Scripts\JumpThruPlatform.cs" />
+     <Compile Include="Assets\Scripts\KatanaEnemy.cs" />
+     <Compile Include="Assets\Scripts\LoadScene.cs" />
+     <Compile Include="Assets\Scripts\MindProjectileScript.cs" />
+     <Compile Include="Assets\Scripts\Morgan.cs" />
+     <Compile Include="Assets\Scripts\MorganStateMachine.cs" />
+     <Compile Include="Assets\Scripts\OniScript.cs" />
+     <Compile Include="Assets\Scripts\OpeningScene.cs" />
+     <Compile Include="Assets\Scripts\ParticleFixer.cs" />
+     <Compile Include="Assets\Scripts\PlayerHealth.cs" />
+     <Compile Include="Assets\Scripts\Projectile.cs" />
+     <Compile Include="Assets\Scripts\SoftPlatform.cs" />
+     <Compile Include="Assets\Scripts\StartOver.cs" />
+     <Compile Include="Assets\Scripts\YureiLvl1.cs" />
+     <Compile Include="Assets\Scripts\YureiLvl2.cs" />
+     <Compile Include="Assets\TempScripts\Movement.cs" />
+     <None Include="Assets\JAPANESE SAMURAI MUSIC PACK 1\Read me!!!!!!!!!!!!!!!!!!!.txt" />
+     <None Include="Assets\2D Sky FREE\Demo\Scripts\Note.txt" />
+     <None Include="Assets\Fonts\zenzai_itacha\Copyright_Licence.txt" />
+     <None Include="Assets\Introloop\Readme.txt" />
+     <None Include="Assets\Fonts\yozakura\Yozakura font with lowercase is here.txt" />
+     <None Include="Assets\2D Sky FREE\Readme.txt" />
+     <None Include="Assets\GUI Animator\GUI Animator FREE\Readme.txt" />
+     <None Include="Assets\JumpPhysics\ReadMe.txt" />
+     <None Include="Assets\GE Common Assets\Readme.txt" />
+     <None Include="Assets\GUI Animator\GUI Animator FREE\!How to.txt" />
+ <Reference Include="UnityEngine.UI">
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.Networking">
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+ </Reference>
+ <Reference Include="2D Sky FREE">
+ <HintPath>/Users/danielbaratta/Mind Control/Assets/2D Sky FREE/Demo/Scripts/2D Sky FREE.dll</HintPath>
+ </Reference>
+ <Reference Include="GETween">
+ <HintPath>/Users/danielbaratta/Mind Control/Assets/GUI Animator/Common/Plugins/GETween.dll</HintPath>
+ </Reference>
+ <Reference Include="GUIAnimatorFREE">
+ <HintPath>/Users/danielbaratta/Mind Control/Assets/GUI Animator/GUI Animator FREE/Plugins/GUIAnimatorFREE.dll</HintPath>
+ </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  
+</Project>

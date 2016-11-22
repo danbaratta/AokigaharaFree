@@ -1,0 +1,29 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{D6455E35-C9C7-F8CC-0C84-1E7948B22921}") = "Mind Control", "Assembly-CSharp.csproj", "{66434DAC-43BF-B23A-6F7A-FDCC271C55CB}"
+EndProject
+Project("{D6455E35-C9C7-F8CC-0C84-1E7948B22921}") = "Mind Control", "Assembly-CSharp-Editor.csproj", "{51B91F4D-0A77-50DF-B3FF-7193F0C037EB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{66434DAC-43BF-B23A-6F7A-FDCC271C55CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66434DAC-43BF-B23A-6F7A-FDCC271C55CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66434DAC-43BF-B23A-6F7A-FDCC271C55CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66434DAC-43BF-B23A-6F7A-FDCC271C55CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51B91F4D-0A77-50DF-B3FF-7193F0C037EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51B91F4D-0A77-50DF-B3FF-7193F0C037EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51B91F4D-0A77-50DF-B3FF-7193F0C037EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51B91F4D-0A77-50DF-B3FF-7193F0C037EB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
