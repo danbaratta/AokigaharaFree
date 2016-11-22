@@ -280,8 +280,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 *.apk
-/FunGame/Library
 /Mind Control/Library/metadata
 
 /Mind Control/Library
-Library
+
