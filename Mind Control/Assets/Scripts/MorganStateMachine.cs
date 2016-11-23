@@ -152,8 +152,9 @@ public class MorganStateMachine : MonoBehaviour
 
     void StateIdle()
     {
+        a.SetBool("Walk", false);
         HandleMorganControls();
-        a.Play("Idle");
+        //a.Play("Idle");
         if (Input.GetAxis("Horizontal") != 0)
         {
             SetState(PlayerStateMachine.WALK);
@@ -163,7 +164,8 @@ public class MorganStateMachine : MonoBehaviour
     void StateWalk()
     {
         HandleMorganControls();
-        a.Play("Walk");
+        //a.Play("Walk");
+        a.SetBool("Walk", true);
         if (!onGround)
         {
             SetState(PlayerStateMachine.IN_AIR);
@@ -224,6 +226,7 @@ public class MorganStateMachine : MonoBehaviour
     {
         isPossessing = false;
         SetState(PlayerStateMachine.IDLE);
+        a.SetBool("Walk", false);
     }
 
     void HandleYureiControls()
@@ -320,7 +323,7 @@ public class MorganStateMachine : MonoBehaviour
 
     void CheckForJump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && canJump)
+        if ((Input.GetKeyDown(KeyCode.Space) ||Input.GetButtonDown("joystick button 0") ) && canJump)
         {
             SetState(PlayerStateMachine.ENTER_JUMP);
         }
@@ -354,10 +357,12 @@ public class MorganStateMachine : MonoBehaviour
         if (direction != 0f)
         {
             SetState(PlayerStateMachine.WALK);
+            a.SetBool("Walk", true);
         }
         else
         {
             SetState(PlayerStateMachine.IDLE);
+            a.SetBool("Walk", false);
         }
     }
 
@@ -399,12 +404,12 @@ public class MorganStateMachine : MonoBehaviour
             bulletIcon.SetActive(false);
         }
 
-        if (Input.GetKeyDown(KeyCode.Mouse1) && (mindCanFire == true))
+        if ((Input.GetKeyDown(KeyCode.Mouse1)|| Input.GetAxis("PrimaryAttack") == -1) && (mindCanFire == true))
         {
             FireMindBullet();
             mindTimer = 0f;
         }
-        else if (Input.GetKeyDown(KeyCode.Mouse0) && (bulletCanFire == true))
+        else if ((Input.GetKeyDown(KeyCode.Mouse0) || Input.GetAxis("PrimaryAttack") ==-1 ) && (bulletCanFire == true))
         {
             FireBullet();
             bulletTimer = 0f;

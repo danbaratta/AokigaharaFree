@@ -114,7 +114,6 @@ public class YureiLvl1 : MonoBehaviour
 
     void StateDying()
     {
-        a.Play("Dead");
         a.SetBool("Dead",true);
         if (a.GetBool("RealDeath"))
         {
