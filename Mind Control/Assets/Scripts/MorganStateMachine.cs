@@ -404,7 +404,7 @@ public class MorganStateMachine : MonoBehaviour
             bulletIcon.SetActive(false);
         }
 
-        if ((Input.GetKeyDown(KeyCode.Mouse1)|| Input.GetAxis("PrimaryAttack") == -1) && (mindCanFire == true))
+        if ((Input.GetKeyDown(KeyCode.Mouse1)|| Input.GetAxis("PrimaryAttack") == 1) && (mindCanFire == true))
         {
             FireMindBullet();
             mindTimer = 0f;
