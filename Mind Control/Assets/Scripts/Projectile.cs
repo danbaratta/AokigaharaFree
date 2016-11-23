@@ -6,8 +6,9 @@ public class Projectile : MonoBehaviour {
 	float moveSpeed = 9.0f;
 
 	public GameObject bullet; 
-	bool DirectionRight = true; 
+	bool DirectionRight = true;
 
+    public int Damage=5;
 
 	// Use this for initialization
 	void Start () 
@@ -37,13 +38,14 @@ public class Projectile : MonoBehaviour {
 	{
 		if (other.tag == "Enemy") 											
 		{
+            other.gameObject.SendMessage("TakeDamage", Damage,SendMessageOptions.DontRequireReceiver);
 			Destroy (gameObject);
-			Destroy (other.gameObject); 
 		}
 	}
 
-	void OnBecameInvisible ()
-	{
-		Destroy (gameObject);
-	}
+    // bullets may not want to be destory if it not in camera view
+	//void OnBecameInvisible ()
+	//{
+	//	Destroy (gameObject);
+	//}
 }

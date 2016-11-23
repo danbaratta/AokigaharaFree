@@ -258,11 +258,11 @@ public class YureiLvl2 : MonoBehaviour {
 			msm.IsYurei(true);
 			GrabPosition ();
 			SendPosition ();
-			Destroy (gameObject);
+			Destroy (gameObject.gameObject);
 		}
 		if ((other.tag == "Player") && (msm.isPossessing == true)) {
 			msm.TransitionFromYurei ();
-			Destroy (gameObject);
+			Destroy (gameObject.gameObject);
 		} 
 		else if (other.gameObject.tag == "Player") 
 		{
@@ -281,7 +281,9 @@ public class YureiLvl2 : MonoBehaviour {
 				msm.Possess (false); // Update this once we get a health and damage system.
 				Destroy (gameObject);
 			}
-		} 
+		}
+        if (other.tag == "Bullet")
+            Destroy(this.gameObject);
 	}
 
 	void GrabPosition()
@@ -296,9 +298,13 @@ public class YureiLvl2 : MonoBehaviour {
 		msm.GetTargetY (curTransformY);
 	}
 
-	void OnBecameInvisible ()
-	{
-		Destroy (gameObject);
-	}
+    void TakeDamage(int dmg)
+    {
+        Destroy(this.gameObject);
+    }
+	//void OnBecameInvisible ()
+	//{
+	//	Destroy (gameObject);
+	//}
 		
 }
