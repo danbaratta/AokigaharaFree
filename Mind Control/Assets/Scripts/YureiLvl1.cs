@@ -65,16 +65,18 @@ public class YureiLvl1 : MonoBehaviour
         SetState(YureiStateMachine.AI_CONTROLLED);
 
         a = GetComponent<Animator>();
+        a.Play("Idle");
     }
 
     void Update()
     {
         ysm[curState].Invoke();
-
-        a.SetFloat("Speed", Mathf.Abs(yureiX));
-        GetComponent<Rigidbody2D>().velocity = new Vector2(yureiX * MoveSpeed, GetComponent<Rigidbody2D>().velocity.y);
+        if (curState != YureiStateMachine.DYING)
+        {
+            a.SetFloat("Speed", Mathf.Abs(yureiX));
+            GetComponent<Rigidbody2D>().velocity = new Vector2(yureiX * MoveSpeed, GetComponent<Rigidbody2D>().velocity.y);
+        }
     }
-
     // Update is called once per frame
 
     void FixedUpdate()
@@ -112,8 +114,13 @@ public class YureiLvl1 : MonoBehaviour
 
     void StateDying()
     {
-        Debug.Log("Ack, I'm dyin'!");
-        Destroy(gameObject);
+        a.Play("Dead");
+        a.SetBool("Dead",true);
+        if (a.GetBool("RealDeath"))
+        {
+            Debug.Log("Ack, I'm dyin'!");
+            Destroy(gameObject);
+        }
     }
 
     // HELPER FUNCTIONS
@@ -149,8 +156,11 @@ public class YureiLvl1 : MonoBehaviour
             SendPosition();
             Destroy(gameObject);
         }
-
-        if ((other.tag == "Player") && (msm.isPossessing == true))
+        else if (other.gameObject.tag == "Bullet")
+        {
+            curState = YureiStateMachine.DYING;
+        }
+        else if ((other.tag == "Player") && (msm.isPossessing == true))
         {
             msm.TransitionFromYurei();
             Destroy(gameObject);
@@ -162,11 +172,11 @@ public class YureiLvl1 : MonoBehaviour
             {
                 msm.GetThrown();
                 playerHealth.TakeDamage(attackDamage);       //deals damage to player
-                a.SetTrigger("Flinch");                       //plays damage animation
-                {
-                    Debug.Log("play damage animation");
-                }
-                Debug.Log("Health works");
+                //a.SetTrigger("Flinch");                       //plays damage animation
+                //{
+                //    Debug.Log("play damage animation");
+                //}
+                //Debug.Log("Health works");
                 //			msm.Possess (false); // Update this once we get a health and damage system.
                 Destroy(gameObject);
             }

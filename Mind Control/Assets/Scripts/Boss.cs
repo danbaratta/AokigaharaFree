@@ -11,7 +11,7 @@ public class Boss : MonoBehaviour {
 	BossHealth bossHealth;  
 	public int bossAttackDamage = 20;
 	public int bulletBossDamage = 5; 
-
+    
 	// Use this for initialization
 	void Start () {
 	

@@ -81,6 +81,8 @@ public class MorganStateMachine : MonoBehaviour
     private float playerYAnim;
     bool ground = false;
 
+    bool Reflect = true;
+
     // Firing and Timing variables
     [SerializeField]
     float bulletTimer = 0f;
@@ -288,18 +290,18 @@ public class MorganStateMachine : MonoBehaviour
 
             if (Input.GetAxis("Horizontal") > 0)
             {
-                if (right != true)
+                if (Reflect != true)
                 {
                     Flip(true);
-                    right = true;
+                    Reflect = true;
                 }
             }
-            else if(Input.GetAxis("Horizontal") < 0)
+            else if (Input.GetAxis("Horizontal") < 0)
             {
-                if (right == true)
+                if (Reflect == true)
                 {
                     Flip(false);
-                    right = false;
+                    Reflect = false;
                 }
             }
             a.SetFloat("Speed", playerXAnim);
@@ -421,12 +423,14 @@ public class MorganStateMachine : MonoBehaviour
                 TransitionToYurei();
                 possess = false;
             }
-            if (isOni == true)
+            else if (isOni == true)
             {
                 TransitionToOni();
                 Debug.Log("isOni = " + isOni);
                 possess = false;
             }
+            else
+                possess = false;
         }
         if (curState == PlayerStateMachine.STATE_YUREI)
         {

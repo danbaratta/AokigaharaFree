@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System;
 public class Base_Enemy : MonoBehaviour
 {
-    private enum EnemyState
+    public enum EnemyState
     {
         Idle,
         Walk,
@@ -14,37 +14,56 @@ public class Base_Enemy : MonoBehaviour
         MaxStates,
     }
     // Use this for initialization
-    int Max_Health;
-    int Health;
+   public int Max_Health;
+    public int Health;
 
-    float Max_Defense;
-    float Defense;
+    public float Max_Defense;
+    public float Defense;
 
-    int Max_Damage;
-    int Damage;
+    public int Max_Damage;
+    public int Damage;
+
+    public Animator anim;
+
+    //Attacking player variables
+   public GameObject Morgan;
+   public PlayerHealth playerHealth;
 
     // Movement variables
-    [SerializeField]
-    float MoveSpeed = 2.0f;
-    float Speed;
+    public float MoveSpeed = 2.0f;
+    public float Speed;
 
-    EnemyState curState;
+   public EnemyState curState;
+    public bool Mirror = false;
 
     Dictionary<EnemyState, Action> States = new Dictionary<EnemyState, Action>();
 
-    void Start()
+    // Script References
+    public MorganStateMachine msm;
+
+    public virtual void Start()
     {
         States.Add(EnemyState.Idle, IdleState);
         States.Add(EnemyState.Walk, WalkState);
         States.Add(EnemyState.Attack, AttackState);
         States.Add(EnemyState.Death, DeathState);
 
+        Morgan = GameObject.FindGameObjectWithTag("Player");
+        playerHealth = Morgan.GetComponent<PlayerHealth>();
+        anim = GetComponent<Animator>();
+        msm = GameObject.Find("Morgan").GetComponent<MorganStateMachine>();
+
     }
 
     // Update is called once per frame
-    void Update()
+    public virtual void Update()
     {
         States[curState].Invoke();
+
+        if(anim.GetBool("Dead"))
+        {
+            Destroy(this);
+        }
     }
 
     void SetState(EnemyState nextState)
@@ -67,6 +86,22 @@ public class Base_Enemy : MonoBehaviour
     }
     public virtual void DeathState()
     {
+        if (anim.GetBool("Dead"))
+        {
+            Destroy(this);
+        }
+    }
 
+    public virtual void TakeDamage(int dmg)
+    {
+        Health -= dmg;
+        if (Health <= 0)
+        {
+            curState = EnemyState.Death;
+            foreach (var item in GetComponents<BoxCollider>())
+            {
+                item.enabled = false;
+            } 
+        }
     }
 }

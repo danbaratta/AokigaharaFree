@@ -77,6 +77,7 @@
     <Compile Include="Assets\Cosmic Lady\Script\Actions.cs" />
     <Compile Include="Assets\Cosmic Lady\Script\AnimatorChanger.cs" />
     <Compile Include="Assets\Cosmic Lady\Script\Desactive.cs" />
+    <Compile Include="Assets\Exit.cs" />
     <Compile Include="Assets\GUI Animator\GUI Animator FREE\Demo (CSharp)\Scripts\GA_FREE_Demo00.cs" />
     <Compile Include="Assets\GUI Animator\GUI Animator FREE\Demo (CSharp)\Scripts\GA_FREE_Demo01.cs" />
     <Compile Include="Assets\GUI Animator\GUI Animator FREE\Demo (CSharp)\Scripts\GA_FREE_Demo02.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="Assets\Scripts\Boss.cs" />
     <Compile Include="Assets\Scripts\BossGenerator.cs" />
     <Compile Include="Assets\Scripts\BossHealth.cs" />
+    <Compile Include="Assets\Scripts\BossLevel_1.cs" />
     <Compile Include="Assets\Scripts\BossWall.cs" />
     <Compile Include="Assets\Scripts\ButtonHandler.cs" />
     <Compile Include="Assets\Scripts\CameraFollow.cs" />
@@ -122,9 +124,11 @@
     <Compile Include="Assets\Scripts\ParticleFixer.cs" />
     <Compile Include="Assets\Scripts\PlayerHealth.cs" />
     <Compile Include="Assets\Scripts\Projectile.cs" />
+    <Compile Include="Assets\Scripts\Shield.cs" />
     <Compile Include="Assets\Scripts\SoftPlatform.cs" />
     <Compile Include="Assets\Scripts\StartOver.cs" />
     <Compile Include="Assets\Scripts\TestScript.cs" />
+    <Compile Include="Assets\Scripts\YureiLevl1ReDone.cs" />
     <Compile Include="Assets\Scripts\YureiLvl1.cs" />
     <Compile Include="Assets\Scripts\YureiLvl2.cs" />
     <Compile Include="Assets\TempScripts\Movement.cs" />
