@@ -42,7 +42,7 @@ public class PlayerHealth : MonoBehaviour {
 		damaged = true;
 		currentHealth -= amount;
 		healthSlider.value = currentHealth;
-		if(currentHealth <= 0 && !isDead)
+		if(currentHealth <= 0)
 		{
 			Death ();
 		}
@@ -51,12 +51,9 @@ public class PlayerHealth : MonoBehaviour {
 
 	void Death ()
 	{
-
-		isDead = true;
-
-		//anim.SetTrigger ("Death");
-		GetComponent<MorganStateMachine> ().SpawnPlayer (); 
-
-	}   
+		GetComponent<MorganStateMachine> ().SpawnPlayer ();
+        currentHealth = startingHealth;
+        healthSlider.value = currentHealth;
+    }   
 
 }
