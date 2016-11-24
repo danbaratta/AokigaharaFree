@@ -26,8 +26,12 @@ Setting up project in unity Step by Step
 
 Rules:
 
-Places players can walk on should be set to layer Floor.
-Enemies need to be tag and layer with Enemy.
-Enemy spawner ( EnemyGenerator) layer EnemyGen.
+Places players can walk on should be set to layer Floor
+
+Enemies need to be tag and layer with Enemy
+
+Enemy spawner ( EnemyGenerator) layer EnemyGen
+
 Player should be under layer player ( duh lol)
-everything else default layer and for tag untagged should be fine.
+
+everything else default layer and for tag untagged should be fine
