@@ -70,6 +70,9 @@ public class MorganStateMachine : MonoBehaviour
     float oniJumpHeight = 8f;
     Vector2 oniMove = Vector2.zero;
 
+    // CheckPoint
+    Vector2 m_CheckPoint;
+
     // Jumping Variables
     [SerializeField]
     bool canJump = true;
@@ -503,7 +506,15 @@ public class MorganStateMachine : MonoBehaviour
 
     public void SpawnPlayer()
     {
-        transform.position = SpawnPoint.transform.position;
-        Morgan = GetComponent<Morgan>();
+        //transform.position = SpawnPoint.transform.position;
+        //Morgan = GetComponent<Morgan>();
+        gameObject.transform.position = m_CheckPoint;
+
+    }
+
+
+    public void CheckPointUpdate(Vector3 location)
+    {
+        m_CheckPoint = new Vector2(location.x, location.y);
     }
 }
