@@ -78,26 +78,14 @@ public class BossLevel_1 : Base_Enemy
             anim.SetBool("Attack", true);
             AttackMode = true;
             AttackBox.enabled = true;
-        }
-        if (AttackMode&& AttackBox.enabled)
-        {
-            //float direction = Vector2.Angle(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y),
-            //     new Vector2(Morgan.transform.position.x, Morgan.transform.position.y));
-            float direction = gameObject.transform.position.x- Morgan.transform.position.x;
+            float direction = gameObject.transform.position.x - Morgan.transform.position.x;
             if (direction <= 0)
-                GetComponent<Rigidbody2D>().velocity = new Vector2(MoveSpeed *25 * Time.deltaTime, 0);
+                GetComponent<Rigidbody2D>().velocity = new Vector2(MoveSpeed * 25 * Time.deltaTime, 0);
             else
-                GetComponent<Rigidbody2D>().velocity = new Vector2(-MoveSpeed *25* Time.deltaTime, 0);
-
+                GetComponent<Rigidbody2D>().velocity = new Vector2(-MoveSpeed * 25 * Time.deltaTime, 0);
         }
         if(AttackMode &&!AttackBox.enabled)
         {
-            float direction = gameObject.transform.position.x-StartLocation.x;
-            if ( direction <= 0)
-                GetComponent<Rigidbody2D>().velocity = new Vector2(MoveSpeed *25* Time.deltaTime, 0);
-            else
-                GetComponent<Rigidbody2D>().velocity = new Vector2(-MoveSpeed *25* Time.deltaTime, 0);
-
             if(Vector2.Distance(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y),StartLocation)<.5f)
             {
                 AttackMode = false;
@@ -113,8 +101,17 @@ public class BossLevel_1 : Base_Enemy
     {
         if (other.tag == "Player")
         {
-            other.gameObject.SendMessage("TakeDamage", Damage);
+            playerHealth.TakeDamage(Damage);
+            //other.gameObject.SendMessage("TakeDamage", Damage);
             AttackBox.enabled = false;
+            msm.GetThrown();
+
+            float direction = gameObject.transform.position.x - StartLocation.x;
+            if (direction <= 0)
+                GetComponent<Rigidbody2D>().velocity = new Vector2(MoveSpeed * 25 * Time.deltaTime, 0);
+            else
+                GetComponent<Rigidbody2D>().velocity = new Vector2(-MoveSpeed * 25 * Time.deltaTime, 0);
+            anim.SetBool("Attack", false);
         }
     }
 
