@@ -61,10 +61,9 @@ public class YureiLvl1 : MonoBehaviour
 
         ysm.Add(YureiStateMachine.AI_CONTROLLED, StateAI_Controlled);
         ysm.Add(YureiStateMachine.DYING, StateDying);
-
-        SetState(YureiStateMachine.AI_CONTROLLED);
-
+ 
         a = GetComponent<Animator>();
+        SetState(YureiStateMachine.AI_CONTROLLED);
         a.Play("Idle");
     }
 
@@ -73,7 +72,6 @@ public class YureiLvl1 : MonoBehaviour
         ysm[curState].Invoke();
         if (curState != YureiStateMachine.DYING)
         {
-            a.SetFloat("Speed", Mathf.Abs(yureiX));
             GetComponent<Rigidbody2D>().velocity = new Vector2(yureiX * MoveSpeed, GetComponent<Rigidbody2D>().velocity.y);
         }
     }
@@ -105,6 +103,17 @@ public class YureiLvl1 : MonoBehaviour
     {
         GrabPosition();
         curState = nextState;
+        switch (nextState)
+        {
+            case YureiStateMachine.AI_CONTROLLED:
+                a.Play("Idle");
+                break;
+            case YureiStateMachine.DYING:
+                a.Play("Death");
+                break;
+            default:
+                break;
+        }
     }
 
     void StateAI_Controlled()
@@ -114,7 +123,7 @@ public class YureiLvl1 : MonoBehaviour
 
     void StateDying()
     {
-        a.SetBool("Dead",true);
+        a.SetBool("Dead", true);
         if (a.GetBool("RealDeath"))
         {
             Debug.Log("Ack, I'm dyin'!");
@@ -157,7 +166,7 @@ public class YureiLvl1 : MonoBehaviour
         }
         else if (other.gameObject.tag == "Bullet")
         {
-            curState = YureiStateMachine.DYING;
+            SetState(YureiStateMachine.DYING);
         }
         else if ((other.tag == "Player") && (msm.isPossessing == true))
         {
@@ -170,14 +179,8 @@ public class YureiLvl1 : MonoBehaviour
             if (playerHealth.currentHealth > 0)
             {
                 msm.GetThrown();
-                playerHealth.TakeDamage(attackDamage);       //deals damage to player
-                //a.SetTrigger("Flinch");                       //plays damage animation
-                //{
-                //    Debug.Log("play damage animation");
-                //}
-                //Debug.Log("Health works");
-                //			msm.Possess (false); // Update this once we get a health and damage system.
-                Destroy(gameObject);
+                playerHealth.TakeDamage(attackDamage);       
+                SetState(YureiStateMachine.DYING);
             }
         }
     }
