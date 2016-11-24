@@ -23,25 +23,37 @@ public class BossLevel_1 : Base_Enemy
     float timer;
     float SpawnTimer;
     float intervalTimer;
+    //Animation
+
+    // attack mode
+    Vector2 StartLocation;
+    bool AttackMode;
 
     public List<GameObject> EnemySpawn;
 
+    //
     GameObject Sheild;
 
+    //
+    public BoxCollider2D AttackBox;
+
     HealthStats curHealthState;
-    Dictionary<HealthStats, Action> States = new Dictionary<HealthStats, Action>();
+    Dictionary<HealthStats, Action> BossStates = new Dictionary<HealthStats, Action>();
     // Use this for initialization
     public override void Start()
     {
         timer = 3;
         base.Start();
         bossHealthSlider.maxValue = Health = Max_Health = 1000;
-        States.Add(HealthStats.Full, FullHealth);
-        States.Add(HealthStats.High, HighHealth);
-        States.Add(HealthStats.Mid, MidHealth);
-        States.Add(HealthStats.Low, LowHeath);
+        BossStates.Add(HealthStats.Full, FullHealth);
+        BossStates.Add(HealthStats.High, HighHealth);
+        BossStates.Add(HealthStats.Mid, MidHealth);
+        BossStates.Add(HealthStats.Low, LowHeath);
 
         Sheild = gameObject.transform.GetChild(0).gameObject;
+
+        StartLocation = transform.position;
+        intervalTimer = 10;
     }
 
     // Update is called once per frame
@@ -53,22 +65,57 @@ public class BossLevel_1 : Base_Enemy
 
     public override void IdleState()
     {
-
+        anim.SetBool("Attack", false);
     }
 
     public override void AttackState()
     {
-        States[curHealthState].Invoke();
+        BossStates[curHealthState].Invoke();
+        intervalTimer -= Time.deltaTime;
+
+        if (intervalTimer < 0 && !AttackMode)
+        {
+            anim.SetBool("Attack", true);
+            AttackMode = true;
+            AttackBox.enabled = true;
+        }
+        if (AttackMode&& AttackBox.enabled)
+        {
+            //float direction = Vector2.Angle(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y),
+            //     new Vector2(Morgan.transform.position.x, Morgan.transform.position.y));
+            float direction = gameObject.transform.position.x- Morgan.transform.position.x;
+            if (direction <= 0)
+                GetComponent<Rigidbody2D>().velocity = new Vector2(MoveSpeed *25 * Time.deltaTime, 0);
+            else
+                GetComponent<Rigidbody2D>().velocity = new Vector2(-MoveSpeed *25* Time.deltaTime, 0);
+
+        }
+        if(AttackMode &&!AttackBox.enabled)
+        {
+            float direction = gameObject.transform.position.x-StartLocation.x;
+            if ( direction <= 0)
+                GetComponent<Rigidbody2D>().velocity = new Vector2(MoveSpeed *25* Time.deltaTime, 0);
+            else
+                GetComponent<Rigidbody2D>().velocity = new Vector2(-MoveSpeed *25* Time.deltaTime, 0);
+
+            if(Vector2.Distance(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y),StartLocation)<.5f)
+            {
+                AttackMode = false;
+                intervalTimer = UnityEngine.Random.Range(10f, 15f);
+                GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+                anim.SetBool("Attack", false);
+            }
+        }
     }
 
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        //if (other.tag == "Bullet")
-        //{
-        //    if (other.gameObject.GetComponent<Projectile>())
-        //        TakeDamage(other.gameObject.GetComponent<Projectile>().Damage);
-        //}
+        if (other.tag == "Player")
+        {
+            other.gameObject.SendMessage("TakeDamage", Damage);
+            AttackBox.enabled = false;
+        }
     }
 
 
