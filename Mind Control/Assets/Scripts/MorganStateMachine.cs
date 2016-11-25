@@ -156,10 +156,12 @@ public class MorganStateMachine : MonoBehaviour
     void StateIdle()
     {
         a.SetBool("Walk", false);
+        a.speed = 1;
         HandleMorganControls();
         //a.Play("Idle");
         if (Input.GetAxis("Horizontal") != 0)
         {
+            a.Play("Walk");
             SetState(PlayerStateMachine.WALK);
         }
     }
@@ -168,14 +170,17 @@ public class MorganStateMachine : MonoBehaviour
     {
         HandleMorganControls();
         //a.Play("Walk");
+        a.speed = Math.Abs(playerXAnim);
         a.SetBool("Walk", true);
         if (!onGround)
         {
+            a.Play("Jump");
             SetState(PlayerStateMachine.IN_AIR);
         }
 
         if (Input.GetAxis("Horizontal") == 0)
         {
+            a.Play("Idle");
             SetState(PlayerStateMachine.IDLE);
         }
     }
@@ -190,6 +195,7 @@ public class MorganStateMachine : MonoBehaviour
     void StateInAir()
     {
         HandleMorganControls();
+        a.speed = 1;
     }
 
     void State_Oni()
@@ -310,6 +316,7 @@ public class MorganStateMachine : MonoBehaviour
                     Reflect = false;
                 }
             }
+            
             a.SetFloat("Speed", playerXAnim);
             GetComponent<Rigidbody2D>().velocity = new Vector2(playerXAnim * Morgan.WalkSpeed(), GetComponent<Rigidbody2D>().velocity.y);
         }
@@ -339,6 +346,7 @@ public class MorganStateMachine : MonoBehaviour
         if (!onGround)
         {
             canJump = false;
+            a.Play("Jump");
             SetState(PlayerStateMachine.IN_AIR);
 
         }
@@ -360,10 +368,12 @@ public class MorganStateMachine : MonoBehaviour
         if (direction != 0f)
         {
             SetState(PlayerStateMachine.WALK);
+            a.Play("Walk");
             a.SetBool("Walk", true);
         }
         else
         {
+            a.Play("Idle");
             SetState(PlayerStateMachine.IDLE);
             a.SetBool("Walk", false);
         }
