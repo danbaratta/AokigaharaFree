@@ -7,6 +7,11 @@ public class BossWall : MonoBehaviour
     public GameObject bossWallFront;
     public GameObject rearBossWall;
     public GameObject Boss;
+
+    //AudioRef
+    public GameObject Audio;
+
+
     // Use this for initialization
     void Start()
     {
@@ -17,9 +22,10 @@ public class BossWall : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!Boss)
+        if (!Boss)
         {
             rearBossWall.SetActive(false);
+            Audio.SendMessage("Track", 0);
         }
     }
 
@@ -29,6 +35,7 @@ public class BossWall : MonoBehaviour
         {
             bossWallFront.SetActive(true);
             Boss.GetComponent<BossLevel_1>().AttackModeOn();
+            Audio.SendMessage("Track", 1);
         }
     }
 }

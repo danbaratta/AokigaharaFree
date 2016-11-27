@@ -72,8 +72,18 @@ public class BossLevel_1 : Base_Enemy
     {
         BossStates[curHealthState].Invoke();
         intervalTimer -= Time.deltaTime;
-
-        if (intervalTimer < 0 && !AttackMode)
+        if (Sheild && Sheild.activeSelf)
+        {
+            AttackMode = true;
+            AttackBox.enabled = false;
+            float direction = gameObject.transform.position.x - StartLocation.x;
+            if (direction <= 0)
+                GetComponent<Rigidbody2D>().velocity = new Vector2(MoveSpeed * 25 * Time.deltaTime, 0);
+            else
+                GetComponent<Rigidbody2D>().velocity = new Vector2(-MoveSpeed * 25 * Time.deltaTime, 0);
+            anim.SetBool("Attack", false);
+        }
+        else if (intervalTimer < 0 && !AttackMode)
         {
             anim.SetBool("Attack", true);
             AttackMode = true;
@@ -84,9 +94,9 @@ public class BossLevel_1 : Base_Enemy
             else
                 GetComponent<Rigidbody2D>().velocity = new Vector2(-MoveSpeed * 25 * Time.deltaTime, 0);
         }
-        if(AttackMode &&!AttackBox.enabled)
+        if (AttackMode && !AttackBox.enabled)
         {
-            if(Vector2.Distance(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y),StartLocation)<.5f)
+            if (Vector2.Distance(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y), StartLocation) < .5f)
             {
                 AttackMode = false;
                 intervalTimer = UnityEngine.Random.Range(10f, 15f);
@@ -140,6 +150,9 @@ public class BossLevel_1 : Base_Enemy
         }
 
         bossHealthSlider.value = Health;
+
+        if (Health < 0)
+            Destroy(this.gameObject);
     }
 
     public virtual void FullHealth()
@@ -154,7 +167,10 @@ public class BossLevel_1 : Base_Enemy
                 SpawnTimer = UnityEngine.Random.Range(2.5f, 5f);
             }
             if (timer < -10)
+            {
                 timer = 10;
+                SpawnTimer = 0;
+            }
         }
     }
     public virtual void HighHealth()
@@ -165,11 +181,14 @@ public class BossLevel_1 : Base_Enemy
             SpawnTimer -= Time.deltaTime;
             if (SpawnTimer <= 0)
             {
-                Instantiate(EnemySpawn[0]);
+                Instantiate(EnemySpawn[0], this.gameObject.transform.position, Quaternion.identity);
                 SpawnTimer = UnityEngine.Random.Range(2.5f, 4f);
             }
             if (timer < -12)
+            {
                 timer = 12;
+                SpawnTimer = 0;
+            }
         }
     }
 
@@ -181,24 +200,32 @@ public class BossLevel_1 : Base_Enemy
             SpawnTimer -= Time.deltaTime;
             if (SpawnTimer <= 0)
             {
-                Instantiate(EnemySpawn[0]);
+                Instantiate(EnemySpawn[0], this.gameObject.transform.position, Quaternion.identity);
                 SpawnTimer = UnityEngine.Random.Range(2f, 4f);
             }
             if (timer < -14)
+            {
                 timer = 14;
+                SpawnTimer = 0;
+            }
         }
     }
     public virtual void LowHeath()
     {
+        timer -= Time.deltaTime;
         if (timer <= 0)
         {
+            SpawnTimer -= Time.deltaTime;
             if (SpawnTimer <= 0)
             {
-                Instantiate(EnemySpawn[0]);
+                Instantiate(EnemySpawn[0], this.gameObject.transform.position, Quaternion.identity);
                 SpawnTimer = UnityEngine.Random.Range(1.5f, 2.5f);
             }
             if (timer < -15)
+            {
                 timer = 15;
+                SpawnTimer = 0;
+            }
         }
     }
 
