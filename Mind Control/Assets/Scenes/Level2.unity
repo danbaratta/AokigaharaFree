@@ -32907,6 +32907,7 @@ Prefab:
       value: 10
       objectReference: {fileID: 0}
 <<<<<<< HEAD
+<<<<<<< HEAD
     - target: {fileID: 61000010914848614, guid: 3b4b790bb8482c448bf638008b62bd03,
         type: 2}
       propertyPath: m_Size.y
@@ -32923,6 +32924,8 @@ Prefab:
       value: 20
 >>>>>>> origin/AokigaharaFree
       objectReference: {fileID: 0}
+=======
+>>>>>>> parent of 3c21290... Update
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3b4b790bb8482c448bf638008b62bd03, type: 2}
   m_IsPrefabParent: 0
