@@ -13,7 +13,7 @@ public class MorganStateMachine : MonoBehaviour
         WALK,
         ENTER_JUMP,
         IN_AIR,
-		DASH,
+        DASH,
         STATE_YUREI,
         STATE_ONI,
 
@@ -123,8 +123,8 @@ public class MorganStateMachine : MonoBehaviour
         psm.Add(PlayerStateMachine.ENTER_JUMP, StateEnterJump);
         psm.Add(PlayerStateMachine.IN_AIR, StateInAir);
         psm.Add(PlayerStateMachine.STATE_YUREI, State_Yurei);
-        psm.Add(PlayerStateMachine.STATE_ONI, State_Oni);       
-		psm.Add(PlayerStateMachine.DASH, StateDash);       // adding states to the dictionary
+        psm.Add(PlayerStateMachine.STATE_ONI, State_Oni);
+        psm.Add(PlayerStateMachine.DASH, StateDash);       // adding states to the dictionary
 
         SetState(PlayerStateMachine.IDLE);                  // setting default state to Idle
     }
@@ -202,15 +202,17 @@ public class MorganStateMachine : MonoBehaviour
         a.speed = 1;
     }
 
-	void StateDash()
-	{
-		if (Input.GetKey (KeyCode.T)) 
-		{
-			GetComponent<Rigidbody2D> ().velocity += new Vector2 (Morgan.DashSpeed (), GetComponent<Rigidbody2D> ().velocity.y);
-			SetState (PlayerStateMachine.DASH);
-			Debug.Log ("dashing");
-		}
-	}
+    void StateDash()
+    {
+        Morgan.dashTimer -= Time.deltaTime;
+        if (Morgan.dashTimer <= 0)
+        {
+            GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+            SetState(PlayerStateMachine.IDLE);
+            GetComponent<Rigidbody2D>().gravityScale = 1;
+            Morgan.dashTimer = Morgan.ConstDashTimer;
+        }
+    }
 
     void State_Oni()
     {
@@ -333,16 +335,19 @@ public class MorganStateMachine : MonoBehaviour
 
             a.SetFloat("Speed", playerXAnim);
             GetComponent<Rigidbody2D>().velocity = new Vector2(playerXAnim * Morgan.WalkSpeed(), GetComponent<Rigidbody2D>().velocity.y);
-        }
-        /*		if (playerXAnim > 0 && !right) {
-                    Flip (); 
-                }
+
+            if (Input.GetKey(KeyCode.T)&&Morgan.Dash)
+            {
+                if (Reflect)
+                    GetComponent<Rigidbody2D>().velocity = new Vector2(Morgan.DashSpeed(), 0);
                 else
-                {
-                    if (playerXAnim < 0 && right)
-                        Flip ();	
-                }
-         */
+                    GetComponent<Rigidbody2D>().velocity = new Vector2(-Morgan.DashSpeed(), 0);
+
+                SetState(PlayerStateMachine.DASH);
+                Morgan.Dash = false;
+                GetComponent<Rigidbody2D>().gravityScale = 0;
+            }
+        }
     }
 
     void CheckForJump()
@@ -367,6 +372,7 @@ public class MorganStateMachine : MonoBehaviour
         else if (onGround)
         {
             HandleLandOnGround();
+            Morgan.Dash = true;
         }
     }
 
