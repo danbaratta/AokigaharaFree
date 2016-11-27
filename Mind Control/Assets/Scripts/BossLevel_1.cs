@@ -109,7 +109,14 @@ public class BossLevel_1 : Base_Enemy
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Player")
+        // If player is possing a enemy does 10 damage on touching boss
+        if(other.tag == "Player" && msm.isPossessing)
+        {
+            TakeDamage(10);
+            msm.TransitionFromYurei();
+            msm.GetThrown();
+        }
+        else if (other.tag == "Player")
         {
             playerHealth.TakeDamage(Damage);
             //other.gameObject.SendMessage("TakeDamage", Damage);

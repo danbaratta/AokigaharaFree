@@ -25,6 +25,7 @@ GameObject:
   - 61: {fileID: 61000010914848614}
   - 114: {fileID: 114000010942935752}
   - 61: {fileID: 61000013475620232}
+  - 61: {fileID: 61000012991005920}
   m_Layer: 9
   m_Name: level one Boss
   m_TagString: Enemy
@@ -121,14 +122,28 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_Offset: {x: 1.168457, y: 0.4557259}
   serializedVersion: 2
-  m_Size: {x: 4.2085104, y: 4.597842}
---- !u!61 &61000013475620232
+  m_Size: {x: 4.2085104, y: 14.28}
+--- !u!61 &61000012991005920
 BoxCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011625508698}
   m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_Offset: {x: 1.168457, y: 0.4557259}
+  serializedVersion: 2
+  m_Size: {x: 4.2085104, y: 14.28}
+--- !u!61 &61000013475620232
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011625508698}
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -168,8 +183,8 @@ MonoBehaviour:
   Health: 1000
   Max_Defense: 0
   Defense: 0
-  Max_Damage: 0
-  Damage: 0
+  Max_Damage: 10
+  Damage: 10
   anim: {fileID: 0}
   Morgan: {fileID: 0}
   playerHealth: {fileID: 0}

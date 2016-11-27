@@ -261,7 +261,7 @@ public class MorganStateMachine : MonoBehaviour
         right = true;
         isPossessing = true;
         SetLocationToTarget();
-        gameObject.GetComponent<Rigidbody2D>().isKinematic = true;
+        //gameObject.GetComponent<Rigidbody2D>().isKinematic = true;
         SetState(PlayerStateMachine.STATE_YUREI);
     }
 
@@ -316,7 +316,7 @@ public class MorganStateMachine : MonoBehaviour
                     Reflect = false;
                 }
             }
-            
+
             a.SetFloat("Speed", playerXAnim);
             GetComponent<Rigidbody2D>().velocity = new Vector2(playerXAnim * Morgan.WalkSpeed(), GetComponent<Rigidbody2D>().velocity.y);
         }
@@ -333,7 +333,7 @@ public class MorganStateMachine : MonoBehaviour
 
     void CheckForJump()
     {
-        if ((Input.GetKeyDown(KeyCode.Space) ||Input.GetButtonDown("joystick button 0") ) && canJump)
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("joystick button 0")) && canJump)
         {
             SetState(PlayerStateMachine.ENTER_JUMP);
         }
@@ -417,12 +417,12 @@ public class MorganStateMachine : MonoBehaviour
             bulletIcon.SetActive(false);
         }
 
-        if ((Input.GetKeyDown(KeyCode.Mouse1)|| Input.GetAxis("PrimaryAttack") == 1) && (mindCanFire == true))
+        if ((Input.GetKeyDown(KeyCode.Mouse1) || Input.GetAxis("PrimaryAttack") == 1) && (mindCanFire == true))
         {
             FireMindBullet();
             mindTimer = 0f;
         }
-        else if ((Input.GetKeyDown(KeyCode.Mouse0) || Input.GetAxis("PrimaryAttack") ==-1 ) && (bulletCanFire == true))
+        else if ((Input.GetKeyDown(KeyCode.Mouse0) || Input.GetAxis("PrimaryAttack") == -1) && (bulletCanFire == true))
         {
             FireBullet();
             bulletTimer = 0f;
