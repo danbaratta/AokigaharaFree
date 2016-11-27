@@ -13,6 +13,7 @@ public class MorganStateMachine : MonoBehaviour
         WALK,
         ENTER_JUMP,
         IN_AIR,
+		DASH,
         STATE_YUREI,
         STATE_ONI,
 
@@ -70,6 +71,7 @@ public class MorganStateMachine : MonoBehaviour
     float oniJumpHeight = 8f;
     Vector2 oniMove = Vector2.zero;
 
+
     // CheckPoint
     Vector2 m_CheckPoint;
 
@@ -121,7 +123,8 @@ public class MorganStateMachine : MonoBehaviour
         psm.Add(PlayerStateMachine.ENTER_JUMP, StateEnterJump);
         psm.Add(PlayerStateMachine.IN_AIR, StateInAir);
         psm.Add(PlayerStateMachine.STATE_YUREI, State_Yurei);
-        psm.Add(PlayerStateMachine.STATE_ONI, State_Oni);       // adding states to the dictionary
+        psm.Add(PlayerStateMachine.STATE_ONI, State_Oni);       
+		psm.Add(PlayerStateMachine.DASH, StateDash);       // adding states to the dictionary
 
         SetState(PlayerStateMachine.IDLE);                  // setting default state to Idle
     }
@@ -190,6 +193,7 @@ public class MorganStateMachine : MonoBehaviour
         canJump = false;
         GetComponent<Rigidbody2D>().velocity += new Vector2(GetComponent<Rigidbody2D>().velocity.x, Morgan.InitJumpSpeed());
         SetState(PlayerStateMachine.IN_AIR);
+
     }
 
     void StateInAir()
@@ -197,6 +201,16 @@ public class MorganStateMachine : MonoBehaviour
         HandleMorganControls();
         a.speed = 1;
     }
+
+	void StateDash()
+	{
+		if (Input.GetKey (KeyCode.T)) 
+		{
+			GetComponent<Rigidbody2D> ().velocity += new Vector2 (Morgan.DashSpeed (), GetComponent<Rigidbody2D> ().velocity.y);
+			SetState (PlayerStateMachine.DASH);
+			Debug.Log ("dashing");
+		}
+	}
 
     void State_Oni()
     {
