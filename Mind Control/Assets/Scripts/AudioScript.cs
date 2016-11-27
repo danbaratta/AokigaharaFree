@@ -3,13 +3,17 @@ using System.Collections;
 
 public class AudioScript : MonoBehaviour
 {
+    // Place background music for default in here
     public AudioClip BackGroundMusic;
+    //Boss battle music here
     public AudioClip BattleMusic;
+    // Audio player this what use palyer sounds clips
     AudioSource AudioPlayer;
     // play another track
     public bool TrackChange;
+    // CurrentTrack to play
     AudioClip CurrentTrack;
-    //
+    // How face it should Fad Out and In
     public float TransitionSpeed = 5;
 
     // Use this for initialization
