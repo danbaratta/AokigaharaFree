@@ -23,10 +23,6 @@ public class AudioScript : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            Track(1);
-        }
         if (TrackChange)
         {
             FadeOut();
@@ -59,10 +55,6 @@ public class AudioScript : MonoBehaviour
     }
 
 
-    void Fade()
-    {
-
-    }
     void FadeOut()
     {
         if (AudioPlayer.volume > 0)

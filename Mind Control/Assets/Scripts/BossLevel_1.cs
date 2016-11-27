@@ -130,7 +130,7 @@ public class BossLevel_1 : Base_Enemy
             msm.TransitionFromYurei();
             msm.GetThrown();
         }
-        else if (other.tag == "Player")
+        else if (other.tag == "Player"&&AttackMode)
         {
             playerHealth.TakeDamage(Damage);
             //other.gameObject.SendMessage("TakeDamage", Damage);
