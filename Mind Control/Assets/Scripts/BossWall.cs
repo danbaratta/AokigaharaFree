@@ -35,7 +35,6 @@ public class BossWall : MonoBehaviour
         {
             bossWallFront.SetActive(true);
             Boss.GetComponent<BossLevel_1>().AttackModeOn();
-            Audio.SendMessage("Track", 1);
         }
     }
 }
