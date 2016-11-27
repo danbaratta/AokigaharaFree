@@ -23,6 +23,7 @@ public class BossLevel_1 : Base_Enemy
     float timer;
     float SpawnTimer;
     float intervalTimer;
+    float RegenTimer;
     //Animation
 
     // attack mode
@@ -54,13 +55,26 @@ public class BossLevel_1 : Base_Enemy
 
         StartLocation = transform.position;
         intervalTimer = 10;
+        var bla = Input.GetJoystickNames();
     }
 
     // Update is called once per frame
     public override void Update()
     {
         base.Update();
-
+        if(Sheild && Sheild.activeSelf)
+        {
+            RegenTimer -= Time.deltaTime;
+            if(RegenTimer <=0)
+            {
+                Health += 15;
+                RegenTimer = 1;
+            }
+            if (Health >= Max_Health / 2)
+            {
+                Sheild.SetActive(false);
+            }
+        }
     }
 
     public override void IdleState()
@@ -150,7 +164,6 @@ public class BossLevel_1 : Base_Enemy
         }
         else
         {
-            // Hard code always be 3 child for now
             if (Sheild)
                 Sheild.SetActive(true);
             curHealthState = HealthStats.Low;
