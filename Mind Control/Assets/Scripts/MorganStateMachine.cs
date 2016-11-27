@@ -207,10 +207,10 @@ public class MorganStateMachine : MonoBehaviour
         Morgan.dashTimer -= Time.deltaTime;
         if (Morgan.dashTimer <= 0)
         {
-            Morgan.dashTimer = Morgan.ConstDashTimer;
-            GetComponent<Rigidbody2D>().gravityScale = 1;
+            GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
             SetState(PlayerStateMachine.IDLE);
-            GetComponent<Rigidbody2D>().velocity += new Vector2(0, 0);
+            GetComponent<Rigidbody2D>().gravityScale = 1;
+            Morgan.dashTimer = Morgan.ConstDashTimer;
         }
     }
 
@@ -336,17 +336,16 @@ public class MorganStateMachine : MonoBehaviour
             a.SetFloat("Speed", playerXAnim);
             GetComponent<Rigidbody2D>().velocity = new Vector2(playerXAnim * Morgan.WalkSpeed(), GetComponent<Rigidbody2D>().velocity.y);
 
-            if (Input.GetKey(KeyCode.T) && Morgan.Dash)
+            if (Input.GetKey(KeyCode.T)&&Morgan.Dash)
             {
                 if (Reflect)
                     GetComponent<Rigidbody2D>().velocity = new Vector2(Morgan.DashSpeed(), 0);
                 else
                     GetComponent<Rigidbody2D>().velocity = new Vector2(-Morgan.DashSpeed(), 0);
 
-                GetComponent<Rigidbody2D>().gravityScale = 0;
                 SetState(PlayerStateMachine.DASH);
                 Morgan.Dash = false;
-                a.Play("Jump");
+                GetComponent<Rigidbody2D>().gravityScale = 0;
             }
         }
     }
