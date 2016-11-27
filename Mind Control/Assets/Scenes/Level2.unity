@@ -32856,6 +32856,11 @@ Prefab:
       propertyPath: Max_Damage
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 61000010914848614, guid: 3b4b790bb8482c448bf638008b62bd03,
+        type: 2}
+      propertyPath: m_Size.y
+      value: 14.28
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3b4b790bb8482c448bf638008b62bd03, type: 2}
   m_IsPrefabParent: 0
