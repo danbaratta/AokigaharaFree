@@ -45,7 +45,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 116454}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.45, y: -2.72, z: -1}
+  m_LocalPosition: {x: 649.97, y: -2.53, z: -1}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -124,6 +124,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cea6bc428b8ba94c8d5be4081770474, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dashSpeed: 10
+  dashTimer: 1.5
+  ConstDashTimer: 1.5
+  Dash: 0
 --- !u!114 &11426916
 MonoBehaviour:
   m_ObjectHideFlags: 1
