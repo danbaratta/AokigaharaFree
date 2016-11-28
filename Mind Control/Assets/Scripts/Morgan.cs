@@ -6,7 +6,7 @@ public class Morgan : MonoBehaviour {
 	private float walkSpeed = 5f;
 	private float walkAccel = 1f;
 
-	public float dashSpeed = 10f;
+	public float dashSpeed = 20f;
 	public float dashTimer = 0f;
     public float ConstDashTimer;
     public bool Dash;
