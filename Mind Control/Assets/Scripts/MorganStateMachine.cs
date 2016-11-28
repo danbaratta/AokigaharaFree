@@ -204,10 +204,12 @@ public class MorganStateMachine : MonoBehaviour
 
 	void StateDash()
 	{
-		if (Input.GetKey (KeyCode.T))
-			GetComponent<Rigidbody2D> ().velocity += new Vector2 (Morgan.DashSpeed (), GetComponent<Rigidbody2D>().velocity.y);
-		SetState (PlayerStateMachine.DASH);
-		Debug.Log ("dashing");
+		if (Input.GetKey (KeyCode.T)) 
+		{
+			GetComponent<Rigidbody2D> ().velocity += new Vector2 (Morgan.DashSpeed (), GetComponent<Rigidbody2D> ().velocity.y);
+			SetState (PlayerStateMachine.DASH);
+			Debug.Log ("dashing");
+		}
 	}
 
     void State_Oni()
