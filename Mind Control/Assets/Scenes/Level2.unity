@@ -32617,11 +32617,19 @@ Prefab:
       objectReference: {fileID: 2127823723}
     - target: {fileID: 11416986, guid: 8c0ff0e3f7f4f480a81c25c1c644467b, type: 2}
       propertyPath: dashTimer
-      value: 1.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11416986, guid: 8c0ff0e3f7f4f480a81c25c1c644467b, type: 2}
       propertyPath: ConstDashTimer
-      value: 1.5
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11416986, guid: 8c0ff0e3f7f4f480a81c25c1c644467b, type: 2}
+      propertyPath: dashSpeed
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 11416986, guid: 8c0ff0e3f7f4f480a81c25c1c644467b, type: 2}
+      propertyPath: Dash
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8c0ff0e3f7f4f480a81c25c1c644467b, type: 2}
