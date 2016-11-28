@@ -336,7 +336,7 @@ public class MorganStateMachine : MonoBehaviour
             a.SetFloat("Speed", playerXAnim);
             GetComponent<Rigidbody2D>().velocity = new Vector2(playerXAnim * Morgan.WalkSpeed(), GetComponent<Rigidbody2D>().velocity.y);
 
-            if (Input.GetKey(KeyCode.T)&&Morgan.Dash)
+            if (Input.GetKey(KeyCode.T) && Morgan.Dash)
             {
                 if (Reflect)
                     GetComponent<Rigidbody2D>().velocity = new Vector2(Morgan.DashSpeed(), 0);
