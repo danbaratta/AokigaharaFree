@@ -75,20 +75,6 @@ public class YureiLvl1 : MonoBehaviour
             GetComponent<Rigidbody2D>().velocity = new Vector2(yureiX * MoveSpeed, GetComponent<Rigidbody2D>().velocity.y);
         }
     }
-    // Update is called once per frame
-
-    void FixedUpdate()
-    {
-        if (yureiX > 0 && !right)
-            Flip();
-
-        else
-        {
-            if (yureiX < 0 && right)
-                Flip();
-        }
-    }
-
     void Flip()
     {
         right = !right;

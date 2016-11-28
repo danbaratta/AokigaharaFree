@@ -21,6 +21,7 @@ public class YureiLevl1ReDone : Base_Enemy
     public override void IdleState()
     {
         WalkState();
+        anim.Play("Idle");
     }
 
     public override void AttackState()
@@ -29,13 +30,13 @@ public class YureiLevl1ReDone : Base_Enemy
     }
     public override void WalkState()
     {
-        transform.position -= transform.right * Time.deltaTime * MoveSpeed;
+        //transform.position -= transform.right * Time.deltaTime * MoveSpeed;
 
-        GetComponent<Rigidbody2D>().velocity = new Vector2(0, MoveSpeed*Time.deltaTime);
+        GetComponent<Rigidbody2D>().velocity = new Vector2(-MoveSpeed,0);
     }
     public override void DeathState()
-    {
-       if( anim.GetBool("Dead"))
+    {        
+        if (anim.GetBool("RealDeath"))
         {
             Destroy(this);
         }
@@ -60,12 +61,20 @@ public class YureiLevl1ReDone : Base_Enemy
         }
         else if (other.gameObject.tag == "Bullet")
         {
-            Destroy(this);
+            SetState(EnemyState.Death);
+            anim.SetBool("Dead", true);
+            anim.Play("Death");
+            TurnOffCollision();
+            GetComponent<Rigidbody2D>().velocity = new Vector2();
         }
         else if ((other.tag == "Player") && (msm.isPossessing == true))
         {
             msm.TransitionFromYurei();
-            Destroy(gameObject);
+            SetState(EnemyState.Death);
+            anim.SetBool("Dead", true);
+            anim.Play("Death");
+            TurnOffCollision();
+            GetComponent<Rigidbody2D>().velocity = new Vector2();
         }
 
         else if (other.tag == "Player")
@@ -80,9 +89,26 @@ public class YureiLevl1ReDone : Base_Enemy
                 //}
                 //Debug.Log("Health works");
                 //			msm.Possess (false); // Update this once we get a health and damage system.
-                Destroy(gameObject);
+                SetState(EnemyState.Death);
+                anim.SetBool("Dead", true);
+                anim.Play("Death");
+                TurnOffCollision();
+                GetComponent<Rigidbody2D>().velocity = new Vector2();
             }
         }
     }
 
+    void OnBecameInvisible()
+    {
+        Destroy(gameObject);
+    }
+
+    /// <summary>
+    /// Set location for player to move when possesing someone
+    /// </summary>
+    void SendPosition()
+    {
+        msm.GetTargetX(transform.position.x);
+        msm.GetTargetY(transform.position.y);
+    }
 }

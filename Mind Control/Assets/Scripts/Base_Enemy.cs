@@ -66,7 +66,7 @@ public class Base_Enemy : MonoBehaviour
         }
     }
 
-    void SetState(EnemyState nextState)
+   public void SetState(EnemyState nextState)
     {
         curState = nextState;
     }
@@ -102,6 +102,27 @@ public class Base_Enemy : MonoBehaviour
             {
                 item.enabled = false;
             } 
+        }
+    }
+
+    /// <summary>
+    /// Flip the image True = facing right False = facing left
+    /// </summary>
+    void Flip(bool Turn)
+    {
+        Vector3 scale = transform.localScale;
+        if (Turn)
+            scale.x = Math.Abs(scale.x);
+        else
+            scale.x = -Math.Abs(scale.x);
+        transform.localScale = scale;
+    }
+
+    public void TurnOffCollision()
+    {
+        foreach (var item in GetComponents<BoxCollider2D>())
+        {
+            item.enabled = false;
         }
     }
 }
