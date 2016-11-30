@@ -408,7 +408,9 @@ public class MorganStateMachine : MonoBehaviour
 
     void FireBullet()
     {
-        Instantiate(Bullet, Morgan.transform.position, Morgan.transform.rotation);
+       GameObject TempBullet = (GameObject)Instantiate(Bullet, Morgan.transform.position, Morgan.transform.rotation);
+        if (!Reflect)
+            TempBullet.SendMessage("FlipAxis");
     }
     void CheckForFiring()
     {
