@@ -14,26 +14,28 @@ public class Base_Enemy : MonoBehaviour
         MaxStates,
     }
     // Use this for initialization
-   public int Max_Health;
+    public int Max_Health;
     public int Health;
-
+    //
     public float Max_Defense;
     public float Defense;
-
+    //
     public int Max_Damage;
     public int Damage;
-
+    // Animator ref
     public Animator anim;
 
     //Attacking player variables
-   public GameObject Morgan;
-   public PlayerHealth playerHealth;
+    public GameObject Morgan;
+    public PlayerHealth playerHealth;
 
     // Movement variables
     public float MoveSpeed = 2.0f;
     public float Speed;
 
-   public EnemyState curState;
+    //state
+    public EnemyState curState;
+    //Use for checking if enemie should look other direction
     public bool Mirror = false;
 
     Dictionary<EnemyState, Action> States = new Dictionary<EnemyState, Action>();
@@ -60,13 +62,13 @@ public class Base_Enemy : MonoBehaviour
     {
         States[curState].Invoke();
 
-        if(anim.GetBool("Dead"))
+        if (anim.GetBool("Dead"))
         {
             Destroy(this);
         }
     }
 
-   public void SetState(EnemyState nextState)
+    public void SetState(EnemyState nextState)
     {
         curState = nextState;
     }
@@ -98,10 +100,10 @@ public class Base_Enemy : MonoBehaviour
         if (Health <= 0)
         {
             curState = EnemyState.Death;
-            foreach (var item in GetComponents<BoxCollider>())
-            {
-                item.enabled = false;
-            } 
+            TurnOffCollision();
+            anim.SetBool("Dead", true);
+            anim.Play("Death");
+            GetComponent<Rigidbody2D>().velocity = new Vector2();
         }
     }
 
@@ -116,6 +118,7 @@ public class Base_Enemy : MonoBehaviour
         else
             scale.x = -Math.Abs(scale.x);
         transform.localScale = scale;
+        Mirror = !Turn;
     }
 
     public void TurnOffCollision()
