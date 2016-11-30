@@ -7,8 +7,15 @@ public class Actions : MonoBehaviour {
 
     public enum Action 
     {
-        Attack,
-        Idle,
+        Idle=0,
+        Death=8,
+        Flinch=7,
+        Jump=5,
+        Melee=3,
+        Run=2,
+        Shoot=4,
+        SpinAttack=6,
+        Walk=1
         
     }
 
@@ -16,11 +23,12 @@ public class Actions : MonoBehaviour {
     public static Action actualAction = Action.Idle;
     int actualAnim = (int)Action.Idle;
     public Text actText;
+    public GameObject Bullet;
 	// Use this for initialization
 	void Start () {
-       
+        
         anim = this.gameObject.GetComponent<Animator>();
-        //actText.text = actualAction.ToString();
+        actText.text = actualAction.ToString();
         PlayAnimation();
 	}
 
@@ -32,20 +40,49 @@ public class Actions : MonoBehaviour {
 
     public void NextAnimation()
     { 
-        //switch(((int)actualAnim + 1))
+        
 		switch(((int)actualAnim))
         {
+
             case 0:
-                actualAction = Action.Attack;
-                actualAnim = (int)actualAction;
-                break;
-            case 1:
                 actualAction = Action.Idle;
                 actualAnim = (int)actualAction;
                 break;
-           
+            case 1:
+                actualAction = Action.Walk;
+                actualAnim = (int)actualAction;
+                break;
+            case 2:
+                actualAction = Action.Run;
+                actualAnim = (int)actualAction;
+                break;
+
+            case 3:
+                actualAction = Action.Melee;
+                actualAnim = (int)actualAction;
+                break;
+            case 4:
+                actualAction = Action.Shoot;
+                actualAnim = (int)actualAction;
+                break;
+            case 5:
+                actualAction = Action.Jump;
+                actualAnim = (int)actualAction;
+                break;
+            case 6:
+                actualAction = Action.SpinAttack;
+                actualAnim = (int)actualAction;
+                break;
+            case 7:
+                actualAction = Action.Flinch;
+                actualAnim = (int)actualAction;
+                break;
+            case 8:
+                actualAction = Action.Death;
+                actualAnim = (int)actualAction;
+                break;                                     
             default:
-                actualAction = Action.Attack;
+                actualAction = Action.Idle;
                 actualAnim = (int)actualAction;
                 break;
         }
@@ -57,6 +94,7 @@ public class Actions : MonoBehaviour {
 
 	public void Next()
 	{
+        Debug.Log("Next");
 		actualAnim++;
 		NextAnimation ();
 	}
@@ -77,4 +115,10 @@ public class Actions : MonoBehaviour {
         yield return new WaitForSeconds(.7f);
         anim.Play(Action.Idle.ToString());
     }
+    public void ActiveShoot()
+    {
+        Bullet.SetActive(true);
+    }
+
+
 }
