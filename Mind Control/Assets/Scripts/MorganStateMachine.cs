@@ -97,6 +97,7 @@ public class MorganStateMachine : MonoBehaviour
     bool bulletCanFire;
     [SerializeField]
     float mindTimer = 0f;
+	[SerializeField]
     float mindTimeMax = 20f;
     [SerializeField]
     bool mindCanFire;
