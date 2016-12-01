@@ -47,7 +47,16 @@ public class MindProjectileScript : MonoBehaviour {
 		}
 	}
 
-	void OnBecameInvisible ()
+    public void FlipAxis()
+    {
+        DirectionRight = false;
+        Vector3 scale = transform.localScale;
+
+        scale.x = -scale.x;
+        transform.localScale = scale;
+    }
+
+    void OnBecameInvisible ()
 	{
 		Destroy (gameObject);
 	}

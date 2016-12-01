@@ -403,12 +403,16 @@ public class MorganStateMachine : MonoBehaviour
 
     void FireMindBullet()                                   // Need to fix firing to the LEFT
     {
-        Instantiate(MindBullet, Morgan.transform.position, Morgan.transform.rotation);
+        GameObject TempBullet = (GameObject)Instantiate(MindBullet, Morgan.transform.position, Morgan.transform.rotation);
+        if (!Reflect)
+            TempBullet.SendMessage("FlipAxis");
     }
 
     void FireBullet()
     {
-        Instantiate(Bullet, Morgan.transform.position, Morgan.transform.rotation);
+       GameObject TempBullet = (GameObject)Instantiate(Bullet, Morgan.transform.position, Morgan.transform.rotation);
+        if (!Reflect)
+            TempBullet.SendMessage("FlipAxis");
     }
     void CheckForFiring()
     {
