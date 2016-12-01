@@ -153,5 +153,5 @@ MonoBehaviour:
   m_ChanceOfDrop: 0
   msm: {fileID: 0}
   m_Distance: 25
-  m_Projectile: {fileID: 171898, guid: caa1472da978e4cd589afa1102335ee3, type: 2}
+  m_Projectile: {fileID: 171898, guid: b30586f3b17591046893330cbe351c0e, type: 2}
   m_ConstProjectileTimer: 2.5
