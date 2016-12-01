@@ -24,6 +24,7 @@ public class BossLevel_1 : Base_Enemy
     float SpawnTimer;
     float intervalTimer;
     float RegenTimer;
+    public float m_SheildTimer;
     //Animation
 
     // attack mode
@@ -38,14 +39,22 @@ public class BossLevel_1 : Base_Enemy
     //
     public BoxCollider2D AttackBox;
 
+    //15% health
+    public GameObject m_Enemy;
+    public int m_HowManyToSpawn = 3;
+    bool m_BossLowHealth;
+    bool m_Finish;
+    List<GameObject> m_SpawnEnemies;
+
     HealthStats curHealthState;
     Dictionary<HealthStats, Action> BossStates = new Dictionary<HealthStats, Action>();
     // Use this for initialization
     public override void Start()
     {
+        m_SpawnEnemies = new List<GameObject>();
         timer = 3;
         base.Start();
-        bossHealthSlider.maxValue = Health = Max_Health = 1000;
+        bossHealthSlider.maxValue = Health = Max_Health;
         BossStates.Add(HealthStats.Full, FullHealth);
         BossStates.Add(HealthStats.High, HighHealth);
         BossStates.Add(HealthStats.Mid, MidHealth);
@@ -61,20 +70,46 @@ public class BossLevel_1 : Base_Enemy
     // Update is called once per frame
     public override void Update()
     {
-        base.Update();
-        if(Sheild && Sheild.activeSelf)
+        if (!m_BossLowHealth)
         {
-            RegenTimer -= Time.deltaTime;
-            if(RegenTimer <=0)
+            base.Update();
+            if (Sheild && Sheild.activeSelf)
             {
-                Health += 15;
-                RegenTimer = 1;
-            }
-            if (Health >= Max_Health / 2)
-            {
-                Sheild.SetActive(false);
+                RegenTimer -= Time.deltaTime;
+                if (RegenTimer <= 0)
+                {
+                    Health += 15;
+                    RegenTimer = 1;
+                    bossHealthSlider.value = Health;
+                }
+                if (Health >= Max_Health / 2)
+                {
+                    Sheild.SetActive(false);
+                }
             }
         }
+        else
+        {
+            bool temp=false;
+            for (int i = 0; i < m_SpawnEnemies.Count; i++)
+            {
+                if (m_SpawnEnemies[i])
+                    temp = true;
+            }
+            if (!temp)
+            {
+                m_BossLowHealth = false;
+                Health = Max_Health/2;
+                bossHealthSlider.value = Health;
+                TakeDamage(0);
+                m_Finish = true;
+                TurnOnCollision();
+                AttackBox.enabled = false;
+                GetComponent<Renderer>().enabled = true;
+                m_SpawnEnemies.Clear();
+            }
+        }
+
     }
 
     public override void IdleState()
@@ -124,13 +159,13 @@ public class BossLevel_1 : Base_Enemy
     void OnTriggerEnter2D(Collider2D other)
     {
         // If player is possing a enemy does 10 damage on touching boss
-        if(other.tag == "Player" && msm.isPossessing)
+        if (other.tag == "Player" && msm.isPossessing)
         {
             TakeDamage(10);
             msm.TransitionFromYurei();
             msm.GetThrown();
         }
-        else if (other.tag == "Player"&&AttackMode)
+        else if (other.tag == "Player" && AttackMode)
         {
             playerHealth.TakeDamage(Damage);
             //other.gameObject.SendMessage("TakeDamage", Damage);
@@ -160,18 +195,28 @@ public class BossLevel_1 : Base_Enemy
         }
         else if ((float)Health / (float)Max_Health > .25)
         {
-            curHealthState = HealthStats.High;
+            curHealthState = HealthStats.Mid;
         }
+        else if ((float)Health / (float)Max_Health > .15)
+            curHealthState = HealthStats.Low;
         else
         {
-            if (Sheild)
-                Sheild.SetActive(true);
-            curHealthState = HealthStats.Low;
+            if (!m_BossLowHealth&& !m_Finish)
+            {
+                m_BossLowHealth = true;
+                SpawnLastBossMinions();
+                GetComponent<Renderer>().enabled = false;
+                TurnOffCollision();
+            }
+            else
+                curHealthState = HealthStats.Low;
+            //Spawn things here and hide guy until spawn things died.
         }
+
 
         bossHealthSlider.value = Health;
 
-        if (Health < 0)
+        if (Health <= 0)
             Destroy(this.gameObject);
     }
 
@@ -245,6 +290,13 @@ public class BossLevel_1 : Base_Enemy
             {
                 timer = 15;
                 SpawnTimer = 0;
+                if (Sheild)
+                    Sheild.SetActive(true);
+            }
+            else
+            {
+                if (Sheild)
+                    Sheild.SetActive(false);
             }
         }
     }
@@ -261,5 +313,13 @@ public class BossLevel_1 : Base_Enemy
         curState = EnemyState.Idle;
         if (BossCanvas.activeSelf)
             BossCanvas.SetActive(true);
+    }
+
+
+    void SpawnLastBossMinions()
+    {
+        m_SpawnEnemies.Add((GameObject)Instantiate(m_Enemy, this.gameObject.transform.position + new Vector3(3, 0, 0), Quaternion.identity));
+        m_SpawnEnemies.Add((GameObject)Instantiate(m_Enemy, this.gameObject.transform.position + new Vector3(0, 0, 0), Quaternion.identity));
+        m_SpawnEnemies.Add((GameObject)Instantiate(m_Enemy, this.gameObject.transform.position + new Vector3(-3, 0, 0), Quaternion.identity));
     }
 }

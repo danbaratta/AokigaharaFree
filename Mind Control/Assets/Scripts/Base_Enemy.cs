@@ -62,10 +62,6 @@ public class Base_Enemy : MonoBehaviour
     {
         States[curState].Invoke();
 
-        if (anim.GetBool("Dead"))
-        {
-            Destroy(this);
-        }
     }
 
     public void SetState(EnemyState nextState)
@@ -88,9 +84,9 @@ public class Base_Enemy : MonoBehaviour
     }
     public virtual void DeathState()
     {
-        if (anim.GetBool("Dead"))
+        if (anim.GetBool("RealDeath"))
         {
-            Destroy(this);
+            Destroy(this.gameObject);
         }
     }
 
@@ -126,6 +122,14 @@ public class Base_Enemy : MonoBehaviour
         foreach (var item in GetComponents<BoxCollider2D>())
         {
             item.enabled = false;
+        }
+    }
+
+    public void TurnOnCollision()
+    {
+        foreach (var item in GetComponents<BoxCollider2D>())
+        {
+            item.enabled = true;
         }
     }
 }

@@ -45,7 +45,7 @@ public class YureiLevl1ReDone : Base_Enemy
     {        
         if (anim.GetBool("RealDeath"))
         {
-            Destroy(this);
+            Destroy(this.gameObject);
         }
     }
 
