@@ -21212,7 +21212,7 @@ Prefab:
     - target: {fileID: 11482450, guid: 4629032f4fb2d4828921e753913d1d8f, type: 2}
       propertyPath: EnemyTypes.Array.data[0]
       value: 
-      objectReference: {fileID: 142134, guid: d1751d31d34342f4ca075a8df43808d7, type: 2}
+      objectReference: {fileID: 142134, guid: 9e175ae64880629408623b78390ad751, type: 2}
     - target: {fileID: 449986, guid: 4629032f4fb2d4828921e753913d1d8f, type: 2}
       propertyPath: m_LocalScale.x
       value: 1.6

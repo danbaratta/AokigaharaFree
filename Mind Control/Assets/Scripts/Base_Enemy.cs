@@ -132,4 +132,25 @@ public class Base_Enemy : MonoBehaviour
             item.enabled = true;
         }
     }
+
+    /// <summary>
+    /// Move toward the direction you give it
+    /// One time call
+    /// Most have Rigidbody
+    /// </summary>
+    /// <param name="Direction"></param>
+    virtual public void Move(Vector3 Direction)
+    {
+        GetComponent<Rigidbody>().velocity = Direction;
+    }
+    /// <summary>
+    /// Move Toward the object you want to go to
+    /// </summary>
+    virtual public void MoveTowards(Vector3 Target)
+    {
+        Vector3 temp = gameObject.transform.position - Target;
+        temp= temp.normalized;
+        GetComponent<Rigidbody>().velocity = temp;
+    }
+
 }
