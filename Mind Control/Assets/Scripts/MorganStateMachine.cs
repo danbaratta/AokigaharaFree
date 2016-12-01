@@ -49,7 +49,7 @@ public class MorganStateMachine : MonoBehaviour
     bool isOni = false;
     public bool isPossessing = false;                               // used to determine, in other scripts, if the player is possessing an enemy or not
     float possessTimer = 0f;
-    float possessLimit = 3f;
+    float possessLimit = 6f;
     // next enemy bool here
     public GameObject MindBullet;
     public GameObject Bullet;
