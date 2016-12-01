@@ -9,6 +9,8 @@ TagManager:
   - MindBullet
   - Generator
   - Bullet
+  - Health
+  - Special
   layers:
   - Default
   - TransparentFX

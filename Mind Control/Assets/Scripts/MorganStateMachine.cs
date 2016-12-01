@@ -91,7 +91,7 @@ public class MorganStateMachine : MonoBehaviour
     // Firing and Timing variables
     [SerializeField]
     float bulletTimer = 0f;
-	[SerializeField]
+    [SerializeField]
     float bulletTimeMax = 0.5f;
     [SerializeField]
     bool bulletCanFire;
@@ -101,6 +101,12 @@ public class MorganStateMachine : MonoBehaviour
     [SerializeField]
     bool mindCanFire;
     public GameObject bulletIcon;
+
+
+    // Power Bar
+
+    int m_MaxPowerBar = 100;
+   public int m_CurrentPower = 0;
 
     // Use this for initialization
     void Start()
@@ -411,7 +417,7 @@ public class MorganStateMachine : MonoBehaviour
 
     void FireBullet()
     {
-       GameObject TempBullet = (GameObject)Instantiate(Bullet, Morgan.transform.position, Morgan.transform.rotation);
+        GameObject TempBullet = (GameObject)Instantiate(Bullet, Morgan.transform.position, Morgan.transform.rotation);
         if (!Reflect)
             TempBullet.SendMessage("FlipAxis");
     }
@@ -551,5 +557,14 @@ public class MorganStateMachine : MonoBehaviour
     public void CheckPointUpdate(Vector3 location)
     {
         m_CheckPoint = new Vector2(location.x, location.y);
+    }
+
+    public void PowerBar(int PowerBar)
+    {
+        m_CurrentPower += PowerBar;
+        if (m_CurrentPower < 0)
+            m_CurrentPower = 0;
+        if (m_CurrentPower > m_MaxPowerBar)
+            m_CurrentPower = m_MaxPowerBar;
     }
 }
