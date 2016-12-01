@@ -200,6 +200,7 @@ public class MorganStateMachine : MonoBehaviour
         canJump = false;
         GetComponent<Rigidbody2D>().velocity += new Vector2(GetComponent<Rigidbody2D>().velocity.x, Morgan.InitJumpSpeed());
         SetState(PlayerStateMachine.IN_AIR);
+        Debug.Log(GetComponent<Rigidbody2D>().velocity.y);
 
     }
 
@@ -207,6 +208,7 @@ public class MorganStateMachine : MonoBehaviour
     {
         HandleMorganControls();
         a.speed = 1;
+        Debug.Log(GetComponent<Rigidbody2D>().velocity.y);
     }
 
     void StateDash()

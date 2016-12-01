@@ -1,48 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &11467166
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013089102222}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9cea6bc428b8ba94c8d5be4081770474, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &11488222
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013089102222}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8715284f883bd4013ba0528b830446b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SpawnPoint: {fileID: 0}
-  Yurei1: {fileID: 0}
-  curState: 0
-  isOni: 0
-  isPossessing: 0
-  MindBullet: {fileID: 0}
-  Bullet: {fileID: 0}
-  groundCheck: {fileID: 0}
-  walkableLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  groundCheckRadius: 0.1
-  onGround: 0
-  canControl: 1
-  canJump: 1
-  right: 1
-  bulletTimer: 0
-  bulletCanFire: 0
-  mindTimer: 0
-  mindCanFire: 0
-  bulletIcon: {fileID: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -84,8 +41,6 @@ GameObject:
   - 61: {fileID: 61000013685949282}
   - 50: {fileID: 50000014281794864}
   - 61: {fileID: 61000013995725550}
-  - 114: {fileID: 11467166}
-  - 114: {fileID: 11488222}
   m_Layer: 0
   m_Name: Oni
   m_TagString: Enemy
@@ -100,7 +55,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013089102222}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.5, y: -2.46, z: -0.24968418}
+  m_LocalPosition: {x: 655.1, y: -0.8, z: -0.24968418}
   m_LocalScale: {x: 0.30457443, y: 0.30457443, z: 0.30457443}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -188,7 +143,7 @@ Animator:
   m_GameObject: {fileID: 1000013089102222}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3cdb6cdf145e3744ab95b12009650796, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
