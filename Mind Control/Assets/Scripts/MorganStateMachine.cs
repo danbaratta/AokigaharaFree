@@ -105,8 +105,8 @@ public class MorganStateMachine : MonoBehaviour
 
     // Power Bar
 
-    int m_MaxPowerBar = 100;
-   public int m_CurrentPower = 0;
+    public int m_MaxPowerBar = 100;
+    public int m_CurrentPower = 0;
 
     // Use this for initialization
     void Start()
