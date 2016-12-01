@@ -40,6 +40,12 @@ public class Base_Enemy : MonoBehaviour
 
     Dictionary<EnemyState, Action> States = new Dictionary<EnemyState, Action>();
 
+
+    // Drop
+    public GameObject m_ItemToDrop;
+    // 0-1 scale % ex:.75%
+    public float m_ChanceOfDrop;
+
     // Script References
     public MorganStateMachine msm;
 
@@ -141,6 +147,7 @@ public class Base_Enemy : MonoBehaviour
     /// <param name="Direction"></param>
     virtual public void Move(Vector3 Direction)
     {
+        if(GetComponent<Rigidbody>())
         GetComponent<Rigidbody>().velocity = Direction;
     }
     /// <summary>
@@ -148,9 +155,20 @@ public class Base_Enemy : MonoBehaviour
     /// </summary>
     virtual public void MoveTowards(Vector3 Target)
     {
-        Vector3 temp = gameObject.transform.position - Target;
-        temp= temp.normalized;
-        GetComponent<Rigidbody>().velocity = temp;
+        if (GetComponent<Rigidbody>())
+        {
+            Vector3 temp = gameObject.transform.position - Target;
+            temp = temp.normalized;
+            GetComponent<Rigidbody>().velocity = temp;
+        }
     }
 
+    public void DropItem()
+    {
+        if (UnityEngine.Random.Range(0f, 1f) > m_ChanceOfDrop)
+        {
+            if (m_ItemToDrop)
+                Instantiate(m_ItemToDrop, this.gameObject.transform.position, Quaternion.identity);
+        }
+    }
 }
