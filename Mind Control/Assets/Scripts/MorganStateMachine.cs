@@ -91,6 +91,7 @@ public class MorganStateMachine : MonoBehaviour
     // Firing and Timing variables
     [SerializeField]
     float bulletTimer = 0f;
+	[SerializeField]
     float bulletTimeMax = 0.5f;
     [SerializeField]
     bool bulletCanFire;

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Projectile : MonoBehaviour
 {
-
+	[SerializeField]
     float moveSpeed = 9.0f;
 
     public GameObject bullet;
