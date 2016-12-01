@@ -9745,7 +9745,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 468186, guid: 8c0ff0e3f7f4f480a81c25c1c644467b, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 1.45
+      value: -2.19
       objectReference: {fileID: 0}
     - target: {fileID: 468186, guid: 8c0ff0e3f7f4f480a81c25c1c644467b, type: 2}
       propertyPath: m_LocalPosition.y
@@ -23330,7 +23330,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4000012849196376, guid: 4def211543329964d97fcc44a60bfe0f, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -4.19
+      value: -3.75
       objectReference: {fileID: 0}
     - target: {fileID: 4000012849196376, guid: 4def211543329964d97fcc44a60bfe0f, type: 2}
       propertyPath: m_LocalPosition.z
@@ -23375,6 +23375,41 @@ Prefab:
     - target: {fileID: 212000014162319124, guid: 4def211543329964d97fcc44a60bfe0f,
         type: 2}
       propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 198000012774393292, guid: 4def211543329964d97fcc44a60bfe0f,
+        type: 2}
+      propertyPath: looping
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 198000012774393292, guid: 4def211543329964d97fcc44a60bfe0f,
+        type: 2}
+      propertyPath: randomSeed
+      value: -762987040
+      objectReference: {fileID: 0}
+    - target: {fileID: 198000010065055732, guid: 4def211543329964d97fcc44a60bfe0f,
+        type: 2}
+      propertyPath: looping
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 198000010065055732, guid: 4def211543329964d97fcc44a60bfe0f,
+        type: 2}
+      propertyPath: randomSeed
+      value: -427152492
+      objectReference: {fileID: 0}
+    - target: {fileID: 198000012962957574, guid: 4def211543329964d97fcc44a60bfe0f,
+        type: 2}
+      propertyPath: lengthInSec
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 198000012962957574, guid: 4def211543329964d97fcc44a60bfe0f,
+        type: 2}
+      propertyPath: randomSeed
+      value: 1211724304
+      objectReference: {fileID: 0}
+    - target: {fileID: 198000012962957574, guid: 4def211543329964d97fcc44a60bfe0f,
+        type: 2}
+      propertyPath: looping
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
