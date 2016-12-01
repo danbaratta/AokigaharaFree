@@ -141,7 +141,7 @@ MonoBehaviour:
   Max_Defense: 0
   Defense: 0
   Max_Damage: 0
-  Damage: 0
+  Damage: 15
   anim: {fileID: 0}
   Morgan: {fileID: 0}
   playerHealth: {fileID: 0}

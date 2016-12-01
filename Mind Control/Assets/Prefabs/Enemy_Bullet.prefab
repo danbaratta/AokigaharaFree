@@ -9,8 +9,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 486950}
   - 212: {fileID: 21298458}
-  - 114: {fileID: 11408726}
   - 61: {fileID: 6164568}
+  - 114: {fileID: 114000012433616378}
   m_Layer: 14
   m_Name: Enemy_Bullet
   m_TagString: Bullet
@@ -45,20 +45,6 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Size: {x: 0.96, y: 0.82}
---- !u!114 &11408726
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 171898}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6b8bccde27bd4744aeb85081fab3b14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 9
-  bullet: {fileID: 171898}
-  Damage: 5
 --- !u!212 &21298458
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -103,3 +89,16 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 171898}
   m_IsPrefabParent: 1
+--- !u!114 &114000012433616378
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 171898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5de3503bbde2175419dff815b3ad65da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bullet: {fileID: 171898}
+  Damage: 5
