@@ -41,6 +41,7 @@ GameObject:
   - 61: {fileID: 61000013685949282}
   - 50: {fileID: 50000014281794864}
   - 61: {fileID: 61000013995725550}
+  - 114: {fileID: 114000011296561264}
   m_Layer: 0
   m_Name: Oni
   m_TagString: Enemy
@@ -151,6 +152,35 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114000011296561264
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013089102222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0e72cc0319bc10428499ce75622b6d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Max_Health: 10
+  Health: 0
+  Max_Defense: 0
+  Defense: 0
+  Max_Damage: 0
+  Damage: 0
+  anim: {fileID: 0}
+  Morgan: {fileID: 0}
+  playerHealth: {fileID: 0}
+  MoveSpeed: 2
+  Speed: 0
+  curState: 0
+  Mirror: 0
+  m_ItemToDrop: {fileID: 0}
+  m_ChanceOfDrop: 0
+  msm: {fileID: 0}
+  m_JumpPower: 0
+  m_Distance: 25
 --- !u!114 &114000013652429582
 MonoBehaviour:
   m_ObjectHideFlags: 1

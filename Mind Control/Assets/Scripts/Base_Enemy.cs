@@ -10,6 +10,7 @@ public class Base_Enemy : MonoBehaviour
         Walk,
         Attack,
         Death,
+        Jump,
 
         MaxStates,
     }
@@ -55,6 +56,7 @@ public class Base_Enemy : MonoBehaviour
         States.Add(EnemyState.Walk, WalkState);
         States.Add(EnemyState.Attack, AttackState);
         States.Add(EnemyState.Death, DeathState);
+        States.Add(EnemyState.Jump, Jump);
 
         Morgan = GameObject.FindGameObjectWithTag("Player");
         playerHealth = Morgan.GetComponent<PlayerHealth>();
@@ -88,6 +90,12 @@ public class Base_Enemy : MonoBehaviour
     {
 
     }
+
+    public virtual void Jump()
+    {
+
+    }
+
     public virtual void DeathState()
     {
         if (anim.GetBool("RealDeath"))

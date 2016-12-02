@@ -41,6 +41,8 @@ public class OniScript : MonoBehaviour
 		CheckForAttack ();
 	}
 
+
+
 	void CheckForAttack()
 	{
 		willAttack = Physics2D.OverlapCircle (attackCheckPoint.position, 1.0f, Player);

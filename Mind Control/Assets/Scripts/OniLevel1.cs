@@ -4,15 +4,119 @@ using System.Collections;
 public class OniLevel1 : Base_Enemy
 {
 
-    // Use this for initialization
-  public  override void Start()
-    {
+    public float m_JumpPower;
+    public float m_Distance = 25f;
 
+    //Test
+    float timer;
+    public float ConstTimer;
+
+    // Use this for initialization
+    public  override void Start()
+    {
+        base.Start();
+        Health = Max_Health;
     }
 
     // Update is called once per frame
    public override void Update()
     {
+        base.Update();
+        if (Vector2.Distance(Morgan.transform.position, transform.position) > m_Distance)
+        {
+            Destroy(this.gameObject);
+        }
+    }
+
+    public override void Jump()
+    {
+        GetComponent<Rigidbody2D>().velocity += new Vector2(GetComponent<Rigidbody2D>().velocity.x, m_JumpPower);
+        SetState(EnemyState.Walk);
 
     }
+
+    public override void IdleState()
+    {
+        WalkState();
+        anim.Play("Idle");
+    }
+
+    public override void AttackState()
+    {
+
+    }
+    public override void WalkState()
+    {
+        //transform.position -= transform.right * Time.deltaTime * MoveSpeed;
+        Vector3 temp = gameObject.transform.position - Morgan.transform.position;
+        temp = temp.normalized;
+        temp.y = 0;
+        temp.x = -temp.x * MoveSpeed;
+
+        GetComponent<Rigidbody2D>().velocity = new Vector2(temp.x, GetComponent<Rigidbody2D>().velocity.y);
+
+        timer -= Time.deltaTime;
+        if(timer<=0)
+        {
+            SetState(EnemyState.Jump);
+            timer = ConstTimer;
+        }
+
+    }
+    public override void DeathState()
+    {
+        if (anim.GetBool("RealDeath"))
+        {
+            Destroy(this.gameObject);
+        }
+    }
+
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "MindBullet")
+        {
+            if (msm.right == false)
+            {
+                msm.Right(true);
+            }
+
+            msm.IsYurei(true);
+
+            msm.GetTargetX(transform.position.x);
+            msm.GetTargetY(transform.position.y);
+
+            Destroy(gameObject);
+        }
+        else if ((other.tag == "Player") && (msm.isPossessing == true))
+        {
+            msm.TransitionFromYurei();
+            SetState(EnemyState.Death);
+            anim.SetBool("Dead", true);
+            anim.Play("Death");
+            GetComponent<Rigidbody2D>().velocity = new Vector2();
+        }
+
+        else if (other.tag == "Player")
+        {
+            if (playerHealth.currentHealth > 0)
+            {
+                msm.GetThrown();
+                playerHealth.TakeDamage(Damage);       //deals damage to player
+
+                GetComponent<Rigidbody2D>().velocity = new Vector2();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Set location for player to move when possesing someone
+    /// </summary>
+    void SendPosition()
+    {
+        msm.GetTargetX(transform.position.x);
+        msm.GetTargetY(transform.position.y);
+    }
+
+
 }

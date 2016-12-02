@@ -209,7 +209,6 @@ public class MorganStateMachine : MonoBehaviour
     {
         HandleMorganControls();
         a.speed = 1;
-        Debug.Log(GetComponent<Rigidbody2D>().velocity.y);
     }
 
     void StateDash()
