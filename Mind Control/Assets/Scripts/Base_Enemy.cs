@@ -72,7 +72,7 @@ public class Base_Enemy : MonoBehaviour
 
     }
 
-    public void SetState(EnemyState nextState)
+    public virtual void SetState(EnemyState nextState)
     {
         curState = nextState;
     }
@@ -120,7 +120,7 @@ public class Base_Enemy : MonoBehaviour
     /// <summary>
     /// Flip the image True = facing right False = facing left
     /// </summary>
-    void Flip(bool Turn)
+    public void Flip(bool Turn)
     {
         Vector3 scale = transform.localScale;
         if (Turn)

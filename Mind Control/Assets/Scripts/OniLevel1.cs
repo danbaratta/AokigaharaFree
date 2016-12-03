@@ -11,20 +11,56 @@ public class OniLevel1 : Base_Enemy
     float timer;
     public float ConstTimer;
 
+    public Collider2D AttackBox;
+
     // Use this for initialization
-    public  override void Start()
+    public override void Start()
     {
         base.Start();
         Health = Max_Health;
+        AttackBox.enabled = false;
+
     }
 
     // Update is called once per frame
-   public override void Update()
+    public override void Update()
     {
         base.Update();
         if (Vector2.Distance(Morgan.transform.position, transform.position) > m_Distance)
         {
             Destroy(this.gameObject);
+        }
+
+    }
+
+    public override void SetState(EnemyState nextState)
+    {
+        curState = nextState;
+        switch (nextState)
+        {
+            case EnemyState.Idle:
+                {
+                    anim.Play("Idle");
+                    AttackBox.enabled = false;
+                }
+                break;
+            case EnemyState.Walk:
+                //anim.Play("Walk");
+                break;
+            case EnemyState.Attack:
+                {
+                    anim.Play("Attack");
+                    AttackBox.enabled = true;
+                }
+                break;
+            case EnemyState.Death:
+                break;
+            case EnemyState.Jump:
+                break;
+            case EnemyState.MaxStates:
+                break;
+            default:
+                break;
         }
     }
 
@@ -43,7 +79,7 @@ public class OniLevel1 : Base_Enemy
 
     public override void AttackState()
     {
-
+        //WalkState();
     }
     public override void WalkState()
     {
@@ -53,22 +89,28 @@ public class OniLevel1 : Base_Enemy
         temp.y = 0;
         temp.x = -temp.x * MoveSpeed;
 
+        if (temp.x <= 0)
+            Flip(true);
+        else if (temp.x > 0)
+            Flip(false);
         GetComponent<Rigidbody2D>().velocity = new Vector2(temp.x, GetComponent<Rigidbody2D>().velocity.y);
 
         timer -= Time.deltaTime;
-        if(timer<=0)
+        if (timer <= 0)
         {
             SetState(EnemyState.Jump);
             timer = ConstTimer;
         }
 
+        if (Vector2.Distance(Morgan.transform.position, transform.position) < 2)
+        {
+            SetState(EnemyState.Attack);
+        }
+
     }
     public override void DeathState()
     {
-        if (anim.GetBool("RealDeath"))
-        {
-            Destroy(this.gameObject);
-        }
+        Destroy(this.gameObject);
     }
 
 
@@ -105,9 +147,16 @@ public class OniLevel1 : Base_Enemy
                 playerHealth.TakeDamage(Damage);       //deals damage to player
 
                 GetComponent<Rigidbody2D>().velocity = new Vector2();
+
+                Vector3 temp = gameObject.transform.position - Morgan.transform.position;
+                temp = temp.normalized;
+                temp.y = 20;
+                temp.x = temp.x * 30;
+                GetComponent<Rigidbody2D>().AddForce(temp, ForceMode2D.Impulse);
             }
         }
     }
+
 
     /// <summary>
     /// Set location for player to move when possesing someone
