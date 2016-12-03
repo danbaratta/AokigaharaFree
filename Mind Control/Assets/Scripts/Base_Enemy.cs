@@ -57,11 +57,16 @@ public class Base_Enemy : MonoBehaviour
         States.Add(EnemyState.Attack, AttackState);
         States.Add(EnemyState.Death, DeathState);
         States.Add(EnemyState.Jump, Jump);
+        States.Add(EnemyState.MaxStates, Stub);
 
         Morgan = GameObject.FindGameObjectWithTag("Player");
         playerHealth = Morgan.GetComponent<PlayerHealth>();
         anim = GetComponent<Animator>();
         msm = GameObject.Find("Morgan").GetComponent<MorganStateMachine>();
+
+    }
+    void Stub()
+    {
 
     }
 

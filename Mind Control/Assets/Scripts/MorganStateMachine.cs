@@ -530,7 +530,7 @@ public class MorganStateMachine : MonoBehaviour
 
     public void SwitchCanControl()
     {
-        canControl = !canControl;
+        canControl = true;
     }
 
     public void GetThrown()

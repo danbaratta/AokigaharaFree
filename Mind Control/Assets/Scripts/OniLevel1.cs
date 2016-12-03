@@ -45,7 +45,7 @@ public class OniLevel1 : Base_Enemy
                 }
                 break;
             case EnemyState.Walk:
-                //anim.Play("Walk");
+                anim.Play("Idle");
                 break;
             case EnemyState.Attack:
                 {
@@ -71,6 +71,11 @@ public class OniLevel1 : Base_Enemy
 
     }
 
+    void WaitJump()
+    {
+        SetState(EnemyState.Walk);
+    }
+
     public override void IdleState()
     {
         WalkState();
@@ -79,7 +84,11 @@ public class OniLevel1 : Base_Enemy
 
     public override void AttackState()
     {
-        //WalkState();
+       WalkState();
+        if (Vector2.Distance(Morgan.transform.position, transform.position) > 5)
+        {
+            SetState(EnemyState.Idle);
+        }
     }
     public override void WalkState()
     {
@@ -102,7 +111,7 @@ public class OniLevel1 : Base_Enemy
             timer = ConstTimer;
         }
 
-        if (Vector2.Distance(Morgan.transform.position, transform.position) < 2)
+        if (Vector2.Distance(Morgan.transform.position, transform.position) < 5)
         {
             SetState(EnemyState.Attack);
         }
@@ -150,9 +159,12 @@ public class OniLevel1 : Base_Enemy
 
                 Vector3 temp = gameObject.transform.position - Morgan.transform.position;
                 temp = temp.normalized;
-                temp.y = 20;
-                temp.x = temp.x * 30;
+                temp.y = 15;
+                temp.x = temp.x * 10;
                 GetComponent<Rigidbody2D>().AddForce(temp, ForceMode2D.Impulse);
+                Invoke("WaitJump", 2f);
+                //SetState(EnemyState.Walk);
+                SetState(EnemyState.MaxStates);
             }
         }
     }
@@ -166,6 +178,4 @@ public class OniLevel1 : Base_Enemy
         msm.GetTargetX(transform.position.x);
         msm.GetTargetY(transform.position.y);
     }
-
-
 }
