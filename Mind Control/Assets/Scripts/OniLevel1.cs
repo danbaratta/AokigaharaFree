@@ -13,24 +13,54 @@ public class OniLevel1 : Base_Enemy
 
     public Collider2D AttackBox;
 
+    public bool m_UseNavMesh;
+    NavMeshAgent Agent;
+
     // Use this for initialization
     public override void Start()
     {
         base.Start();
         Health = Max_Health;
         AttackBox.enabled = false;
+        if (m_UseNavMesh)
+        {
+            Agent = gameObject.AddComponent<NavMeshAgent>();
+            Agent.updateRotation = false;
+            //Agent.updatePosition = false;
+
+            Agent.radius = 2;
+            Agent.height = 5;
+            Agent.baseOffset = 3.36f;
+            Agent.speed = 2;
+            Agent.angularSpeed = 10;
+            Agent.acceleration = 3;
+        }
 
     }
 
     // Update is called once per frame
     public override void Update()
     {
-        base.Update();
-        if (Vector2.Distance(Morgan.transform.position, transform.position) > m_Distance)
+        if (m_UseNavMesh)
         {
-            Destroy(this.gameObject);
-        }
+            Agent.SetDestination(Morgan.transform.position);
+            base.Update();
+            float x, y;
 
+            x = GetComponent<Rigidbody2D>().velocity.x;
+            y = GetComponent<Rigidbody2D>().velocity.y;
+            Agent.velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, GetComponent<Rigidbody2D>().velocity.y);
+
+            y = 5;
+        }
+        else
+        {
+            base.Update();
+            if (Vector2.Distance(Morgan.transform.position, transform.position) > m_Distance)
+            {
+                Destroy(this.gameObject);
+            }
+        }
     }
 
     public override void SetState(EnemyState nextState)
@@ -84,7 +114,7 @@ public class OniLevel1 : Base_Enemy
 
     public override void AttackState()
     {
-       WalkState();
+        WalkState();
         if (Vector2.Distance(Morgan.transform.position, transform.position) > 5)
         {
             SetState(EnemyState.Idle);
@@ -93,6 +123,7 @@ public class OniLevel1 : Base_Enemy
     public override void WalkState()
     {
         //transform.position -= transform.right * Time.deltaTime * MoveSpeed;
+
         Vector3 temp = gameObject.transform.position - Morgan.transform.position;
         temp = temp.normalized;
         temp.y = 0;
@@ -102,8 +133,20 @@ public class OniLevel1 : Base_Enemy
             Flip(true);
         else if (temp.x > 0)
             Flip(false);
-        GetComponent<Rigidbody2D>().velocity = new Vector2(temp.x, GetComponent<Rigidbody2D>().velocity.y);
+        if (!m_UseNavMesh)
+        {
+            GetComponent<Rigidbody2D>().velocity = new Vector2(temp.x, GetComponent<Rigidbody2D>().velocity.y);
+        }
+        else
+        {
+            GetComponent<Rigidbody2D>().velocity = new Vector2(temp.x, GetComponent<Rigidbody2D>().velocity.y);
+            //Agent.velocity = Agent.velocity + new Vector3( GetComponent<Rigidbody2D>().velocity.x, GetComponent<Rigidbody2D>().velocity.y, 0);
+            Agent.velocity = new Vector2(temp.x, GetComponent<Rigidbody2D>().velocity.y);
 
+            //Debug.Log(Agent.velocity);
+
+
+        }
         timer -= Time.deltaTime;
         if (timer <= 0)
         {
@@ -115,6 +158,8 @@ public class OniLevel1 : Base_Enemy
         {
             SetState(EnemyState.Attack);
         }
+
+
 
     }
     public override void DeathState()
@@ -162,6 +207,8 @@ public class OniLevel1 : Base_Enemy
                 temp.y = 15;
                 temp.x = temp.x * 10;
                 GetComponent<Rigidbody2D>().AddForce(temp, ForceMode2D.Impulse);
+               // if (m_UseNavMesh)
+               //     GetComponent<Rigidbody2D>().velocity = temp;
                 Invoke("WaitJump", 2f);
                 //SetState(EnemyState.Walk);
                 SetState(EnemyState.MaxStates);

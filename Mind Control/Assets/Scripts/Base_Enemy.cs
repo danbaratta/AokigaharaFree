@@ -114,7 +114,7 @@ public class Base_Enemy : MonoBehaviour
         Health -= dmg;
         if (Health <= 0)
         {
-            curState = EnemyState.Death;
+            SetState(EnemyState.Death);
             TurnOffCollision();
             anim.SetBool("Dead", true);
             anim.Play("Death");
@@ -183,5 +183,11 @@ public class Base_Enemy : MonoBehaviour
             if (m_ItemToDrop)
                 Instantiate(m_ItemToDrop, this.gameObject.transform.position, Quaternion.identity);
         }
+    }
+
+
+    public void PlayerReset()
+    {
+        Destroy(gameObject);
     }
 }

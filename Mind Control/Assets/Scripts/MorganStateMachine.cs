@@ -97,7 +97,7 @@ public class MorganStateMachine : MonoBehaviour
     bool bulletCanFire;
     [SerializeField]
     float mindTimer = 0f;
-	[SerializeField]
+    [SerializeField]
     float mindTimeMax = 20f;
     [SerializeField]
     bool mindCanFire;
@@ -553,8 +553,13 @@ public class MorganStateMachine : MonoBehaviour
         //Morgan = GetComponent<Morgan>();
         gameObject.transform.position = m_CheckPoint;
 
-    }
+        Base_Enemy[] gos = (Base_Enemy[])GameObject.FindObjectsOfType(typeof(Base_Enemy));
+        foreach (Base_Enemy go in gos)
+        {
 
+            go.gameObject.BroadcastMessage("PlayerReset", SendMessageOptions.DontRequireReceiver);
+        }
+    }
 
     public void CheckPointUpdate(Vector3 location)
     {

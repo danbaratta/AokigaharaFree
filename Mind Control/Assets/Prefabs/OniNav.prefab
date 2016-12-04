@@ -42,7 +42,7 @@ GameObject:
   - 61: {fileID: 61000013995725550}
   - 114: {fileID: 114000011296561264}
   m_Layer: 9
-  m_Name: Oni
+  m_Name: OniNav
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -182,7 +182,7 @@ MonoBehaviour:
   m_Distance: 25
   ConstTimer: 10
   AttackBox: {fileID: 61000011380680900}
-  m_UseNavMesh: 0
+  m_UseNavMesh: 1
 --- !u!212 &212000010727794848
 SpriteRenderer:
   m_ObjectHideFlags: 1

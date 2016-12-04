@@ -61,11 +61,12 @@ public class EnemyGenerator : MonoBehaviour
                 if (EnemyTypes.Length != 0)
                 {
                     int randIndex = Random.Range(0, EnemyTypes.Length);
-                    Instantiate(EnemyTypes[randIndex], transform.position, transform.rotation);
 
                     // Dynamic way spawning enemies
                     if (transform.childCount != 0)
                         Instantiate(EnemyTypes[randIndex], transform.GetChild(0).transform.position, Quaternion.identity);
+                    else
+                    Instantiate(EnemyTypes[randIndex], transform.position, transform.rotation);                
                 }
             }
             else
