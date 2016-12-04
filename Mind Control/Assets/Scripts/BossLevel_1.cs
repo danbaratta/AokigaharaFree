@@ -249,7 +249,10 @@ public class BossLevel_1 : Base_Enemy
         bossHealthSlider.value = Health;
 
         if (Health <= 0)
+        {
             Destroy(this.gameObject);
+            AttackModeOff();
+        }
     }
 
     public virtual void FullHealth()
@@ -344,7 +347,7 @@ public class BossLevel_1 : Base_Enemy
     {
         curState = EnemyState.Idle;
         if (BossCanvas.activeSelf)
-            BossCanvas.SetActive(true);
+            BossCanvas.SetActive(false);
     }
 
 
