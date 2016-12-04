@@ -95,7 +95,11 @@ public class YureiLevl3 : Base_Enemy
         {
             if (playerHealth.currentHealth > 0)
             {
-                msm.GetThrown();
+                float direction = gameObject.transform.position.x - Morgan.transform.position.x;
+                if (direction <= 0)
+                    msm.GetThrown(false);
+                else
+                    msm.GetThrown(true);
                 playerHealth.TakeDamage(Damage);       //deals damage to player
 
                 SetState(EnemyState.Death);

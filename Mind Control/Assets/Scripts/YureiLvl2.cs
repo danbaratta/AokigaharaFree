@@ -268,10 +268,14 @@ public class YureiLvl2 : MonoBehaviour {
 		{
 			if (playerHealth.currentHealth > 0) 
 			{
-				msm.GetThrown ();
+                float direction = gameObject.transform.position.x - Morgan.transform.position.x;
+                if (direction <= 0)
+                    msm.GetThrown(false);
+                else
+                    msm.GetThrown(true);
 
 
-				playerHealth.TakeDamage (attackDamage);       //deals damage to player
+                playerHealth.TakeDamage (attackDamage);       //deals damage to player
 				Debug.Log ("Plaeyer is taking damage");
 				/*a.SetTrigger ("Flinch");                       //plays damage animation
 				{

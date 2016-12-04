@@ -164,7 +164,11 @@ public class YureiLvl1 : MonoBehaviour
         {
             if (playerHealth.currentHealth > 0)
             {
-                msm.GetThrown();
+                float direction = gameObject.transform.position.x - Morgan.transform.position.x;
+                if (direction <= 0)
+                    msm.GetThrown(false);
+                else
+                    msm.GetThrown(true);
                 playerHealth.TakeDamage(attackDamage);       
                 SetState(YureiStateMachine.DYING);
             }

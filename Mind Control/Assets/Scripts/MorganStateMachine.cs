@@ -533,12 +533,16 @@ public class MorganStateMachine : MonoBehaviour
         canControl = true;
     }
 
-    public void GetThrown()
+    public void GetThrown(bool Direction)
     {
         //		gameObject.GetComponent<Rigidbody2D> ().velocity += new Vector2 (GetComponent<Rigidbody2D> ().velocity.x * -20f, 0f);	
         //		GetComponent<Rigidbody2D>().AddForce(Vector2.left * 10, ForceMode2D.Impulse);
-        Vector2 velocity = GetComponent<Rigidbody2D>().velocity;
-        Vector2 throwDir = new Vector2(-30, 10);
+        Vector2 throwDir;
+        if (Direction)
+            throwDir = new Vector2(-30, 10);
+        else
+            throwDir = new Vector2(30, 10);
+
         canControl = false;
         Debug.Log("canControl = " + canControl);
         gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);

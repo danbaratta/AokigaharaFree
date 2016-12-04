@@ -163,14 +163,22 @@ public class BossLevel_1 : Base_Enemy
         {
             TakeDamage(10);
             msm.TransitionFromYurei();
-            msm.GetThrown();
+            float direction = gameObject.transform.position.x - Morgan.transform.position.x;
+            if (direction <= 0)
+                msm.GetThrown(false);
+            else
+                msm.GetThrown(true);
         }
         else if (other.tag == "Player" && AttackMode)
         {
             playerHealth.TakeDamage(Damage);
             //other.gameObject.SendMessage("TakeDamage", Damage);
             AttackBox.enabled = false;
-            msm.GetThrown();
+            float m_direction = gameObject.transform.position.x - Morgan.transform.position.x;
+            if (m_direction <= 0)
+                msm.GetThrown(false);
+            else
+                msm.GetThrown(true);
 
             float direction = gameObject.transform.position.x - StartLocation.x;
             if (direction <= 0)
