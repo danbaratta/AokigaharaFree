@@ -29,8 +29,7 @@ public class MorganStateMachine : MonoBehaviour
     GameObject SpawnPoint;
 
     public GameObject Yurei1;
-    YureiLvl1 Yurei1Script;
-    YureiLvl2 Yurei2;
+
     Sprite YureiSprite;
     Sprite MorganSprite;
 

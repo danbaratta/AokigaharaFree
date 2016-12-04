@@ -90,7 +90,7 @@ public class BossLevel_1 : Base_Enemy
         }
         else
         {
-            bool temp=false;
+            bool temp = false;
             for (int i = 0; i < m_SpawnEnemies.Count; i++)
             {
                 if (m_SpawnEnemies[i])
@@ -99,7 +99,7 @@ public class BossLevel_1 : Base_Enemy
             if (!temp)
             {
                 m_BossLowHealth = false;
-                Health = Max_Health/2;
+                Health = Max_Health / 2;
                 bossHealthSlider.value = Health;
                 TakeDamage(0);
                 m_Finish = true;
@@ -115,6 +115,7 @@ public class BossLevel_1 : Base_Enemy
     public override void IdleState()
     {
         anim.SetBool("Attack", false);
+        anim.Play("Idle");
     }
 
     public override void AttackState()
@@ -131,10 +132,12 @@ public class BossLevel_1 : Base_Enemy
             else
                 GetComponent<Rigidbody2D>().velocity = new Vector2(-MoveSpeed * 25 * Time.deltaTime, 0);
             anim.SetBool("Attack", false);
+            anim.Play("Idle");
         }
         else if (intervalTimer < 0 && !AttackMode)
         {
             anim.SetBool("Attack", true);
+            anim.Play("Attack");
             AttackMode = true;
             AttackBox.enabled = true;
             float direction = gameObject.transform.position.x - Morgan.transform.position.x;
@@ -186,6 +189,7 @@ public class BossLevel_1 : Base_Enemy
             else
                 GetComponent<Rigidbody2D>().velocity = new Vector2(-MoveSpeed * 25 * Time.deltaTime, 0);
             anim.SetBool("Attack", false);
+            anim.Play("Idle");
         }
     }
 
@@ -195,21 +199,41 @@ public class BossLevel_1 : Base_Enemy
         base.TakeDamage(dmg);
         if ((float)Health / (float)Max_Health > .75)
         {
-            curHealthState = HealthStats.Full;
+            if (curHealthState != HealthStats.Full)
+            {
+                curHealthState = HealthStats.Full;
+                timer = 0;
+            }
         }
         else if ((float)Health / (float)Max_Health > .50)
         {
-            curHealthState = HealthStats.High;
+            if (curHealthState != HealthStats.High)
+            {
+                curHealthState = HealthStats.High;
+                timer = 0;
+            }
         }
         else if ((float)Health / (float)Max_Health > .25)
         {
-            curHealthState = HealthStats.Mid;
+            if (curHealthState != HealthStats.Mid)
+            {
+                curHealthState = HealthStats.Mid;
+                timer = 0;
+            }
         }
         else if ((float)Health / (float)Max_Health > .15)
-            curHealthState = HealthStats.Low;
+        {
+            if (curHealthState != HealthStats.Low)
+            {
+                curHealthState = HealthStats.Low;
+                timer = 5;
+                if (Sheild)
+                    Sheild.SetActive(true);
+            }
+        }
         else
         {
-            if (!m_BossLowHealth&& !m_Finish)
+            if (!m_BossLowHealth && !m_Finish)
             {
                 m_BossLowHealth = true;
                 SpawnLastBossMinions();

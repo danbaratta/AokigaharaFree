@@ -9,7 +9,7 @@ public class BossWall : MonoBehaviour
     public GameObject Boss;
 
     //AudioRef
-    public GameObject Audio;
+    public AudioScript Audio;
 
 
     // Use this for initialization
@@ -24,8 +24,11 @@ public class BossWall : MonoBehaviour
     {
         if (!Boss)
         {
-            rearBossWall.SetActive(false);
-            Audio.SendMessage("Track", 0);
+            if (rearBossWall.activeSelf)
+            {
+                rearBossWall.SetActive(false);
+                Audio.Track(0);
+            }
         }
     }
 

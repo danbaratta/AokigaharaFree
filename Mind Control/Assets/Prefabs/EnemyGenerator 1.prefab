@@ -52,7 +52,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013605027312}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 18.67, y: 1.25, z: 0}
+  m_LocalPosition: {x: -2, y: 1.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -105,7 +105,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnemyTypes:
-  - {fileID: 182660, guid: 2af8fa42321344eb397657be4430e37b, type: 2}
+  - {fileID: 142134, guid: d1751d31d34342f4ca075a8df43808d7, type: 2}
   TimeMin: 3
   TimeMax: 6
   AllowedSpawnDistance: 0
