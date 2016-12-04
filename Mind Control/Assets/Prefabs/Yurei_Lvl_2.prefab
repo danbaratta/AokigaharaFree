@@ -14,7 +14,7 @@ GameObject:
   - 50: {fileID: 5021566}
   - 114: {fileID: 114000010661786228}
   m_Layer: 9
-  m_Name: ReDo_Yurei_Lvl_2
+  m_Name: Yurei_Lvl_2
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -149,5 +149,7 @@ MonoBehaviour:
   Speed: 0
   curState: 0
   Mirror: 0
+  m_ItemToDrop: {fileID: 0}
+  m_ChanceOfDrop: 0
   msm: {fileID: 0}
   m_Distance: 25
