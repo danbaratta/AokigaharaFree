@@ -9,7 +9,12 @@ public class YureiLevl3 : Base_Enemy
     public GameObject m_Projectile;
 
     public float m_ConstProjectileTimer;
-    float m_ProjectileTimer;
+    float m_ProjectileTimer=.5f;
+
+    bool m_Invisable = false;
+    public float m_Timer;
+
+    public Vector2 m_TimerRange = new Vector2(5,10);
 
     // Use this for initialization
     public override void Start()
@@ -39,13 +44,9 @@ public class YureiLevl3 : Base_Enemy
     public override void AttackState()
     {
 
-    }
-    public override void WalkState()
-    {
         //transform.position -= transform.right * Time.deltaTime * MoveSpeed;
         Vector3 temp = gameObject.transform.position - Morgan.transform.position;
         temp = temp.normalized;
-        GetComponent<Rigidbody2D>().velocity = -temp * MoveSpeed;
 
         m_ProjectileTimer -= Time.deltaTime;
         if (m_ProjectileTimer <= 0)
@@ -54,6 +55,45 @@ public class YureiLevl3 : Base_Enemy
             if (-temp.x < 0)
                 TempBullet.SendMessage("FlipAxis");
             m_ProjectileTimer = m_ConstProjectileTimer;
+        }
+    }
+    public override void WalkState()
+    {
+        //transform.position -= transform.right * Time.deltaTime * MoveSpeed;
+        Vector3 temp = gameObject.transform.position - Morgan.transform.position;
+        temp = temp.normalized;
+        GetComponent<Rigidbody2D>().velocity = -temp * MoveSpeed;
+
+        //
+        AttackState();
+        //
+
+        m_Timer -= Time.deltaTime;
+        if(m_Timer<0&&!m_Invisable)
+        {
+            Color GhostColor = GetComponent<Renderer>().material.color;
+            GhostColor.a -= Time.deltaTime;
+            if (GhostColor.a > 0)
+                GetComponent<Renderer>().material.color = GhostColor;
+            else
+            {
+                m_Invisable = true;
+                GhostColor.a = 0;
+                GetComponent<Renderer>().material.color = GhostColor;
+            }
+        }
+        if (m_Timer < -5 && m_Invisable)
+        {
+            Color GhostColor = GetComponent<Renderer>().material.color;
+            GhostColor.a += Time.deltaTime *2;
+            if (GhostColor.a < 1)
+                GetComponent<Renderer>().material.color = GhostColor;
+            else
+            {
+                m_Timer = Random.Range(m_TimerRange.x, m_TimerRange.y);
+                m_Invisable = false;
+
+            }
         }
 
     }
@@ -89,6 +129,9 @@ public class YureiLevl3 : Base_Enemy
             anim.SetBool("Dead", true);
             anim.Play("Death");
             GetComponent<Rigidbody2D>().velocity = new Vector2();
+            Color GhostColor = GetComponent<Renderer>().material.color;
+            GhostColor.a = 1;
+            GetComponent<Renderer>().material.color = GhostColor;
         }
 
         else if (other.tag == "Player")
@@ -107,6 +150,9 @@ public class YureiLevl3 : Base_Enemy
                 anim.Play("Death");
                 TurnOffCollision();
                 GetComponent<Rigidbody2D>().velocity = new Vector2();
+                Color GhostColor = GetComponent<Renderer>().material.color;
+                GhostColor.a = 1;
+                GetComponent<Renderer>().material.color = GhostColor;
             }
         }
     }

@@ -21249,8 +21249,7 @@ Prefab:
         type: 2}
       propertyPath: EnemyTypes.Array.data[0]
       value: 
-      objectReference: {fileID: 1000013089102222, guid: fec9c4d072b90a34e8f7fa1fe3be86c8,
-        type: 2}
+      objectReference: {fileID: 142134, guid: c6f0a23e337ba5a4eb9e994683cb2d5b, type: 2}
     - target: {fileID: 114000012635149720, guid: 3972b3c05f686234da2f6ab6660b2faa,
         type: 2}
       propertyPath: TimeMin

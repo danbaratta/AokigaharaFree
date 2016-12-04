@@ -24,11 +24,11 @@ public class AudioTrigger : MonoBehaviour
             m_AudioScript.Track(1);
             Battle = true;
         }
-        else
-        {
-            m_AudioScript.Track(0);
-            Battle = false;
-        }
+        //else
+        //{
+        //    m_AudioScript.Track(0);
+        //    Battle = false;
+        //}
 
     }
 }
