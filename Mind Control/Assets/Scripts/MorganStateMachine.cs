@@ -419,7 +419,9 @@ public class MorganStateMachine : MonoBehaviour
     {
         GameObject TempBullet = (GameObject)Instantiate(MindBullet, Morgan.transform.position, Morgan.transform.rotation);
         if (!Reflect)
-            TempBullet.SendMessage("FlipAxis");
+            TempBullet.SendMessage("FlipAxisLeft");
+        else
+            TempBullet.SendMessage("FlipAxisRight");
     }
 
     void FireBullet()
@@ -428,7 +430,9 @@ public class MorganStateMachine : MonoBehaviour
         TempBullet.transform.position = Morgan.transform.position;
         TempBullet.transform.rotation = Quaternion.identity;
         if (!Reflect)
-            TempBullet.SendMessage("FlipAxis");
+            TempBullet.SendMessage("FlipAxisLeft");
+        else
+            TempBullet.SendMessage("FlipAxisRight");
     }
     void CheckForFiring()
     {

@@ -25,6 +25,9 @@ public class BossLevel_1 : Base_Enemy
     float intervalTimer;
     float RegenTimer;
     public float m_SheildTimer;
+
+    float m_AttackTimer;
+    public float m_ConstAttackTimer = 5;
     //Animation
 
     // attack mode
@@ -47,6 +50,10 @@ public class BossLevel_1 : Base_Enemy
     List<GameObject> m_SpawnEnemies;
 
     HealthStats curHealthState;
+
+    //platforms
+    public GameObject[] Platforms;
+
     Dictionary<HealthStats, Action> BossStates = new Dictionary<HealthStats, Action>();
     // Use this for initialization
     public override void Start()
@@ -64,7 +71,8 @@ public class BossLevel_1 : Base_Enemy
 
         StartLocation = transform.position;
         intervalTimer = 10;
-        var bla = Input.GetJoystickNames();
+        m_AttackTimer = m_ConstAttackTimer;
+        HidePlatform();
     }
 
     // Update is called once per frame
@@ -118,13 +126,40 @@ public class BossLevel_1 : Base_Enemy
         anim.Play("Idle");
     }
 
+    public override void SetState(EnemyState nextState)
+    {
+        base.SetState(nextState);
+
+        switch (nextState)
+        {
+            case EnemyState.Idle:
+                break;
+            case EnemyState.Walk:
+                break;
+            case EnemyState.Attack:
+                {
+
+                }
+                break;
+            case EnemyState.Death:
+                break;
+            case EnemyState.Jump:
+                break;
+            case EnemyState.MaxStates:
+                break;
+            default:
+                break;
+        }
+    }
+
+
     public override void AttackState()
     {
         BossStates[curHealthState].Invoke();
         intervalTimer -= Time.deltaTime;
         if (Sheild && Sheild.activeSelf)
         {
-            AttackMode = true;
+            AttackMode = false;
             AttackBox.enabled = false;
             float direction = gameObject.transform.position.x - StartLocation.x;
             if (direction <= 0)
@@ -142,9 +177,16 @@ public class BossLevel_1 : Base_Enemy
             AttackBox.enabled = true;
             float direction = gameObject.transform.position.x - Morgan.transform.position.x;
             if (direction <= 0)
+            {
+                Flip(false);
                 GetComponent<Rigidbody2D>().velocity = new Vector2(MoveSpeed * 25 * Time.deltaTime, 0);
+            }
             else
+            {
+                Flip(true);
                 GetComponent<Rigidbody2D>().velocity = new Vector2(-MoveSpeed * 25 * Time.deltaTime, 0);
+            }
+            ShowPlatform();
         }
         if (AttackMode && !AttackBox.enabled)
         {
@@ -154,8 +196,34 @@ public class BossLevel_1 : Base_Enemy
                 intervalTimer = UnityEngine.Random.Range(10f, 15f);
                 GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
                 anim.SetBool("Attack", false);
+                m_AttackTimer = m_ConstAttackTimer;
+                float direction = gameObject.transform.position.x - Morgan.transform.position.x;
+                if (direction <= 0)
+                    Flip(false);
+                else
+                    Flip(true);
+                HidePlatform();
             }
         }
+        else if (AttackBox.enabled && AttackMode)
+        {
+            m_AttackTimer -= Time.deltaTime;
+            if (m_AttackTimer <= 0)
+            {
+                AttackBox.enabled = false;
+                anim.Play("Idle");
+                m_AttackTimer = m_ConstAttackTimer;
+
+                //Cud not get player move back
+                float direction = gameObject.transform.position.x - StartLocation.x;
+                if (direction <= 0)
+                    GetComponent<Rigidbody2D>().velocity = new Vector2(MoveSpeed * 25 * Time.deltaTime, 0);
+                else
+                    GetComponent<Rigidbody2D>().velocity = new Vector2(-MoveSpeed * 25 * Time.deltaTime, 0);
+
+            }
+        }
+
     }
 
 
@@ -190,6 +258,25 @@ public class BossLevel_1 : Base_Enemy
                 GetComponent<Rigidbody2D>().velocity = new Vector2(-MoveSpeed * 25 * Time.deltaTime, 0);
             anim.SetBool("Attack", false);
             anim.Play("Idle");
+        }
+        if (other.tag == "Bullet")
+        {
+            if (AttackBox.enabled && AttackMode)
+            {
+                float direction = gameObject.transform.position.x - Morgan.transform.position.x;
+                if (direction <= 0)
+                {
+                    Flip(false);
+                    GetComponent<Rigidbody2D>().velocity = new Vector2(MoveSpeed * 25 * Time.deltaTime, 0);
+                }
+                else
+                {
+                    Flip(true);
+                    GetComponent<Rigidbody2D>().velocity = new Vector2(-MoveSpeed * 25 * Time.deltaTime, 0);
+                }
+
+                m_AttackTimer = m_ConstAttackTimer;
+            }
         }
     }
 
@@ -379,5 +466,22 @@ public class BossLevel_1 : Base_Enemy
         temp.transform.position = gameObject.transform.position + new Vector3(-3, 0, 0);
         temp.transform.rotation = Quaternion.identity;
         m_SpawnEnemies.Add(temp);
+    }
+
+
+    void ShowPlatform()
+    {
+        for (int i = 0; i < Platforms.Length; i++)
+        {
+            Platforms[i].SetActive(true);
+        }
+    }
+
+    void HidePlatform()
+    {
+        for (int i = 0; i < Platforms.Length; i++)
+        {
+            Platforms[i].SetActive(false);
+        }
     }
 }

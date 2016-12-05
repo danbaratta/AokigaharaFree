@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Projectile : MonoBehaviour
 {
-	[SerializeField]
+    [SerializeField]
     float moveSpeed = 9.0f;
 
     public GameObject bullet;
@@ -16,7 +16,7 @@ public class Projectile : MonoBehaviour
     PoolManager.EnemiesType Type = PoolManager.EnemiesType.PlayerBullets;
 
 
-    float LifeTimer =3;
+    float LifeTimer = 3;
     // Use this for initialization
     void Start()
     {
@@ -53,15 +53,22 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    public void FlipAxis()
+    public void FlipAxisLeft()
     {
         DirectionRight = false;
-        Vector3 scale = transform.localScale;
 
-        scale.x = -scale.x;
+        Vector3 scale = transform.localScale;
+        scale.x = -Mathf.Abs(scale.x);
         transform.localScale = scale;
     }
 
+    public void FlipAxisRight()
+    {
+        DirectionRight = true;
+        Vector3 scale = transform.localScale;
+        scale.x = Mathf.Abs(scale.x);
+        transform.localScale = scale;
+    }
     // bullets may not want to be destory if it not in camera view
     //void OnBecameInvisible ()
     //{
