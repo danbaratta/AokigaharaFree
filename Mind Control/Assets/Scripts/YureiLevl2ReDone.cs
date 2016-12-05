@@ -11,7 +11,7 @@ public class YureiLevl2ReDone : Base_Enemy
     {
         base.Start();
         Health = Max_Health;
-        
+        Type = PoolManager.EnemiesType.Yurei_Level2;
     }
 
     // Update is called once per frame
@@ -20,7 +20,7 @@ public class YureiLevl2ReDone : Base_Enemy
         base.Update();
         if (Vector2.Distance(Morgan.transform.position, transform.position) > m_Distance)
         {
-            Destroy(this.gameObject);
+            GetPoolManager().Remove(gameObject, Type);
         }
     }
 
@@ -43,11 +43,8 @@ public class YureiLevl2ReDone : Base_Enemy
         GetComponent<Rigidbody2D>().velocity = -temp*MoveSpeed;
     }
     public override void DeathState()
-    {        
-        if (anim.GetBool("RealDeath"))
-        {
-            Destroy(this.gameObject);
-        }
+    {
+        base.DeathState();
     }
 
 

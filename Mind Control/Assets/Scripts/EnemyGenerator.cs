@@ -9,7 +9,7 @@ public class EnemyGenerator : MonoBehaviour
 
     //allows different enemy types to spawn
     [SerializeField]
-    GameObject[] EnemyTypes;
+    PoolManager.EnemiesType[] EnemyTypes;
     bool generateEnemies;
 
     [SerializeField]
@@ -27,10 +27,13 @@ public class EnemyGenerator : MonoBehaviour
     //Player Ref
     GameObject Player;
 
+    PoolManager m_PoolManager;
+
     // Use this for initialization
     void Start()
     {
         //Morgan = GetComponent<MorganStateMachine> ();
+        m_PoolManager = GameObject.Find("PoolManager").GetComponent<PoolManager>();
     }
 
     // Update is called once per frame
@@ -64,9 +67,19 @@ public class EnemyGenerator : MonoBehaviour
 
                     // Dynamic way spawning enemies
                     if (transform.childCount != 0)
-                        Instantiate(EnemyTypes[randIndex], transform.GetChild(0).transform.position, Quaternion.identity);
+                    {
+                       GameObject temp= m_PoolManager.FindClass(EnemyTypes[0]);
+                        temp.transform.position = transform.GetChild(0).transform.position;
+                        temp.transform.rotation = Quaternion.identity;
+                    }
+                    // Instantiate(EnemyTypes[randIndex], transform.GetChild(0).transform.position, Quaternion.identity);
                     else
-                    Instantiate(EnemyTypes[randIndex], transform.position, transform.rotation);                
+                    {
+                        GameObject temp = m_PoolManager.FindClass(EnemyTypes[0]);
+                        temp.transform.position = transform.GetChild(0).transform.position;
+                        temp.transform.rotation = Quaternion.identity;
+                    }
+                    //Instantiate(EnemyTypes[randIndex], transform.position, transform.rotation);
                 }
             }
             else

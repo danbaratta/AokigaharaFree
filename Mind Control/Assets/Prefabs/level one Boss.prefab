@@ -136,7 +136,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_Offset: {x: 1.168457, y: 0.4557259}
   serializedVersion: 2
-  m_Size: {x: 4.2085104, y: 14.28}
+  m_Size: {x: 4.9, y: 6.9}
 --- !u!61 &61000013475620232
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -179,6 +179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ad3a7af6f03a03428090d75be137e95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Type: 0
   Max_Health: 1000
   Health: 1000
   Max_Defense: 0
@@ -192,12 +193,16 @@ MonoBehaviour:
   Speed: 0
   curState: 0
   Mirror: 0
+  m_ItemToDrop: {fileID: 0}
+  m_ChanceOfDrop: 0
   msm: {fileID: 0}
   bossHealthSlider: {fileID: 0}
   BossCanvas: {fileID: 0}
-  EnemySpawn:
-  - {fileID: 142134, guid: 1b2631e146c1149f581d5d08b822492f, type: 2}
+  m_SheildTimer: 0
+  EnemySpawn: 01000000
   AttackBox: {fileID: 61000013475620232}
+  m_Enemy: 3
+  m_HowManyToSpawn: 3
 --- !u!114 &114000012719050458
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -212,6 +217,7 @@ MonoBehaviour:
   Max_Health: 200
   Health: 200
   Def: 0
+  m_ConstTimer: 0.5
 --- !u!212 &212000012187498916
 SpriteRenderer:
   m_ObjectHideFlags: 1

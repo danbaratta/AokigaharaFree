@@ -9,19 +9,21 @@ public class YureiLevl3 : Base_Enemy
     public GameObject m_Projectile;
 
     public float m_ConstProjectileTimer;
-    float m_ProjectileTimer=.5f;
+    float m_ProjectileTimer = .5f;
 
     bool m_Invisable = false;
     public float m_Timer;
 
-    public Vector2 m_TimerRange = new Vector2(5,10);
+    public Vector2 m_TimerRange = new Vector2(5, 10);
+
+    public bool m_Yurei3B;
 
     // Use this for initialization
     public override void Start()
     {
         base.Start();
         Health = Max_Health;
-
+        Type = PoolManager.EnemiesType.Yurei_Level3;
     }
 
     // Update is called once per frame
@@ -30,7 +32,7 @@ public class YureiLevl3 : Base_Enemy
         base.Update();
         if (Vector2.Distance(Morgan.transform.position, transform.position) > m_Distance)
         {
-            Destroy(this.gameObject);
+            GetPoolManager().Remove(gameObject, Type);
         }
     }
 
@@ -67,42 +69,41 @@ public class YureiLevl3 : Base_Enemy
         //
         AttackState();
         //
-
-        m_Timer -= Time.deltaTime;
-        if(m_Timer<0&&!m_Invisable)
+        if (m_Yurei3B)
         {
-            Color GhostColor = GetComponent<Renderer>().material.color;
-            GhostColor.a -= Time.deltaTime;
-            if (GhostColor.a > 0)
-                GetComponent<Renderer>().material.color = GhostColor;
-            else
+            m_Timer -= Time.deltaTime;
+            if (m_Timer < 0 && !m_Invisable)
             {
-                m_Invisable = true;
-                GhostColor.a = 0;
-                GetComponent<Renderer>().material.color = GhostColor;
+                Color GhostColor = GetComponent<Renderer>().material.color;
+                GhostColor.a -= Time.deltaTime;
+                if (GhostColor.a > 0)
+                    GetComponent<Renderer>().material.color = GhostColor;
+                else
+                {
+                    m_Invisable = true;
+                    GhostColor.a = 0;
+                    GetComponent<Renderer>().material.color = GhostColor;
+                }
             }
-        }
-        if (m_Timer < -5 && m_Invisable)
-        {
-            Color GhostColor = GetComponent<Renderer>().material.color;
-            GhostColor.a += Time.deltaTime *2;
-            if (GhostColor.a < 1)
-                GetComponent<Renderer>().material.color = GhostColor;
-            else
+            if (m_Timer < -5 && m_Invisable)
             {
-                m_Timer = Random.Range(m_TimerRange.x, m_TimerRange.y);
-                m_Invisable = false;
+                Color GhostColor = GetComponent<Renderer>().material.color;
+                GhostColor.a += Time.deltaTime * 2;
+                if (GhostColor.a < 1)
+                    GetComponent<Renderer>().material.color = GhostColor;
+                else
+                {
+                    m_Timer = Random.Range(m_TimerRange.x, m_TimerRange.y);
+                    m_Invisable = false;
 
+                }
             }
         }
 
     }
     public override void DeathState()
     {
-        if (anim.GetBool("RealDeath"))
-        {
-            Destroy(this.gameObject);
-        }
+        base.DeathState();
     }
 
 
@@ -120,7 +121,7 @@ public class YureiLevl3 : Base_Enemy
             msm.GetTargetX(transform.position.x);
             msm.GetTargetY(transform.position.y);
 
-            Destroy(gameObject);
+            GetPoolManager().Remove(gameObject, Type);
         }
         else if ((other.tag == "Player") && (msm.isPossessing == true))
         {
@@ -164,5 +165,17 @@ public class YureiLevl3 : Base_Enemy
     {
         msm.GetTargetX(transform.position.x);
         msm.GetTargetY(transform.position.y);
+    }
+
+    override public void Reset()
+    {
+        base.Reset();
+        m_ProjectileTimer = .5f;
+
+        m_Invisable = false;
+        m_Timer = 0;
+        Color GhostColor = GetComponent<Renderer>().material.color;
+        GhostColor.a = 1;
+        GetComponent<Renderer>().material.color = GhostColor;
     }
 }

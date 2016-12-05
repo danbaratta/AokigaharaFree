@@ -10,18 +10,24 @@ public class Enemy_Projectile : MonoBehaviour
     bool DirectionRight = true;
 
     public int Damage = 5;
-
+    //pool manger ref
+    PoolManager m_PoolManager;
+    PoolManager.EnemiesType Type = PoolManager.EnemiesType.PlayerBullets;
+    float LifeTimer = 3;
     // Use this for initialization
     void Start()
     {
         bullet = gameObject;
-        Destroy(gameObject, 3f);
+        m_PoolManager = GameObject.Find("PoolManager").GetComponent<PoolManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
         MoveProjectile();
+        LifeTimer -= Time.deltaTime;
+        if (LifeTimer <= 0)
+            m_PoolManager.Remove(gameObject, Type);
     }
 
     void MoveProjectile()
@@ -41,7 +47,7 @@ public class Enemy_Projectile : MonoBehaviour
         if (other.tag == "Player")
         {
             other.gameObject.SendMessage("TakeDamage", Damage, SendMessageOptions.DontRequireReceiver);
-            Destroy(gameObject);
+            m_PoolManager.Remove(gameObject, Type);
         }
     }
 
@@ -59,4 +65,10 @@ public class Enemy_Projectile : MonoBehaviour
     //{
     //	Destroy (gameObject);
     //}
+
+
+    public void Reset()
+    {
+        LifeTimer = 3;
+    }
 }

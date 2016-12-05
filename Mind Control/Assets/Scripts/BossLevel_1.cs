@@ -31,7 +31,7 @@ public class BossLevel_1 : Base_Enemy
     Vector2 StartLocation;
     bool AttackMode;
 
-    public List<GameObject> EnemySpawn;
+    public List<PoolManager.EnemiesType> EnemySpawn;
 
     //
     GameObject Sheild;
@@ -40,7 +40,7 @@ public class BossLevel_1 : Base_Enemy
     public BoxCollider2D AttackBox;
 
     //15% health
-    public GameObject m_Enemy;
+    public PoolManager.EnemiesType m_Enemy;
     public int m_HowManyToSpawn = 3;
     bool m_BossLowHealth;
     bool m_Finish;
@@ -93,7 +93,7 @@ public class BossLevel_1 : Base_Enemy
             bool temp = false;
             for (int i = 0; i < m_SpawnEnemies.Count; i++)
             {
-                if (m_SpawnEnemies[i])
+                if (m_SpawnEnemies[i].activeSelf)
                     temp = true;
             }
             if (!temp)
@@ -263,7 +263,10 @@ public class BossLevel_1 : Base_Enemy
             SpawnTimer -= Time.deltaTime;
             if (SpawnTimer <= 0)
             {
-                Instantiate(EnemySpawn[0], this.gameObject.transform.position, Quaternion.identity);
+                GameObject temp = GetPoolManager().FindClass(EnemySpawn[0]);
+                temp.transform.position = gameObject.transform.position;
+                temp.transform.rotation = Quaternion.identity;
+
                 SpawnTimer = UnityEngine.Random.Range(2.5f, 5f);
             }
             if (timer < -10)
@@ -281,7 +284,10 @@ public class BossLevel_1 : Base_Enemy
             SpawnTimer -= Time.deltaTime;
             if (SpawnTimer <= 0)
             {
-                Instantiate(EnemySpawn[0], this.gameObject.transform.position, Quaternion.identity);
+                GameObject temp = GetPoolManager().FindClass(EnemySpawn[0]);
+                temp.transform.position = gameObject.transform.position;
+                temp.transform.rotation = Quaternion.identity;
+
                 SpawnTimer = UnityEngine.Random.Range(2.5f, 4f);
             }
             if (timer < -12)
@@ -300,7 +306,10 @@ public class BossLevel_1 : Base_Enemy
             SpawnTimer -= Time.deltaTime;
             if (SpawnTimer <= 0)
             {
-                Instantiate(EnemySpawn[0], this.gameObject.transform.position, Quaternion.identity);
+                GameObject temp = GetPoolManager().FindClass(EnemySpawn[0]);
+                temp.transform.position = gameObject.transform.position;
+                temp.transform.rotation = Quaternion.identity;
+
                 SpawnTimer = UnityEngine.Random.Range(2f, 4f);
             }
             if (timer < -14)
@@ -318,7 +327,10 @@ public class BossLevel_1 : Base_Enemy
             SpawnTimer -= Time.deltaTime;
             if (SpawnTimer <= 0)
             {
-                Instantiate(EnemySpawn[0], this.gameObject.transform.position, Quaternion.identity);
+                GameObject temp = GetPoolManager().FindClass(EnemySpawn[0]);
+                temp.transform.position = gameObject.transform.position;
+                temp.transform.rotation = Quaternion.identity;
+
                 SpawnTimer = UnityEngine.Random.Range(1.5f, 2.5f);
             }
             if (timer < -15)
@@ -353,8 +365,19 @@ public class BossLevel_1 : Base_Enemy
 
     void SpawnLastBossMinions()
     {
-        m_SpawnEnemies.Add((GameObject)Instantiate(m_Enemy, this.gameObject.transform.position + new Vector3(3, 0, 0), Quaternion.identity));
-        m_SpawnEnemies.Add((GameObject)Instantiate(m_Enemy, this.gameObject.transform.position + new Vector3(0, 0, 0), Quaternion.identity));
-        m_SpawnEnemies.Add((GameObject)Instantiate(m_Enemy, this.gameObject.transform.position + new Vector3(-3, 0, 0), Quaternion.identity));
+        GameObject temp = GetPoolManager().FindClass(m_Enemy);
+        temp.transform.position = gameObject.transform.position + new Vector3(3, 0, 0);
+        temp.transform.rotation = Quaternion.identity;
+        m_SpawnEnemies.Add(temp);
+
+        temp = GetPoolManager().FindClass(m_Enemy);
+        temp.transform.position = gameObject.transform.position + new Vector3(0, 0, 0);
+        temp.transform.rotation = Quaternion.identity;
+        m_SpawnEnemies.Add(temp);
+
+        temp = GetPoolManager().FindClass(m_Enemy);
+        temp.transform.position = gameObject.transform.position + new Vector3(-3, 0, 0);
+        temp.transform.rotation = Quaternion.identity;
+        m_SpawnEnemies.Add(temp);
     }
 }

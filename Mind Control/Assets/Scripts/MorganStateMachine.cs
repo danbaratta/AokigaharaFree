@@ -19,6 +19,9 @@ public class MorganStateMachine : MonoBehaviour
 
         NUM_STATE
     }
+    //pool manager
+    PoolManager m_PoolManager;
+
 
     Dictionary<PlayerStateMachine, Action> psm = new Dictionary<PlayerStateMachine, Action>();
 
@@ -134,6 +137,9 @@ public class MorganStateMachine : MonoBehaviour
         psm.Add(PlayerStateMachine.DASH, StateDash);       // adding states to the dictionary
 
         SetState(PlayerStateMachine.IDLE);                  // setting default state to Idle
+
+
+        m_PoolManager = GameObject.Find("PoolManager").GetComponent<PoolManager>();
     }
 
     // Update is called once per frame
@@ -418,7 +424,9 @@ public class MorganStateMachine : MonoBehaviour
 
     void FireBullet()
     {
-        GameObject TempBullet = (GameObject)Instantiate(Bullet, Morgan.transform.position, Morgan.transform.rotation);
+        GameObject TempBullet= m_PoolManager.FindClass(PoolManager.EnemiesType.PlayerBullets);
+        TempBullet.transform.position = Morgan.transform.position;
+        TempBullet.transform.rotation = Quaternion.identity;
         if (!Reflect)
             TempBullet.SendMessage("FlipAxis");
     }

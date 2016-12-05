@@ -35,7 +35,7 @@ public class OniLevel1 : Base_Enemy
             Agent.angularSpeed = 10;
             Agent.acceleration = 3;
         }
-
+        Type = PoolManager.EnemiesType.Oni_Level1;
     }
 
     // Update is called once per frame
@@ -58,7 +58,7 @@ public class OniLevel1 : Base_Enemy
             base.Update();
             if (Vector2.Distance(Morgan.transform.position, transform.position) > m_Distance)
             {
-                Destroy(this.gameObject);
+                GetPoolManager().Remove(gameObject, Type);
             }
         }
     }
@@ -164,7 +164,7 @@ public class OniLevel1 : Base_Enemy
     }
     public override void DeathState()
     {
-        Destroy(this.gameObject);
+        GetPoolManager().Remove(gameObject, Type);
     }
 
 
@@ -182,7 +182,7 @@ public class OniLevel1 : Base_Enemy
             msm.GetTargetX(transform.position.x);
             msm.GetTargetY(transform.position.y);
 
-            Destroy(gameObject);
+            GetPoolManager().Remove(gameObject, Type);
         }
         else if ((other.tag == "Player") && (msm.isPossessing == true))
         {
@@ -228,5 +228,12 @@ public class OniLevel1 : Base_Enemy
     {
         msm.GetTargetX(transform.position.x);
         msm.GetTargetY(transform.position.y);
+    }
+
+    override public void Reset()
+    {
+        base.Reset();
+        AttackBox.enabled = false;
+        timer = 0;
     }
 }

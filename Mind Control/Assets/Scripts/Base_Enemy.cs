@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System;
 public class Base_Enemy : MonoBehaviour
 {
+    public PoolManager.EnemiesType Type;
+
     public enum EnemyState
     {
         Idle,
@@ -49,8 +51,10 @@ public class Base_Enemy : MonoBehaviour
 
     // Script References
     public MorganStateMachine msm;
+    //pool manger ref
+    PoolManager m_PoolManager;
 
-    public virtual void Start()
+    public virtual void Awake()
     {
         States.Add(EnemyState.Idle, IdleState);
         States.Add(EnemyState.Walk, WalkState);
@@ -58,11 +62,17 @@ public class Base_Enemy : MonoBehaviour
         States.Add(EnemyState.Death, DeathState);
         States.Add(EnemyState.Jump, Jump);
         States.Add(EnemyState.MaxStates, Stub);
+        anim = GetComponent<Animator>();
+        Health = Max_Health;
+    }
 
+    public virtual void Start()
+    {       
         Morgan = GameObject.FindGameObjectWithTag("Player");
         playerHealth = Morgan.GetComponent<PlayerHealth>();
-        anim = GetComponent<Animator>();
+        
         msm = GameObject.Find("Morgan").GetComponent<MorganStateMachine>();
+        m_PoolManager = GameObject.Find("PoolManager").GetComponent<PoolManager>();
 
     }
     void Stub()
@@ -105,7 +115,7 @@ public class Base_Enemy : MonoBehaviour
     {
         if (anim.GetBool("RealDeath"))
         {
-            Destroy(this.gameObject);
+            m_PoolManager.Remove(gameObject, Type);
         }
     }
 
@@ -160,8 +170,8 @@ public class Base_Enemy : MonoBehaviour
     /// <param name="Direction"></param>
     virtual public void Move(Vector3 Direction)
     {
-        if(GetComponent<Rigidbody>())
-        GetComponent<Rigidbody>().velocity = Direction;
+        if (GetComponent<Rigidbody>())
+            GetComponent<Rigidbody>().velocity = Direction;
     }
     /// <summary>
     /// Move Toward the object you want to go to
@@ -188,6 +198,20 @@ public class Base_Enemy : MonoBehaviour
 
     public void PlayerReset()
     {
-        Destroy(gameObject);
+        m_PoolManager.Remove(gameObject, Type);
+    }
+
+    public PoolManager GetPoolManager()
+    {
+        return m_PoolManager;
+    }
+    virtual public void Reset()
+    {
+        Health = Max_Health;
+        anim.SetBool("Dead", false);
+        anim.SetBool("RealDeath", false);
+        anim.Play("Idle");
+        TurnOnCollision();
+        SetState(EnemyState.Idle);
     }
 }
