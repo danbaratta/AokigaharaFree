@@ -28,17 +28,12 @@ public class MorganStateMachine : MonoBehaviour
     Morgan Morgan;  // Data Model
     Rigidbody2D MorganBody2D;
 
-    [SerializeField]
-    GameObject SpawnPoint;
-
     public GameObject Yurei1;
 
     Sprite YureiSprite;
     Sprite MorganSprite;
 
     // X/Y targeting Variables
-    float playerX;
-    float playerY;
     float possessedLocX;
     float possessedLocY;
 
@@ -53,8 +48,7 @@ public class MorganStateMachine : MonoBehaviour
     float possessTimer = 0f;
     float possessLimit = 6f;
     // next enemy bool here
-    public GameObject MindBullet;
-    public GameObject Bullet;
+    //public GameObject MindBullet;
 
     // Ground Check Variables    
     public Transform groundCheck;
@@ -69,8 +63,6 @@ public class MorganStateMachine : MonoBehaviour
     bool canControl = true;
     float yureiMoveSpeed = 3.0f;
     Vector2 yureiMove = Vector2.zero;
-    float oniMoveSpeed = 4.5f;
-    float oniJumpHeight = 8f;
     Vector2 oniMove = Vector2.zero;
 
 
@@ -85,7 +77,6 @@ public class MorganStateMachine : MonoBehaviour
     Animator a;
     public bool right = true;
     private float playerXAnim;
-    private float playerYAnim;
     bool ground = false;
 
     bool Reflect = true;
@@ -105,6 +96,8 @@ public class MorganStateMachine : MonoBehaviour
     bool mindCanFire;
     public GameObject bulletIcon;
 
+    //Skills
+    Abilities m_Abilities;
 
     // Power Bar
 
@@ -140,6 +133,7 @@ public class MorganStateMachine : MonoBehaviour
 
 
         m_PoolManager = GameObject.Find("PoolManager").GetComponent<PoolManager>();
+        m_Abilities = GameObject.Find("Abilities").GetComponent<Abilities>();
     }
 
     // Update is called once per frame
@@ -148,6 +142,13 @@ public class MorganStateMachine : MonoBehaviour
         psm[curState].Invoke();
 
         CheckForPossession();
+        //if(Input.GetKeyDown(KeyCode.O))
+        //{
+        //    if (!m_Abilities.m_Telekinesis)
+        //        m_Abilities.TelekinesisOn();
+        //    else
+        //        m_Abilities.TelekinesisOff();
+        //}
     }
 
     void Flip(bool Turn)
@@ -220,10 +221,9 @@ public class MorganStateMachine : MonoBehaviour
     {
         Morgan.dashTimer -= Time.deltaTime;
         if (Morgan.dashTimer <= 0)
-        {
-            GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+        {           
+            m_Abilities.DashOff(gameObject);
             SetState(PlayerStateMachine.IDLE);
-            GetComponent<Rigidbody2D>().gravityScale = 1;
             Morgan.dashTimer = Morgan.ConstDashTimer;
         }
     }
@@ -352,14 +352,9 @@ public class MorganStateMachine : MonoBehaviour
 
             if (Input.GetKey(KeyCode.T) && Morgan.Dash)
             {
-                if (Reflect)
-                    GetComponent<Rigidbody2D>().velocity = new Vector2(Morgan.DashSpeed(), 0);
-                else
-                    GetComponent<Rigidbody2D>().velocity = new Vector2(-Morgan.DashSpeed(), 0);
-
+                m_Abilities.DashOn(gameObject, Morgan.dashSpeed, Reflect);
                 SetState(PlayerStateMachine.DASH);
                 Morgan.Dash = false;
-                GetComponent<Rigidbody2D>().gravityScale = 0;
             }
         }
     }
@@ -415,25 +410,25 @@ public class MorganStateMachine : MonoBehaviour
 
     // POSSESSION FUNCTIONS
 
-    void FireMindBullet()                                   // Need to fix firing to the LEFT
-    {
-        GameObject TempBullet = (GameObject)Instantiate(MindBullet, Morgan.transform.position, Morgan.transform.rotation);
-        if (!Reflect)
-            TempBullet.SendMessage("FlipAxisLeft");
-        else
-            TempBullet.SendMessage("FlipAxisRight");
-    }
+    //void FireMindBullet()                                   // Need to fix firing to the LEFT
+    //{
+    //    GameObject TempBullet = (GameObject)Instantiate(MindBullet, Morgan.transform.position, Morgan.transform.rotation);
+    //    if (!Reflect)
+    //        TempBullet.SendMessage("FlipAxisLeft");
+    //    else
+    //        TempBullet.SendMessage("FlipAxisRight");
+    //}
 
-    void FireBullet()
-    {
-        GameObject TempBullet= m_PoolManager.FindClass(PoolManager.EnemiesType.PlayerBullets);
-        TempBullet.transform.position = Morgan.transform.position;
-        TempBullet.transform.rotation = Quaternion.identity;
-        if (!Reflect)
-            TempBullet.SendMessage("FlipAxisLeft");
-        else
-            TempBullet.SendMessage("FlipAxisRight");
-    }
+    //void FireBullet()
+    //{
+    //    GameObject TempBullet= m_PoolManager.FindClass(PoolManager.EnemiesType.PlayerBullets);
+    //    TempBullet.transform.position = Morgan.transform.position;
+    //    TempBullet.transform.rotation = Quaternion.identity;
+    //    if (!Reflect)
+    //        TempBullet.SendMessage("FlipAxisLeft");
+    //    else
+    //        TempBullet.SendMessage("FlipAxisRight");
+    //}
     void CheckForFiring()
     {
         Mathf.Clamp(bulletTimer += Time.deltaTime, 0, bulletTimeMax);
@@ -463,12 +458,14 @@ public class MorganStateMachine : MonoBehaviour
 
         if ((Input.GetKeyDown(KeyCode.Mouse1) || Input.GetAxis("PrimaryAttack") == 1) && (mindCanFire == true))
         {
-            FireMindBullet();
+            // FireMindBullet();
+            m_Abilities.FireMindBullet(gameObject.transform.position, Reflect);
             mindTimer = 0f;
         }
         else if ((Input.GetKeyDown(KeyCode.Mouse0) || Input.GetAxis("PrimaryAttack") == -1) && (bulletCanFire == true))
         {
-            FireBullet();
+            //FireBullet();
+            m_Abilities.FireSimpleBullet(gameObject.transform.position, Reflect);
             bulletTimer = 0f;
         }
     }

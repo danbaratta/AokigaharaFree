@@ -139,17 +139,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8715284f883bd4013ba0528b830446b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpawnPoint: {fileID: 0}
   Yurei1: {fileID: 0}
   curState: 0
   isOni: 0
   isPossessing: 0
-  MindBullet: {fileID: 131956, guid: 021a55a4c36521a42bec12cf0959e01c, type: 2}
-  Bullet: {fileID: 171898, guid: caa1472da978e4cd589afa1102335ee3, type: 2}
   groundCheck: {fileID: 474886}
   walkableLayer:
     serializedVersion: 2
-    m_Bits: 8192
+    m_Bits: 40960
   groundCheckRadius: 0.1
   onGround: 0
   canControl: 1

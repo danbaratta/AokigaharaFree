@@ -11,6 +11,9 @@ TagManager:
   - Bullet
   - Health
   - Special
+  - Pitfall
+  - SpikeFloor
+  - Blocks
   layers:
   - Default
   - TransparentFX
@@ -27,8 +30,8 @@ TagManager:
   - SpecialWall
   - Floor
   - Enemy_Projectile
-  - 
-  - 
+  - HazardToPlayer
+  - Blocks
   - 
   - 
   - 

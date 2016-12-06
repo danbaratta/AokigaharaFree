@@ -47,12 +47,20 @@ public class MindProjectileScript : MonoBehaviour {
 		}
 	}
 
-    public void FlipAxis()
+    public void FlipAxisLeft()
     {
         DirectionRight = false;
-        Vector3 scale = transform.localScale;
 
-        scale.x = -scale.x;
+        Vector3 scale = transform.localScale;
+        scale.x = -Mathf.Abs(scale.x);
+        transform.localScale = scale;
+    }
+
+    public void FlipAxisRight()
+    {
+        DirectionRight = true;
+        Vector3 scale = transform.localScale;
+        scale.x = Mathf.Abs(scale.x);
         transform.localScale = scale;
     }
 
