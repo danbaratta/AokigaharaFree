@@ -14,7 +14,7 @@ public class OniLevel1 : Base_Enemy
     public Collider2D AttackBox;
 
     public bool m_UseNavMesh;
-    NavMeshAgent Agent;
+    UnityEngine.AI.NavMeshAgent Agent;
 
     // Use this for initialization
     public override void Start()
@@ -24,7 +24,7 @@ public class OniLevel1 : Base_Enemy
         AttackBox.enabled = false;
         if (m_UseNavMesh)
         {
-            Agent = gameObject.AddComponent<NavMeshAgent>();
+            Agent = gameObject.AddComponent<UnityEngine.AI.NavMeshAgent>();
             Agent.updateRotation = false;
             //Agent.updatePosition = false;
 
