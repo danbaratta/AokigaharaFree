@@ -53,9 +53,13 @@ public class YureiLevl3 : Base_Enemy
         m_ProjectileTimer -= Time.deltaTime;
         if (m_ProjectileTimer <= 0)
         {
-            GameObject TempBullet = (GameObject)Instantiate(m_Projectile, gameObject.transform.position, Quaternion.identity);
-            if (-temp.x < 0)
-                TempBullet.SendMessage("FlipAxis");
+            GameObject TempBullet = GetPoolManager().FindClass(PoolManager.EnemiesType.EnemyBullets);
+            TempBullet.transform.position = gameObject.transform.position;
+            TempBullet.transform.rotation = Quaternion.identity;
+            if (!Mirror)
+                TempBullet.SendMessage("FlipAxisLeft");
+            else
+                TempBullet.SendMessage("FlipAxisRight");
             m_ProjectileTimer = m_ConstProjectileTimer;
         }
     }
@@ -65,7 +69,10 @@ public class YureiLevl3 : Base_Enemy
         Vector3 temp = gameObject.transform.position - Morgan.transform.position;
         temp = temp.normalized;
         GetComponent<Rigidbody2D>().velocity = -temp * MoveSpeed;
-
+        if (temp.x < 0)
+            Flip(false);
+        else
+            Flip(true);
         //
         AttackState();
         //

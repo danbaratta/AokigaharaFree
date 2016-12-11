@@ -15961,6 +15961,54 @@ SpriteRenderer:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
+--- !u!1 &1401344315
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1401344317}
+  - component: {fileID: 1401344316}
+  m_Layer: 0
+  m_Name: Teleport
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1401344316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1401344315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 152e639a88385474a86771aff2e7d543, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TeleportOn: 0
+  m_SpecialBox: 0
+  Top: 14.6
+  Bottom: -2
+  Left: -48.48536
+  Right: 516.9
+  SpecialLeft: 0
+  SpecialRight: 0
+--- !u!4 &1401344317
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1401344315}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 555.5, y: 14.6, z: -35.03}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 28
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1403996902 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 153188, guid: b85bbe51456f64f7c9e015ecfee57040, type: 2}
@@ -21987,8 +22035,8 @@ Prefab:
     - target: {fileID: 114000012635149720, guid: 3972b3c05f686234da2f6ab6660b2faa,
         type: 2}
       propertyPath: EnemyTypes.Array.data[0]
-      value: 
-      objectReference: {fileID: 142134, guid: c6f0a23e337ba5a4eb9e994683cb2d5b, type: 2}
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 114000012635149720, guid: 3972b3c05f686234da2f6ab6660b2faa,
         type: 2}
       propertyPath: TimeMin
