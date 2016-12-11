@@ -98,7 +98,7 @@ public class MorganStateMachine : MonoBehaviour
 
     //Skills
     Abilities m_Abilities;
-
+    bool m_Teleport;
     // Power Bar
 
     public int m_MaxPowerBar = 100;
@@ -139,9 +139,17 @@ public class MorganStateMachine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        psm[curState].Invoke();
+        if (!m_Teleport)
+        {
+            psm[curState].Invoke();
 
-        CheckForPossession();
+            CheckForPossession();
+        }
+        else
+        {
+            // Save Check Zero out all movement
+            GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+        }
         //if(Input.GetKeyDown(KeyCode.O))
         //{
         //    if (!m_Abilities.m_Telekinesis)
@@ -149,6 +157,14 @@ public class MorganStateMachine : MonoBehaviour
         //    else
         //        m_Abilities.TelekinesisOff();
         //}
+
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            m_Abilities.Teleport();
+            TeleportOn();
+        }
+
+
     }
 
     void Flip(bool Turn)
@@ -585,5 +601,26 @@ public class MorganStateMachine : MonoBehaviour
             m_CurrentPower = 0;
         if (m_CurrentPower > m_MaxPowerBar)
             m_CurrentPower = m_MaxPowerBar;
+    }
+
+
+    public void TeleportComplete()
+    {
+        m_Teleport = false;
+    }
+    
+    public void TeleportOn()
+    {
+        GetComponent<BoxCollider2D>().enabled = false;
+        GetComponent<SpriteRenderer>().enabled = false;
+        GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+        GetComponent<Rigidbody2D>().gravityScale = 0;
+    }
+
+    public void TeleportOff()
+    {
+        GetComponent<BoxCollider2D>().enabled = true;
+        GetComponent<SpriteRenderer>().enabled = true;
+        GetComponent<Rigidbody2D>().gravityScale = 1;
     }
 }

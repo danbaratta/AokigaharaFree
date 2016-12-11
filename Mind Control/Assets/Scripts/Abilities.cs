@@ -9,6 +9,7 @@ public class Abilities : MonoBehaviour
         MindBullet,
         Dash,
         Telekinesis,
+        Teleport,
         MaxSize,
     }
 
@@ -24,11 +25,15 @@ public class Abilities : MonoBehaviour
     GameObject m_MovingObject;
 
     public bool m_Telekinesis;
+    Teleport m_Teleport;
+
+    public float m_TeleportTimer =5;
 
     // Use this for initialization
     void Start()
     {
         m_PoolManager = GameObject.Find("PoolManager").GetComponent<PoolManager>();
+        m_Teleport = GameObject.Find("Teleport").GetComponent<Teleport>(); ;
     }
 
     // Update is called once per frame
@@ -110,7 +115,7 @@ public class Abilities : MonoBehaviour
 
     public void DashOn(GameObject Player, float speed, bool Direction)
     {
-        Player.GetComponent<Rigidbody2D>().gravityScale = 1;
+        Player.GetComponent<Rigidbody2D>().gravityScale = 0;
         if (Direction)
             Player.GetComponent<Rigidbody2D>().velocity = new Vector2(speed, 0);
         else
@@ -141,8 +146,8 @@ public class Abilities : MonoBehaviour
         Bits = ~Bits;
         RaycastHit2D hit;
 
-        hit = Physics2D.Raycast(temp, Camera.main.transform.forward,25f,Bits);
-        if(hit.collider)
+        hit = Physics2D.Raycast(temp, Camera.main.transform.forward, 25f, Bits);
+        if (hit.collider)
         {
             if (hit.collider.tag == "Blocks")
             {
@@ -157,5 +162,14 @@ public class Abilities : MonoBehaviour
         m_MovingObject.SendMessage("StopMoveBlock");
         m_MovingObject = null;
         m_Telekinesis = false;
+    }
+
+
+    public void Teleport()
+    {
+        if (m_Teleport)
+            m_Teleport.m_TeleportOn = true;
+
+        m_Teleport.SetTimer(5); 
     }
 }

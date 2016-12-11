@@ -30,7 +30,7 @@ public class HealthDrop : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D other)
     {
-        Player.SendMessage("TakeDamage",Health);
+        Player.SendMessage("TakeDamage",-Health);
         Destroy(gameObject);
     }
 }
