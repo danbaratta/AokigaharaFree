@@ -26,7 +26,6 @@ public class PoolManager : MonoBehaviour
                 NewItem.SetActive(false);
                 m_Dead.Add(NewItem);
                 Count++;
-                NewItem.SendMessage("Spanwed");
             }
         }
 
@@ -43,6 +42,7 @@ public class PoolManager : MonoBehaviour
                 m_Dead.Remove(temp);
                 //Add to alive
                 m_Alive.Add(temp);
+                temp.SendMessage("Spanwed", SendMessageOptions.DontRequireReceiver);
             }
             else
             {
