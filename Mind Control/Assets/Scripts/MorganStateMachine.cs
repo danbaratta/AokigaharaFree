@@ -237,7 +237,7 @@ public class MorganStateMachine : MonoBehaviour
     {
         Morgan.dashTimer -= Time.deltaTime;
         if (Morgan.dashTimer <= 0)
-        {           
+        {
             m_Abilities.DashOff(gameObject);
             SetState(PlayerStateMachine.IDLE);
             Morgan.dashTimer = Morgan.ConstDashTimer;
@@ -275,6 +275,8 @@ public class MorganStateMachine : MonoBehaviour
         SetLocationToTarget();
         SetState(PlayerStateMachine.STATE_ONI);
         Debug.Log("made it this far... setstate.state_oni");
+        GetComponent<Rigidbody2D>().velocity = new Vector2();
+
     }
 
     void TransitionFromOni()
@@ -282,10 +284,14 @@ public class MorganStateMachine : MonoBehaviour
         isPossessing = false;
         SetState(PlayerStateMachine.IDLE);
         a.SetBool("Walk", false);
+        GetComponent<Rigidbody2D>().gravityScale = 1;
+
     }
 
     void HandleYureiControls()
     {
+        GetComponent<Rigidbody2D>().velocity = new Vector2();
+
         gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/Kodama_pass11_edit");
 
         yureiMove.x = Input.GetAxisRaw("Horizontal") * Time.deltaTime * yureiMoveSpeed;
@@ -319,6 +325,8 @@ public class MorganStateMachine : MonoBehaviour
         possess = false;
         isYurei = false;
         possessTimer = 0f;
+        GetComponent<Rigidbody2D>().gravityScale = 1;
+
     }
 
     void SetLocationToTarget()
@@ -492,7 +500,7 @@ public class MorganStateMachine : MonoBehaviour
         {
             Debug.Log("possess = " + possess + "\n isYurei = " + isYurei);
             possessTimer += Time.deltaTime;                 // The IF statements here will decide which enemy you possessed
-
+            GetComponent<Rigidbody2D>().gravityScale = 0;
             if (isYurei == true)
             {
                 TransitionToYurei();
@@ -608,7 +616,7 @@ public class MorganStateMachine : MonoBehaviour
     {
         m_Teleport = false;
     }
-    
+
     public void TeleportOn()
     {
         GetComponent<BoxCollider2D>().enabled = false;

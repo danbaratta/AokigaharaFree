@@ -15,7 +15,7 @@ public class PoolManager : MonoBehaviour
 
         void Start()
         {
-            Create(Count);
+            //Create(Count);
         }
 
       public  void Create(int amount)
@@ -26,6 +26,7 @@ public class PoolManager : MonoBehaviour
                 NewItem.SetActive(false);
                 m_Dead.Add(NewItem);
                 Count++;
+                NewItem.SendMessage("Spanwed");
             }
         }
 

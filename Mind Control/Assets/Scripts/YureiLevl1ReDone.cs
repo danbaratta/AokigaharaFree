@@ -61,7 +61,7 @@ public class YureiLevl1ReDone : Base_Enemy
             msm.GetTargetX(transform.position.x);
             msm.GetTargetY(transform.position.y);
 
-            Destroy(gameObject);
+             RemoveThis();
         }
         else if ((other.tag == "Player") && (msm.isPossessing == true))
         {

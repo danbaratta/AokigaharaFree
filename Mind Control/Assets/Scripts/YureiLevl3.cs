@@ -32,7 +32,7 @@ public class YureiLevl3 : Base_Enemy
         base.Update();
         if (Vector2.Distance(Morgan.transform.position, transform.position) > m_Distance)
         {
-            GetPoolManager().Remove(gameObject, Type);
+             RemoveThis();
         }
     }
 
@@ -128,7 +128,7 @@ public class YureiLevl3 : Base_Enemy
             msm.GetTargetX(transform.position.x);
             msm.GetTargetY(transform.position.y);
 
-            GetPoolManager().Remove(gameObject, Type);
+             RemoveThis();
         }
         else if ((other.tag == "Player") && (msm.isPossessing == true))
         {

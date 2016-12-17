@@ -36,6 +36,8 @@ public class Base_Enemy : MonoBehaviour
     public float MoveSpeed = 2.0f;
     public float Speed;
 
+    public bool NotSpawned = false;
+
     //state
     public EnemyState curState;
     //Use for checking if enemie should look other direction
@@ -67,10 +69,10 @@ public class Base_Enemy : MonoBehaviour
     }
 
     public virtual void Start()
-    {       
+    {
         Morgan = GameObject.FindGameObjectWithTag("Player");
         playerHealth = Morgan.GetComponent<PlayerHealth>();
-        
+
         msm = GameObject.Find("Morgan").GetComponent<MorganStateMachine>();
         m_PoolManager = GameObject.Find("PoolManager").GetComponent<PoolManager>();
 
@@ -213,5 +215,25 @@ public class Base_Enemy : MonoBehaviour
         anim.Play("Idle");
         TurnOnCollision();
         SetState(EnemyState.Idle);
+    }
+
+
+    public bool RemoveThis()
+    {
+        if (!NotSpawned)
+        {
+            m_PoolManager.Remove(gameObject, Type);
+            return true;
+        }
+	Destroy(gameObject);
+        return false;
+    }
+
+    /// <summary>
+    /// Safe Check make sure if this object was spawn normal method well set var to correct sets
+    /// </summary>
+    public void Spanwed()
+    {
+        NotSpawned = false;
     }
 }

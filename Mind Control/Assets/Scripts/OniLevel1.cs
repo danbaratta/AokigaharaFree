@@ -58,7 +58,7 @@ public class OniLevel1 : Base_Enemy
             base.Update();
             if (Vector2.Distance(Morgan.transform.position, transform.position) > m_Distance)
             {
-                GetPoolManager().Remove(gameObject, Type);
+                RemoveThis();
             }
         }
     }
@@ -164,7 +164,7 @@ public class OniLevel1 : Base_Enemy
     }
     public override void DeathState()
     {
-        GetPoolManager().Remove(gameObject, Type);
+         RemoveThis();
     }
 
 
@@ -182,7 +182,7 @@ public class OniLevel1 : Base_Enemy
             msm.GetTargetX(transform.position.x);
             msm.GetTargetY(transform.position.y);
 
-            GetPoolManager().Remove(gameObject, Type);
+             RemoveThis();
         }
         else if ((other.tag == "Player") && (msm.isPossessing == true))
         {
@@ -211,8 +211,8 @@ public class OniLevel1 : Base_Enemy
                 temp.y = 15;
                 temp.x = temp.x * 10;
                 GetComponent<Rigidbody2D>().AddForce(temp, ForceMode2D.Impulse);
-               // if (m_UseNavMesh)
-               //     GetComponent<Rigidbody2D>().velocity = temp;
+                // if (m_UseNavMesh)
+                //     GetComponent<Rigidbody2D>().velocity = temp;
                 Invoke("WaitJump", 2f);
                 //SetState(EnemyState.Walk);
                 SetState(EnemyState.MaxStates);
