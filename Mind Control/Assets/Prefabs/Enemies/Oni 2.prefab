@@ -94,7 +94,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &61007008885464376
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -165,7 +165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27cf2348b1bf22f428d9d378a50d7fba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 0
+  Type: 5
   Max_Health: 100
   Health: 0
   Max_Defense: 0
@@ -188,7 +188,7 @@ MonoBehaviour:
   ConstTimer: 0
   AttackBox: {fileID: 61500215585760360}
   m_UseNavMesh: 0
-  m_ConstProjectileTimer: 0
+  m_ConstProjectileTimer: 2.5
 --- !u!212 &212111696640248938
 SpriteRenderer:
   m_ObjectHideFlags: 1
