@@ -58,7 +58,8 @@ public class OniLevel1 : Base_Enemy
             base.Update();
             if (Vector2.Distance(Morgan.transform.position, transform.position) > m_Distance)
             {
-                RemoveThis();
+                if (!NotSpawned)
+                    RemoveThis();
             }
         }
     }
@@ -164,7 +165,7 @@ public class OniLevel1 : Base_Enemy
     }
     public override void DeathState()
     {
-         RemoveThis();
+        RemoveThis();
     }
 
 
@@ -182,7 +183,7 @@ public class OniLevel1 : Base_Enemy
             msm.GetTargetX(transform.position.x);
             msm.GetTargetY(transform.position.y);
 
-             RemoveThis();
+            RemoveThis();
         }
         else if ((other.tag == "Player") && (msm.isPossessing == true))
         {

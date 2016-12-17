@@ -20,7 +20,8 @@ public class YureiLevl2ReDone : Base_Enemy
         base.Update();
         if (Vector2.Distance(Morgan.transform.position, transform.position) > m_Distance)
         {
-             RemoveThis();
+            if (!NotSpawned)
+                RemoveThis();
         }
     }
 
