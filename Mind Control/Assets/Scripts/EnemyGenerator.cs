@@ -58,7 +58,7 @@ public class EnemyGenerator : MonoBehaviour
     {
         if (generateEnemies)
         {
-            if (Vector2.Distance(transform.position, Player.transform.position) > AllowedSpawnDistance)
+            if (Vector2.Distance(transform.GetChild(0).transform.position, Player.transform.position) > AllowedSpawnDistance)
             {
                 // Dev safe Check
                 if (EnemyTypes.Length != 0)
