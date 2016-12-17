@@ -55,11 +55,15 @@ public class OniLevel1 : Base_Enemy
         }
         else
         {
-            base.Update();
             if (Vector2.Distance(Morgan.transform.position, transform.position) > m_Distance)
             {
                 if (!NotSpawned)
                     RemoveThis();
+                GetComponent<Rigidbody2D>().velocity = new Vector2();
+            }
+            else
+            {
+                base.Update();
             }
         }
     }

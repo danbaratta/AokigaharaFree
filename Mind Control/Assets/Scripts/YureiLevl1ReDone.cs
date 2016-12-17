@@ -17,11 +17,15 @@ public class YureiLevl1ReDone : Base_Enemy
     // Update is called once per frame
     public override void Update()
     {
-        base.Update();
         if (Vector2.Distance(Morgan.transform.position, transform.position) > m_Distance)
         {
             if (!NotSpawned)
                 RemoveThis();
+            GetComponent<Rigidbody2D>().velocity = new Vector2();
+        }
+        else
+        {
+            base.Update();
         }
     }
 
