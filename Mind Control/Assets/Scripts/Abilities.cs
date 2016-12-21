@@ -168,8 +168,11 @@ public class Abilities : MonoBehaviour
     public void Teleport()
     {
         if (m_Teleport)
+
+        {
             m_Teleport.m_TeleportOn = true;
 
-        m_Teleport.SetTimer(5); 
+            m_Teleport.SetTimer(5);
+        }
     }
 }
