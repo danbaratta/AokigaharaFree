@@ -11,6 +11,11 @@ public class Teleport : MonoBehaviour
     // World Limits
     public float Top, Bottom, Left, Right, SpecialLeft, SpecialRight;
 
+    //mouse
+    bool m_MouseBool;
+    Vector2 m_mouseLocation;
+    public float MouseSpeed = 5;
+    public float ControllerSpeed = 5;
 
     // Use this for initialization
     void Start()
@@ -31,15 +36,22 @@ public class Teleport : MonoBehaviour
     {
         if (m_TeleportOn)
         {
+
+            if (!m_MouseBool)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                m_mouseLocation = Input.mousePosition;
+                m_MouseBool = true;
+            }
             if (!gameObject.transform.GetChild(0).gameObject.activeSelf)
                 gameObject.transform.GetChild(0).gameObject.SetActive(true);
 
             Timer -= Time.deltaTime;
             if (Timer > 0)
             {
-                if (Input.GetKeyDown(KeyCode.Mouse0))
+                if (Input.GetKeyDown(KeyCode.Mouse0) || Input.GetButtonDown("joystick button 0"))
                 {
-                    Vector3 temp = Input.mousePosition;
+                    Vector3 temp = m_mouseLocation;
                     temp = Camera.main.ScreenToWorldPoint(temp);
 
                     temp.z = -10;
@@ -64,16 +76,23 @@ public class Teleport : MonoBehaviour
                         if (temp.x > SpecialRight)
                             temp.x = SpecialRight;
                     }
+
+
                     Morgan.transform.position = temp;
                     m_TeleportOn = false;
                     Morgan.SendMessage("TeleportOff");
                     gameObject.transform.GetChild(0).gameObject.SetActive(false);
-
+                    m_MouseBool = false;
                 }
                 else
                 {
-                    Vector3 temp = Input.mousePosition;
-                    temp = Camera.main.ScreenToWorldPoint(temp);
+                    m_mouseLocation.x += Input.GetAxis("Mouse X") * MouseSpeed;
+                    m_mouseLocation.y += Input.GetAxis("Mouse Y") * MouseSpeed;
+
+                    m_mouseLocation.x += Input.GetAxis("Horizontal") * ControllerSpeed;
+                    m_mouseLocation.y += Input.GetAxis("Vertical") * ControllerSpeed;
+                    Vector3 temp;
+                    temp = Camera.main.ScreenToWorldPoint(new Vector3(m_mouseLocation.x, m_mouseLocation.y));
 
                     temp.z = -10;
                     Ray m_Ray = new Ray(temp, Vector3.forward);
@@ -84,7 +103,7 @@ public class Teleport : MonoBehaviour
             }
             else
             {
-                Vector3 temp = Input.mousePosition;
+                Vector3 temp = m_mouseLocation;
                 temp = Camera.main.ScreenToWorldPoint(temp);
 
                 temp.z = -10;
@@ -113,6 +132,7 @@ public class Teleport : MonoBehaviour
                 m_TeleportOn = false;
                 Morgan.SendMessage("TeleportOff");
                 gameObject.transform.GetChild(0).gameObject.SetActive(false);
+                m_MouseBool = false;
 
             }
         }
