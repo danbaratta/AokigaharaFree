@@ -100,7 +100,7 @@ public class MorganStateMachine : MonoBehaviour
     Abilities m_Abilities;
     bool m_Teleport;
     // Power Bar
-
+    public Slider PowerSlider;
     public int m_MaxPowerBar = 100;
     public int m_CurrentPower = 0;
 
@@ -160,8 +160,8 @@ public class MorganStateMachine : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.O))
         {
-            m_Abilities.Teleport();
-            TeleportOn();
+            if (m_Abilities.Teleport())
+                TeleportOn();
         }
 
 
@@ -376,9 +376,11 @@ public class MorganStateMachine : MonoBehaviour
 
             if (Input.GetKey(KeyCode.T) && Morgan.Dash)
             {
-                m_Abilities.DashOn(gameObject, Morgan.dashSpeed, Reflect);
-                SetState(PlayerStateMachine.DASH);
-                Morgan.Dash = false;
+                if (m_Abilities.DashOn(gameObject, Morgan.dashSpeed, Reflect))
+                {
+                    SetState(PlayerStateMachine.DASH);
+                    Morgan.Dash = false;
+                }
             }
         }
     }
@@ -483,8 +485,8 @@ public class MorganStateMachine : MonoBehaviour
         if ((Input.GetKeyDown(KeyCode.Mouse1) || Input.GetAxis("PrimaryAttack") == 1) && (mindCanFire == true))
         {
             // FireMindBullet();
-            m_Abilities.FireMindBullet(gameObject.transform.position, Reflect);
-            mindTimer = 0f;
+            if (m_Abilities.FireMindBullet(gameObject.transform.position, Reflect))
+                mindTimer = 0f;
         }
         else if ((Input.GetKeyDown(KeyCode.Mouse0) || Input.GetAxis("PrimaryAttack") == -1) && (bulletCanFire == true))
         {
@@ -609,8 +611,20 @@ public class MorganStateMachine : MonoBehaviour
             m_CurrentPower = 0;
         if (m_CurrentPower > m_MaxPowerBar)
             m_CurrentPower = m_MaxPowerBar;
+        if (PowerSlider)
+            PowerSlider.value = (float)m_CurrentPower / (float)m_MaxPowerBar;
     }
 
+    public bool CanUseAbilbity(int Power)
+    {
+        int temp = m_CurrentPower - Power;
+        if (temp < 0)
+        {
+            return false;
+        }
+        PowerBar(-Power);
+        return true;
+    }
 
     public void TeleportComplete()
     {
@@ -623,6 +637,7 @@ public class MorganStateMachine : MonoBehaviour
         GetComponent<SpriteRenderer>().enabled = false;
         GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
         GetComponent<Rigidbody2D>().gravityScale = 0;
+        m_Teleport = true;
     }
 
     public void TeleportOff()
@@ -630,5 +645,6 @@ public class MorganStateMachine : MonoBehaviour
         GetComponent<BoxCollider2D>().enabled = true;
         GetComponent<SpriteRenderer>().enabled = true;
         GetComponent<Rigidbody2D>().gravityScale = 1;
+        m_Teleport = false;
     }
 }

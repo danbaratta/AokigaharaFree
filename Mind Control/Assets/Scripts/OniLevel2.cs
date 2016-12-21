@@ -227,7 +227,7 @@ public class OniLevel2 : Base_Enemy
 
                 Vector3 temp = gameObject.transform.position - Morgan.transform.position;
                 temp = temp.normalized;
-                temp.y = 15;
+                temp.y = 5;
                 temp.x = temp.x * 10;
                 GetComponent<Rigidbody2D>().AddForce(temp, ForceMode2D.Impulse);
                 // if (m_UseNavMesh)

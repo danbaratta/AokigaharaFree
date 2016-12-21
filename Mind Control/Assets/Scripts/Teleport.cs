@@ -11,6 +11,7 @@ public class Teleport : MonoBehaviour
     // World Limits
     public float Top, Bottom, Left, Right, SpecialLeft, SpecialRight;
 
+
     // Use this for initialization
     void Start()
     {
@@ -30,6 +31,9 @@ public class Teleport : MonoBehaviour
     {
         if (m_TeleportOn)
         {
+            if (!gameObject.transform.GetChild(0).gameObject.activeSelf)
+                gameObject.transform.GetChild(0).gameObject.SetActive(true);
+
             Timer -= Time.deltaTime;
             if (Timer > 0)
             {
@@ -63,7 +67,20 @@ public class Teleport : MonoBehaviour
                     Morgan.transform.position = temp;
                     m_TeleportOn = false;
                     Morgan.SendMessage("TeleportOff");
+                    gameObject.transform.GetChild(0).gameObject.SetActive(false);
+
                 }
+                else
+                {
+                    Vector3 temp = Input.mousePosition;
+                    temp = Camera.main.ScreenToWorldPoint(temp);
+
+                    temp.z = -10;
+                    Ray m_Ray = new Ray(temp, Vector3.forward);
+                    temp.z = -1;
+                    gameObject.transform.GetChild(0).gameObject.transform.position = temp;
+                }
+
             }
             else
             {
@@ -95,6 +112,8 @@ public class Teleport : MonoBehaviour
                 Morgan.transform.position = temp;
                 m_TeleportOn = false;
                 Morgan.SendMessage("TeleportOff");
+                gameObject.transform.GetChild(0).gameObject.SetActive(false);
+
             }
         }
     }

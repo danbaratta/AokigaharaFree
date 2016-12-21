@@ -12,6 +12,13 @@ public class Abilities : MonoBehaviour
         Teleport,
         MaxSize,
     }
+    // Energy
+    public int m_TeleportEnergy = 25;
+    public int m_DashEnergy = 5;
+    public int m_PossesEnergy = 5;
+    public int m_ShieldEnergy = 25;
+    public int m_FloorBlastEnergy = 35;
+    public int m_MegaBlastEnergy = 65;
 
     public bool[] UnlockedSkills;
 
@@ -27,13 +34,17 @@ public class Abilities : MonoBehaviour
     public bool m_Telekinesis;
     Teleport m_Teleport;
 
-    public float m_TeleportTimer =5;
+    // Morgan
+    MorganStateMachine Morgan;
+
+    public float m_TeleportTimer = 5;
 
     // Use this for initialization
     void Start()
     {
         m_PoolManager = GameObject.Find("PoolManager").GetComponent<PoolManager>();
-        m_Teleport = GameObject.Find("Teleport").GetComponent<Teleport>(); ;
+        m_Teleport = GameObject.Find("Teleport").GetComponent<Teleport>();
+        Morgan = GameObject.Find("Morgan").GetComponent<MorganStateMachine>();
     }
 
     // Update is called once per frame
@@ -104,22 +115,34 @@ public class Abilities : MonoBehaviour
     }
 
 
-    public void FireMindBullet(Vector3 location, bool Direction)
+    public bool FireMindBullet(Vector3 location, bool Direction)
     {
-        GameObject TempBullet = (GameObject)Instantiate(m_MindBullet, location, Quaternion.identity);
-        if (!Direction)
-            TempBullet.SendMessage("FlipAxisLeft");
+        if (Morgan.CanUseAbilbity(m_PossesEnergy))
+        {
+            GameObject TempBullet = (GameObject)Instantiate(m_MindBullet, location, Quaternion.identity);
+            if (!Direction)
+                TempBullet.SendMessage("FlipAxisLeft");
+            else
+                TempBullet.SendMessage("FlipAxisRight");
+            return true;
+        }
         else
-            TempBullet.SendMessage("FlipAxisRight");
+            return false;
     }
 
-    public void DashOn(GameObject Player, float speed, bool Direction)
+    public bool DashOn(GameObject Player, float speed, bool Direction)
     {
-        Player.GetComponent<Rigidbody2D>().gravityScale = 0;
-        if (Direction)
-            Player.GetComponent<Rigidbody2D>().velocity = new Vector2(speed, 0);
+        if (Morgan.CanUseAbilbity(m_DashEnergy))
+        {
+            Player.GetComponent<Rigidbody2D>().gravityScale = 0;
+            if (Direction)
+                Player.GetComponent<Rigidbody2D>().velocity = new Vector2(speed, 0);
+            else
+                Player.GetComponent<Rigidbody2D>().velocity = new Vector2(-speed, 0);
+            return true;
+        }
         else
-            Player.GetComponent<Rigidbody2D>().velocity = new Vector2(-speed, 0);
+            return false;       
     }
 
     public void DashOff(GameObject Player)
@@ -135,7 +158,6 @@ public class Abilities : MonoBehaviour
         temp = Camera.main.ScreenToWorldPoint(temp);
 
         temp.z = -10;
-        Ray m_Ray = new Ray(temp, Vector3.forward);
 
         int Bits = 0;
         for (int i = 0; i < 16; i++)
@@ -165,14 +187,18 @@ public class Abilities : MonoBehaviour
     }
 
 
-    public void Teleport()
+    public bool Teleport()
     {
-        if (m_Teleport)
-
+        if (Morgan.CanUseAbilbity(m_TeleportEnergy))
         {
-            m_Teleport.m_TeleportOn = true;
-
-            m_Teleport.SetTimer(5);
+            if (m_Teleport)
+            {
+                m_Teleport.m_TeleportOn = true;
+                m_Teleport.SetTimer(5);
+            }
+            return true;
         }
+        else
+            return false;
     }
 }
