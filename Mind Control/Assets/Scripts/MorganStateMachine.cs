@@ -161,7 +161,11 @@ public class MorganStateMachine : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.O))
         {
             if (m_Abilities.Teleport())
+            {
                 TeleportOn();
+                //Test
+                //Time.timeScale = .01f;
+            }
         }
 
 

@@ -83,6 +83,7 @@ public class Teleport : MonoBehaviour
                     Morgan.SendMessage("TeleportOff");
                     gameObject.transform.GetChild(0).gameObject.SetActive(false);
                     m_MouseBool = false;
+                    //Time.timeScale = 1;
                 }
                 else
                 {
