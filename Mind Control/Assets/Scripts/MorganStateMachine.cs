@@ -104,6 +104,10 @@ public class MorganStateMachine : MonoBehaviour
     public int m_MaxPowerBar = 100;
     public int m_CurrentPower = 0;
 
+    //RaidalMenu
+    public GameObject RadialCanvus;
+    bool m_RadialBool;
+
     // Use this for initialization
     void Start()
     {
@@ -167,8 +171,15 @@ public class MorganStateMachine : MonoBehaviour
                 //Time.timeScale = .01f;
             }
         }
-
-
+        if (Input.GetButtonDown("joystick button 9") && !m_RadialBool)
+        {
+            m_RadialBool = true;
+            RadialMenu();
+        }
+        if(RadialCanvus&&!RadialCanvus.activeSelf)
+        {
+            m_RadialBool = false;
+        }
     }
 
     void Flip(bool Turn)
@@ -239,12 +250,13 @@ public class MorganStateMachine : MonoBehaviour
 
     void StateDash()
     {
+        Morgan.Dash = false;
         Morgan.dashTimer -= Time.deltaTime;
         if (Morgan.dashTimer <= 0)
         {
             m_Abilities.DashOff(gameObject);
             SetState(PlayerStateMachine.IDLE);
-            Morgan.dashTimer = Morgan.ConstDashTimer;
+            Morgan.dashTimer = Morgan.ConstDashTimer;            
         }
     }
 
@@ -383,7 +395,40 @@ public class MorganStateMachine : MonoBehaviour
                 if (m_Abilities.DashOn(gameObject, Morgan.dashSpeed, Reflect))
                 {
                     SetState(PlayerStateMachine.DASH);
-                    Morgan.Dash = false;
+                }
+            }
+
+            // Last Ability
+            if (Input.GetButtonDown("joystick button 3"))
+            {
+                if (m_Abilities.GetAbility() != Abilities.m_Abilities.MaxSize)
+                {
+                    switch (m_Abilities.GetAbility())
+                    {
+                        case Abilities.m_Abilities.Dash:
+                            {
+                                if (Morgan.Dash)
+                                {
+                                    if (m_Abilities.DashOn(gameObject, Morgan.dashSpeed, Reflect))
+                                    {
+                                        SetState(PlayerStateMachine.DASH);
+                                    }
+                                }
+                            }
+                            break;
+                        case Abilities.m_Abilities.Telekinesis:
+                            break;
+                        case Abilities.m_Abilities.Teleport:
+                            {
+                                if (m_Abilities.Teleport())
+                                {
+                                    TeleportOn();
+                                }
+                            }
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
         }
@@ -438,27 +483,6 @@ public class MorganStateMachine : MonoBehaviour
         }
     }
 
-    // POSSESSION FUNCTIONS
-
-    //void FireMindBullet()                                   // Need to fix firing to the LEFT
-    //{
-    //    GameObject TempBullet = (GameObject)Instantiate(MindBullet, Morgan.transform.position, Morgan.transform.rotation);
-    //    if (!Reflect)
-    //        TempBullet.SendMessage("FlipAxisLeft");
-    //    else
-    //        TempBullet.SendMessage("FlipAxisRight");
-    //}
-
-    //void FireBullet()
-    //{
-    //    GameObject TempBullet= m_PoolManager.FindClass(PoolManager.EnemiesType.PlayerBullets);
-    //    TempBullet.transform.position = Morgan.transform.position;
-    //    TempBullet.transform.rotation = Quaternion.identity;
-    //    if (!Reflect)
-    //        TempBullet.SendMessage("FlipAxisLeft");
-    //    else
-    //        TempBullet.SendMessage("FlipAxisRight");
-    //}
     void CheckForFiring()
     {
         Mathf.Clamp(bulletTimer += Time.deltaTime, 0, bulletTimeMax);
@@ -587,6 +611,8 @@ public class MorganStateMachine : MonoBehaviour
         gameObject.GetComponent<Rigidbody2D>().AddForce(throwDir, ForceMode2D.Impulse);
         //		gameObject.GetComponent<Rigidbody2D> ().AddForce (throwDir, ForceMode2D.Impulse);
         Invoke("SwitchCanControl", 0.3f);
+        Handheld.Vibrate();
+
     }
 
     public void SpawnPlayer()
@@ -650,5 +676,20 @@ public class MorganStateMachine : MonoBehaviour
         GetComponent<SpriteRenderer>().enabled = true;
         GetComponent<Rigidbody2D>().gravityScale = 1;
         m_Teleport = false;
+    }
+
+
+    void RadialMenu()
+    {
+        if (RadialCanvus)
+        {
+            RadialCanvus.SetActive(true);
+            Time.timeScale = .001f;
+        }
+        else
+        {
+            Debug.Log("Forgot to Add RadialCanvus error ;)");
+            m_RadialBool = false;
+        }
     }
 }

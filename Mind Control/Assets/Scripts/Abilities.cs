@@ -39,6 +39,8 @@ public class Abilities : MonoBehaviour
 
     public float m_TeleportTimer = 5;
 
+    m_Abilities m_LastUsed = m_Abilities.MaxSize;
+
     // Use this for initialization
     void Start()
     {
@@ -200,5 +202,16 @@ public class Abilities : MonoBehaviour
         }
         else
             return false;
+    }
+
+
+    public void SetAbility(m_Abilities num)
+    {
+        m_LastUsed =num;
+    }
+
+    public m_Abilities GetAbility()
+    {
+        return m_LastUsed;
     }
 }
