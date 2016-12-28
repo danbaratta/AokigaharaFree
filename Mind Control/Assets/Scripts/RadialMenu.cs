@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class RadialMenu : MonoBehaviour
 {
- public   Button[] m_Buttons;
+    public Button[] m_Buttons;
 
     Button m_PrevBtn;
     Button m_CurBtn;
@@ -14,11 +14,13 @@ public class RadialMenu : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        for (int i = 0; i < m_Buttons.Length; i++)
+        if (Input.GetJoystickNames().Length == 0)
         {
-            m_Buttons[i].enabled = false;
+            for (int i = 0; i < m_Buttons.Length; i++)
+            {
+                m_Buttons[i].enabled = false;
+            }
         }
-        
     }
 
     // Update is called once per frame
@@ -29,12 +31,14 @@ public class RadialMenu : MonoBehaviour
 
         //Mouse
 
-        if(Input.GetButtonDown("joystick button 0"))
+
+        ///
+
+        if (Input.GetButtonDown("joystick button 0"))
         {
             m_Buttons[m_CurrentButtonNum].SendMessage("PickAbility");
             m_RadialMenuUI.SetActive(false);
             Time.timeScale = 1;
-
         }
 
         // Close canvus.
@@ -67,7 +71,7 @@ public class RadialMenu : MonoBehaviour
 
             float buffer = 360 / m_Buttons.Length;
 
-           // Debug.Log("CurrentBtnOn = "+(int)((temp / 360) * 6));
+            // Debug.Log("CurrentBtnOn = "+(int)((temp / 360) * 6));
             m_Buttons[(int)((temp / 360) * m_Buttons.Length)].enabled = true;
 
             m_CurrentButtonNum = (int)((temp / 360) * m_Buttons.Length);

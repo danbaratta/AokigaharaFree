@@ -3,6 +3,7 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using XInputDotNetPure;
 
 public class MorganStateMachine : MonoBehaviour
 {
@@ -171,12 +172,13 @@ public class MorganStateMachine : MonoBehaviour
                 //Time.timeScale = .01f;
             }
         }
-        if (Input.GetButtonDown("joystick button 9") && !m_RadialBool)
+        // Temp just for testing
+        if (Input.GetButtonDown("joystick button 9") || Input.GetKeyDown(KeyCode.Backspace) && !m_RadialBool)
         {
             m_RadialBool = true;
             RadialMenu();
         }
-        if(RadialCanvus&&!RadialCanvus.activeSelf)
+        if (RadialCanvus && !RadialCanvus.activeSelf)
         {
             m_RadialBool = false;
         }
@@ -256,7 +258,7 @@ public class MorganStateMachine : MonoBehaviour
         {
             m_Abilities.DashOff(gameObject);
             SetState(PlayerStateMachine.IDLE);
-            Morgan.dashTimer = Morgan.ConstDashTimer;            
+            Morgan.dashTimer = Morgan.ConstDashTimer;
         }
     }
 
@@ -398,8 +400,8 @@ public class MorganStateMachine : MonoBehaviour
                 }
             }
 
-            // Last Ability
-            if (Input.GetButtonDown("joystick button 3"))
+            // Last Ability Picked
+            if (Input.GetButtonDown("joystick button 3")|| Input.GetKeyDown(KeyCode.K))
             {
                 if (m_Abilities.GetAbility() != Abilities.m_Abilities.MaxSize)
                 {
@@ -593,6 +595,8 @@ public class MorganStateMachine : MonoBehaviour
     public void SwitchCanControl()
     {
         canControl = true;
+        GamePad.SetVibration(PlayerIndex.One, 0, 0);
+
     }
 
     public void GetThrown(bool Direction)
@@ -611,7 +615,8 @@ public class MorganStateMachine : MonoBehaviour
         gameObject.GetComponent<Rigidbody2D>().AddForce(throwDir, ForceMode2D.Impulse);
         //		gameObject.GetComponent<Rigidbody2D> ().AddForce (throwDir, ForceMode2D.Impulse);
         Invoke("SwitchCanControl", 0.3f);
-        Handheld.Vibrate();
+        GamePad.SetVibration(PlayerIndex.One, 1, 1);
+
 
     }
 

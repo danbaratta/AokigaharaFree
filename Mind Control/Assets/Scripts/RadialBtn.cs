@@ -21,5 +21,8 @@ public class RadialBtn : MonoBehaviour
     public void PickAbility()
     {
         GameObject.Find("Abilities").SendMessage("SetAbility", Type);
+
+            gameObject.transform.parent.gameObject.SetActive(false);
+            Time.timeScale = 1;
     }
 }
