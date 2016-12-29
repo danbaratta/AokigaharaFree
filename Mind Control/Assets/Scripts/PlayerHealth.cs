@@ -15,14 +15,18 @@ public class PlayerHealth : MonoBehaviour
     bool isDead;
     bool damaged;
 
+    public GameObject Sheild;
 
+    void Awake()
+    {
+        Sheild = gameObject.transform.GetChild(1).gameObject;
+    }
 
     void Start()
     {
 
         anim = GetComponent<Animator>();
         playerAudio = GetComponent<AudioSource>();
-
         currentHealth = startingHealth;
     }
 
@@ -40,15 +44,22 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(int amount)
     {
-        damaged = true;
-        currentHealth -= amount;
-        healthSlider.value = currentHealth;
-        if (currentHealth <= 0)
+        if (Sheild && Sheild.activeSelf)
         {
-            Death();
+            Sheild.SendMessage("TakeDamage", amount);
         }
-        if (currentHealth > startingHealth)
-            currentHealth = startingHealth;
+        else
+        {
+            damaged = true;
+            currentHealth -= amount;
+            healthSlider.value = currentHealth;
+            if (currentHealth <= 0)
+            {
+                Death();
+            }
+            if (currentHealth > startingHealth)
+                currentHealth = startingHealth;
+        }
     }
 
 

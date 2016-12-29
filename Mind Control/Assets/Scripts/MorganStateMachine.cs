@@ -428,6 +428,11 @@ public class MorganStateMachine : MonoBehaviour
                                 }
                             }
                             break;
+                        case Abilities.m_Abilities.Sheild:
+                            {
+                                m_Abilities.SheildUp();
+                            }
+                            break;
                         default:
                             break;
                     }

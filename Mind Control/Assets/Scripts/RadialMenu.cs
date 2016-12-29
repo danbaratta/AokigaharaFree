@@ -9,12 +9,13 @@ public class RadialMenu : MonoBehaviour
     Button m_PrevBtn;
     Button m_CurBtn;
     public Color m_HighlighColor;
+    public Color m_NormalColor;
     int m_CurrentButtonNum;
     public GameObject m_RadialMenuUI;
     // Use this for initialization
     void Start()
     {
-        if (Input.GetJoystickNames().Length == 0)
+        if (Input.GetJoystickNames().Length != 0)
         {
             for (int i = 0; i < m_Buttons.Length; i++)
             {
@@ -75,15 +76,21 @@ public class RadialMenu : MonoBehaviour
             m_Buttons[(int)((temp / 360) * m_Buttons.Length)].enabled = true;
 
             m_CurrentButtonNum = (int)((temp / 360) * m_Buttons.Length);
-
+            ColorBlock myColor;
             if (m_CurBtn != null && m_PrevBtn != m_Buttons[m_CurrentButtonNum])
             {
+                myColor = m_CurBtn.colors;
+                myColor.normalColor = m_NormalColor;
+                m_CurBtn.colors = myColor;
                 m_CurBtn.enabled = false;
                 m_PrevBtn = m_CurBtn;
             }
             else if (m_PrevBtn != null && m_CurBtn)
                 m_PrevBtn = m_CurBtn;
             m_CurBtn = m_Buttons[(int)((temp / 360) * m_Buttons.Length)];
+            myColor = m_CurBtn.colors;
+            myColor.normalColor = m_HighlighColor;
+            m_CurBtn.colors = myColor;
         }
     }
 

@@ -10,6 +10,7 @@ public class Abilities : MonoBehaviour
         Dash,
         Telekinesis,
         Teleport,
+        Sheild,
         MaxSize,
     }
     // Energy
@@ -34,8 +35,12 @@ public class Abilities : MonoBehaviour
     public bool m_Telekinesis;
     Teleport m_Teleport;
 
+    PlayerSheild m_Sheild;
+    public int SheildHealth = 125;
+
     // Morgan
     MorganStateMachine Morgan;
+
 
     public float m_TeleportTimer = 5;
 
@@ -47,6 +52,9 @@ public class Abilities : MonoBehaviour
         m_PoolManager = GameObject.Find("PoolManager").GetComponent<PoolManager>();
         m_Teleport = GameObject.Find("Teleport").GetComponent<Teleport>();
         Morgan = GameObject.Find("Morgan").GetComponent<MorganStateMachine>();
+        m_Sheild = GameObject.Find("PlayerSheild").GetComponent<PlayerSheild>();
+        m_Sheild.gameObject.SetActive(false);
+
     }
 
     // Update is called once per frame
@@ -144,7 +152,7 @@ public class Abilities : MonoBehaviour
             return true;
         }
         else
-            return false;       
+            return false;
     }
 
     public void DashOff(GameObject Player)
@@ -207,11 +215,26 @@ public class Abilities : MonoBehaviour
 
     public void SetAbility(m_Abilities num)
     {
-        m_LastUsed =num;
+        m_LastUsed = num;
     }
 
     public m_Abilities GetAbility()
     {
         return m_LastUsed;
+    }
+
+    public bool SheildUp()
+    {
+        if (m_Sheild)
+        {
+            if (!m_Sheild.gameObject.activeSelf && Morgan.CanUseAbilbity(m_ShieldEnergy))
+            {
+                m_Sheild.SetHealth(SheildHealth);
+                m_Sheild.SetTimer();
+                m_Sheild.gameObject.SetActive(true);
+                return true;
+            }
+        }
+        return false;
     }
 }
