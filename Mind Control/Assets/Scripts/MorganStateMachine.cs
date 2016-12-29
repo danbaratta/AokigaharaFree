@@ -702,4 +702,9 @@ public class MorganStateMachine : MonoBehaviour
             m_RadialBool = false;
         }
     }
+
+    public bool GetReflect()
+    {
+        return Reflect;
+    }
 }
