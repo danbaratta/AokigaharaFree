@@ -151,7 +151,7 @@ MonoBehaviour:
   anim: {fileID: 0}
   Morgan: {fileID: 0}
   playerHealth: {fileID: 0}
-  MoveSpeed: 2
+  MoveSpeed: 3
   Speed: 0
   NotSpawned: 0
   curState: 0
