@@ -43,6 +43,7 @@ public class Triple_Floor_Blast : MonoBehaviour
         //gameObject.transform.parent = GameObject.Find("Morgan").transform;
         //gameObject.transform.localPosition = new Vector3(DistanceAwayFromMorgan, gameObject.transform.localPosition.y, gameObject.transform.localPosition.z);
 
+        gameObject.SetActive(false);
     }
     void Start()
     {
@@ -51,16 +52,8 @@ public class Triple_Floor_Blast : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        Vector3 NewPos = Morgan.gameObject.transform.position;
-        if (Morgan.GetReflect())
-            NewPos.x += DistanceAwayFromMorgan;
-        else
-            NewPos.x -= DistanceAwayFromMorgan;
-        NewPos.y = gameObject.transform.position.y;
-        NewPos.z = gameObject.transform.position.z;
-        gameObject.transform.position = NewPos;
-        if ((Input.GetKeyDown(KeyCode.Mouse1) || Input.GetButtonDown("joystick button 0")) && !m_On)
+    {        
+        if ((Input.GetKeyDown(KeyCode.K) || Input.GetButtonDown("joystick button 3")) && !m_On)
         {
             m_On = true;
             DisplaySprite.enabled = false;
@@ -120,9 +113,20 @@ public class Triple_Floor_Blast : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            Vector3 NewPos = Morgan.gameObject.transform.position;
+            if (Morgan.GetReflect())
+                NewPos.x += DistanceAwayFromMorgan;
+            else
+                NewPos.x -= DistanceAwayFromMorgan;
+            NewPos.y = gameObject.transform.position.y;
+            NewPos.z = gameObject.transform.position.z;
+            gameObject.transform.position = NewPos;
+        }
     }
 
-    void Reset()
+    public void Reset()
     {
         DisplaySprite.enabled = true;
         for (int i = 0; i < Spikes.Length; i++)

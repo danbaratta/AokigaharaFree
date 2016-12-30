@@ -11,6 +11,7 @@ public class Abilities : MonoBehaviour
         Telekinesis,
         Teleport,
         Sheild,
+        Triple_Floor_Blast,
         MaxSize,
     }
     // Energy
@@ -38,6 +39,8 @@ public class Abilities : MonoBehaviour
     PlayerSheild m_Sheild;
     public int SheildHealth = 125;
 
+
+    Triple_Floor_Blast m_FloorBlast;
     // Morgan
     MorganStateMachine Morgan;
 
@@ -46,14 +49,55 @@ public class Abilities : MonoBehaviour
 
     m_Abilities m_LastUsed = m_Abilities.MaxSize;
 
+    void Awake()
+    {
+        if (GameObject.Find("PoolManager") != null)
+            m_PoolManager = GameObject.Find("PoolManager").GetComponent<PoolManager>();
+        else
+        {
+            m_Teleport = ((GameObject)Instantiate(Resources.Load("Abilities/PoolManager"))).GetComponent<Teleport>();
+            Debug.Log("Forgot create PoolManager prefab in level");
+        }
+
+        if (GameObject.Find("Teleport") != null)
+            m_Teleport = GameObject.Find("Teleport").GetComponent<Teleport>();
+        else
+        {
+            m_Teleport=((GameObject)Instantiate(Resources.Load("Abilities/Teleport"))).GetComponent<Teleport>();
+            Debug.Log("Forgot create Teleport prefab in level");
+
+        }
+
+        if (GameObject.Find("Morgan") != null)
+            Morgan = GameObject.Find("Morgan").GetComponent<MorganStateMachine>();
+        else
+        {
+            Debug.Log("Forgot create Teleport Morgan in level");
+
+        }
+
+        if (GameObject.Find("PlayerSheild") != null)
+        {
+            m_Sheild = GameObject.Find("PlayerSheild").GetComponent<PlayerSheild>();
+            m_Sheild.gameObject.SetActive(false);
+        }
+        else
+        {
+            Debug.Log("Forgot create PlayerSheild prefab in level");
+        }
+
+        if (GameObject.Find("TripleBlast") != null)
+            m_FloorBlast = GameObject.Find("TripleBlast").GetComponent<Triple_Floor_Blast>();
+        else
+        {
+            m_FloorBlast = ((GameObject)Instantiate(Resources.Load("Abilities/TripleBlast"))).GetComponent<Triple_Floor_Blast>();
+            Debug.Log("Forgot TripleBlast Teleport prefab in level");
+        }
+
+    }
     // Use this for initialization
     void Start()
     {
-        m_PoolManager = GameObject.Find("PoolManager").GetComponent<PoolManager>();
-        m_Teleport = GameObject.Find("Teleport").GetComponent<Teleport>();
-        Morgan = GameObject.Find("Morgan").GetComponent<MorganStateMachine>();
-        m_Sheild = GameObject.Find("PlayerSheild").GetComponent<PlayerSheild>();
-        m_Sheild.gameObject.SetActive(false);
 
     }
 
@@ -237,4 +281,19 @@ public class Abilities : MonoBehaviour
         }
         return false;
     }
+
+    public bool TripleFloorBlast()
+    {
+        if(m_FloorBlast)
+        {
+            if (!m_FloorBlast.gameObject.activeSelf && Morgan.CanUseAbilbity(m_FloorBlastEnergy))
+            {
+                m_FloorBlast.gameObject.SetActive(true);
+                m_FloorBlast.Reset();
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

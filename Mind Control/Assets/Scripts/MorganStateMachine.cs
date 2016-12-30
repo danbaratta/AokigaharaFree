@@ -433,6 +433,11 @@ public class MorganStateMachine : MonoBehaviour
                                 m_Abilities.SheildUp();
                             }
                             break;
+                        case Abilities.m_Abilities.Triple_Floor_Blast:
+                            {
+                                m_Abilities.TripleFloorBlast();
+                            }
+                            break;
                         default:
                             break;
                     }
