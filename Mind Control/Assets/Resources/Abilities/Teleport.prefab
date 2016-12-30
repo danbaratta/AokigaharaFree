@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 4223734443706688}
   - component: {fileID: 114668912541540880}
   m_Layer: 0
-  m_Name: TeleportPrefab
+  m_Name: Teleport
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -90,6 +90,8 @@ MonoBehaviour:
   Right: 516.9
   SpecialLeft: 0
   SpecialRight: 0
+  MouseSpeed: 5
+  ControllerSpeed: 5
 --- !u!198 &198802932064226942
 ParticleSystem:
   m_ObjectHideFlags: 1
