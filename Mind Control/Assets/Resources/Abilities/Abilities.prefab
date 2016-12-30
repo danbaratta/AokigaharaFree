@@ -16,10 +16,10 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000011426893042}
-  - 114: {fileID: 114000014042641216}
+  - component: {fileID: 4000011426893042}
+  - component: {fileID: 114000014042641216}
   m_Layer: 0
   m_Name: Abilities
   m_TagString: Untagged
@@ -36,10 +36,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 701.46045, y: 5.8772097, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &114000014042641216
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -51,6 +51,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 443f1cd66f9edc144a22a0802c90ec84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_TeleportEnergy: 25
+  m_DashEnergy: 5
+  m_PossesEnergy: 5
+  m_ShieldEnergy: 25
+  m_FloorBlastEnergy: 35
+  m_MegaBlastEnergy: 65
   UnlockedSkills: 010000
   Skills: 000000000100000002000000
   m_MindBullet: {fileID: 131956, guid: 021a55a4c36521a42bec12cf0959e01c, type: 2}
+  m_Telekinesis: 0
+  SheildHealth: 125
+  m_TeleportTimer: 5
