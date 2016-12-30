@@ -109,6 +109,23 @@ public class MorganStateMachine : MonoBehaviour
     public GameObject RadialCanvus;
     bool m_RadialBool;
 
+    void Awake()
+    {
+        if (GameObject.Find("Abilities") != null)
+            m_Abilities = GameObject.Find("Abilities").GetComponent<Abilities>();
+        else
+        {
+            m_Abilities = ((GameObject)Instantiate(Resources.Load("Abilities/Abilities"))).GetComponent<Abilities>();
+            Debug.Log("Did not create Abilties prefab in level but i'll create it this once");
+        }
+
+        if(RadialCanvus==null)
+        {
+            RadialCanvus = ((GameObject)Instantiate(Resources.Load("Abilities/RadialMenu")));
+            Debug.Log("Did not create RadialMenu prefab in level but i'll create it this once");
+        }
+    }
+
     // Use this for initialization
     void Start()
     {
@@ -136,9 +153,7 @@ public class MorganStateMachine : MonoBehaviour
 
         SetState(PlayerStateMachine.IDLE);                  // setting default state to Idle
 
-
         m_PoolManager = GameObject.Find("PoolManager").GetComponent<PoolManager>();
-        m_Abilities = GameObject.Find("Abilities").GetComponent<Abilities>();
     }
 
     // Update is called once per frame
@@ -401,7 +416,7 @@ public class MorganStateMachine : MonoBehaviour
             }
 
             // Last Ability Picked
-            if (Input.GetButtonDown("joystick button 3")|| Input.GetKeyDown(KeyCode.K))
+            if (Input.GetButtonDown("joystick button 3") || Input.GetKeyDown(KeyCode.K))
             {
                 if (m_Abilities.GetAbility() != Abilities.m_Abilities.MaxSize)
                 {
@@ -448,7 +463,7 @@ public class MorganStateMachine : MonoBehaviour
 
     void CheckForJump()
     {
-        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("joystick button 0")) && canJump)
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("joystick button 0")) && canJump&& !m_RadialBool)
         {
             SetState(PlayerStateMachine.ENTER_JUMP);
         }
@@ -711,5 +726,10 @@ public class MorganStateMachine : MonoBehaviour
     public bool GetReflect()
     {
         return Reflect;
+    }
+
+    public bool isDashing()
+    {
+        return Morgan.Dash;
     }
 }
