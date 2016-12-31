@@ -119,7 +119,7 @@ public class MorganStateMachine : MonoBehaviour
             Debug.Log("Did not create Abilties prefab in level but i'll create it this once");
         }
 
-        if(RadialCanvus==null)
+        if (RadialCanvus == null)
         {
             RadialCanvus = ((GameObject)Instantiate(Resources.Load("Abilities/RadialMenu")));
             Debug.Log("Did not create RadialMenu prefab in level but i'll create it this once");
@@ -463,7 +463,7 @@ public class MorganStateMachine : MonoBehaviour
 
     void CheckForJump()
     {
-        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("joystick button 0")) && canJump&& !m_RadialBool)
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("joystick button 0")) && canJump && !m_RadialBool)
         {
             SetState(PlayerStateMachine.ENTER_JUMP);
         }
@@ -644,6 +644,37 @@ public class MorganStateMachine : MonoBehaviour
 
 
     }
+
+    /// <summary>
+    /// Direction normlized and power it factor in later
+    /// </summary>
+    public void GetThrown(Vector2 Direction, int PowerX = 30, int PowerY = 30)
+    {
+        Direction.x *= PowerX;
+        Direction.y *= PowerY;
+
+        canControl = false;
+        Debug.Log("canControl = " + canControl);
+        gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+        gameObject.GetComponent<Rigidbody2D>().AddForce(Direction, ForceMode2D.Impulse);
+        //		gameObject.GetComponent<Rigidbody2D> ().AddForce (throwDir, ForceMode2D.Impulse);
+        Invoke("SwitchCanControl", 0.3f);
+        GamePad.SetVibration(PlayerIndex.One, 1, 1);
+    }
+    /// <summary>
+    /// Direction normlized and power already factor in
+    /// </summary>
+    public void GetThrown(Vector2 Direction)
+    {
+        canControl = false;
+        Debug.Log("canControl = " + canControl);
+        gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+        gameObject.GetComponent<Rigidbody2D>().AddForce(Direction, ForceMode2D.Impulse);
+        //		gameObject.GetComponent<Rigidbody2D> ().AddForce (throwDir, ForceMode2D.Impulse);
+        Invoke("SwitchCanControl", 0.3f);
+        GamePad.SetVibration(PlayerIndex.One, 1, 1);
+    }
+
 
     public void SpawnPlayer()
     {

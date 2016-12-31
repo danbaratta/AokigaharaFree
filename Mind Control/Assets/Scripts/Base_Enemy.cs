@@ -43,7 +43,7 @@ public class Base_Enemy : MonoBehaviour
     //Use for checking if enemie should look other direction
     public bool Mirror = false;
 
-    Dictionary<EnemyState, Action> States = new Dictionary<EnemyState, Action>();
+    public Dictionary<EnemyState, Action> States = new Dictionary<EnemyState, Action>();
 
 
     // Drop
@@ -75,6 +75,7 @@ public class Base_Enemy : MonoBehaviour
 
         msm = GameObject.Find("Morgan").GetComponent<MorganStateMachine>();
         m_PoolManager = GameObject.Find("PoolManager").GetComponent<PoolManager>();
+        Damage= Max_Damage;
 
     }
     void Stub()
@@ -150,7 +151,7 @@ public class Base_Enemy : MonoBehaviour
 
     public void TurnOffCollision()
     {
-        foreach (var item in GetComponents<BoxCollider2D>())
+        foreach (var item in GetComponents<Collider2D>())
         {
             item.enabled = false;
         }
@@ -158,7 +159,7 @@ public class Base_Enemy : MonoBehaviour
 
     public void TurnOnCollision()
     {
-        foreach (var item in GetComponents<BoxCollider2D>())
+        foreach (var item in GetComponents<Collider2D>())
         {
             item.enabled = true;
         }

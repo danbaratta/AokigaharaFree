@@ -74,6 +74,7 @@ public class PoolManager : MonoBehaviour
         Oni_Level3,
         PlayerBullets,
         EnemyBullets,
+        Boss,
     }
     // public List<PoolDataType> Enemies = new List<PoolDataType>();
     public PoolDataType[] m_AllObjects;

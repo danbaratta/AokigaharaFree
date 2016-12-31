@@ -5,7 +5,7 @@ public class SoftPlatform : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D col)
 	{
-		if (col.tag == "Player") 
+		if (col.tag == "Player"||col.tag == "Enemy") 
 		{
 			Physics2D.IgnoreCollision (col, transform.parent.GetComponent<Collider2D>(), true);
 		}
@@ -13,8 +13,8 @@ public class SoftPlatform : MonoBehaviour {
 
 	void OnTriggerExit2D(Collider2D col)
 	{
-		if (col.tag == "Player") 
-		{
+        if (col.tag == "Player" || col.tag == "Enemy")
+        {
 			Physics2D.IgnoreCollision (col, transform.parent.GetComponent<Collider2D>(), false);
 		}
 	}
