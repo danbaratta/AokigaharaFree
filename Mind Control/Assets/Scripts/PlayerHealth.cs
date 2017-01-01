@@ -19,12 +19,14 @@ public class PlayerHealth : MonoBehaviour
 
     void Awake()
     {
-        Sheild = gameObject.transform.GetChild(1).gameObject;
+        if (gameObject && gameObject.transform.childCount != 0)
+            Sheild = gameObject.transform.GetChild(1).gameObject;
     }
 
     void Start()
     {
-
+        if (!Sheild && gameObject.transform.childCount != 0)
+            Sheild = gameObject.transform.GetChild(1).gameObject;
         anim = GetComponent<Animator>();
         playerAudio = GetComponent<AudioSource>();
         currentHealth = startingHealth;

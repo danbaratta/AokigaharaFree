@@ -271,7 +271,7 @@ MonoBehaviour:
   startingHealth: 100
   currentHealth: 0
   healthSlider: {fileID: 0}
-  Sheild: {fileID: 0}
+  Sheild: {fileID: 1793738048183452}
 --- !u!114 &114159819517624346
 MonoBehaviour:
   m_ObjectHideFlags: 1

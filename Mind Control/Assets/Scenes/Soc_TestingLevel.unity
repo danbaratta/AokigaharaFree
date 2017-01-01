@@ -7702,59 +7702,19 @@ Prefab:
       propertyPath: m_RootOrder
       value: 12
       objectReference: {fileID: 0}
-    - target: {fileID: 114000012123050816, guid: 8c0ff0e3f7f4f480a81c25c1c644467b,
-        type: 2}
-      propertyPath: healthSlider
-      value: 
-      objectReference: {fileID: 1228218447}
-    - target: {fileID: 11426916, guid: 8c0ff0e3f7f4f480a81c25c1c644467b, type: 2}
-      propertyPath: SpawnPoint
-      value: 
-      objectReference: {fileID: 2068198783}
     - target: {fileID: 11426916, guid: 8c0ff0e3f7f4f480a81c25c1c644467b, type: 2}
       propertyPath: bulletIcon
       value: 
       objectReference: {fileID: 1403996902}
     - target: {fileID: 11426916, guid: 8c0ff0e3f7f4f480a81c25c1c644467b, type: 2}
-      propertyPath: walkableLayer.m_Bits
-      value: 106496
-      objectReference: {fileID: 0}
-    - target: {fileID: 11416986, guid: 8c0ff0e3f7f4f480a81c25c1c644467b, type: 2}
-      propertyPath: dashSpeed
-      value: 35
-      objectReference: {fileID: 0}
-    - target: {fileID: 11416986, guid: 8c0ff0e3f7f4f480a81c25c1c644467b, type: 2}
-      propertyPath: dashTimer
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 11416986, guid: 8c0ff0e3f7f4f480a81c25c1c644467b, type: 2}
-      propertyPath: ConstDashTimer
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 11426916, guid: 8c0ff0e3f7f4f480a81c25c1c644467b, type: 2}
-      propertyPath: m_CurrentPower
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 11426916, guid: 8c0ff0e3f7f4f480a81c25c1c644467b, type: 2}
       propertyPath: RadialCanvus
       value: 
       objectReference: {fileID: 2094547626}
-    - target: {fileID: 21247398, guid: 8c0ff0e3f7f4f480a81c25c1c644467b, type: 2}
-      propertyPath: m_FlipX
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 21247398, guid: 8c0ff0e3f7f4f480a81c25c1c644467b, type: 2}
-      propertyPath: m_FlipY
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4843255501511268, guid: 8c0ff0e3f7f4f480a81c25c1c644467b, type: 2}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6146520, guid: 8c0ff0e3f7f4f480a81c25c1c644467b, type: 2}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
+    - target: {fileID: 114000012123050816, guid: 8c0ff0e3f7f4f480a81c25c1c644467b,
+        type: 2}
+      propertyPath: healthSlider
+      value: 
+      objectReference: {fileID: 1228218447}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8c0ff0e3f7f4f480a81c25c1c644467b, type: 2}
   m_IsPrefabParent: 0
@@ -11971,84 +11931,6 @@ SpriteRenderer:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
---- !u!1 &978016239
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 978016240}
-  - component: {fileID: 978016241}
-  - component: {fileID: 978016242}
-  m_Layer: 8
-  m_Name: PlayerSheild
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &978016240
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 978016239}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.54, y: -2.47, z: 0}
-  m_LocalScale: {x: 4.604522, y: 4.604525, z: 4.604525}
-  m_Children: []
-  m_Father: {fileID: 1165565862}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &978016241
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 978016239}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 0
-  m_ReflectionProbeUsage: 0
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 3838f200a8e1e4df787003348900b402, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
---- !u!114 &978016242
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 978016239}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 477f7e88533e95041a94b493ad7485d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Health: 125
-  m_Timer: 10
 --- !u!1 &982154218
 GameObject:
   m_ObjectHideFlags: 0
@@ -24015,10 +23897,6 @@ Transform:
   m_Father: {fileID: 676761312}
   m_RootOrder: 31
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2068198783 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 169424, guid: 6e1e1af27df0c4ff3958b6420eba11f1, type: 2}
-  m_PrefabInternal: {fileID: 237215773}
 --- !u!1 &2068920641
 GameObject:
   m_ObjectHideFlags: 0

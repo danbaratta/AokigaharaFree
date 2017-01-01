@@ -24,7 +24,10 @@ public class OniLevel1 : Base_Enemy
         AttackBox.enabled = false;
         if (m_UseNavMesh)
         {
+ //FindObjectOfType< UnityEngine.AI.NavMesh > ();
             Agent = gameObject.AddComponent<UnityEngine.AI.NavMeshAgent>();
+            if (!Agent.isOnNavMesh)
+                m_UseNavMesh = false;
             Agent.updateRotation = false;
             //Agent.updatePosition = false;
 
@@ -34,6 +37,8 @@ public class OniLevel1 : Base_Enemy
             Agent.speed = 2;
             Agent.angularSpeed = 10;
             Agent.acceleration = 3;
+            if (!m_UseNavMesh)
+                Destroy(Agent);
         }
         Type = PoolManager.EnemiesType.Oni_Level1;
     }
