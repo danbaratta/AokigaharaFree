@@ -16,8 +16,8 @@ public class Triple_Floor_Blast : MonoBehaviour
     float m_SpikeTimeSpeed;
 
 
-    public float DistanceAwayFromMorgan=10;
-    public int Damage =25;
+    public float DistanceAwayFromMorgan = 10;
+    public int Damage = 25;
 
     GameObject m_SpikeObj;
 
@@ -52,7 +52,7 @@ public class Triple_Floor_Blast : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {        
+    {
         if ((Input.GetKeyDown(KeyCode.K) || Input.GetButtonDown("joystick button 3")) && !m_On)
         {
             m_On = true;
@@ -64,9 +64,12 @@ public class Triple_Floor_Blast : MonoBehaviour
         }
         else if (m_On)
         {
-            m_SpikeDelay -= Time.deltaTime;
+            m_SpikeDelay -= Time.deltaTime;           
+
             if (m_SpikeDelay <= 0)
             {
+                if (m_SpikeObj && !m_SpikeObj.activeSelf)
+                    m_SpikeObj.SetActive(true);
                 // Dont want world want local to parent
                 Vector3 temp = m_SpikeObj.transform.localPosition;
 
@@ -100,7 +103,6 @@ public class Triple_Floor_Blast : MonoBehaviour
                     if (m_Cur <= Spikes.Length - 1)
                     {
                         m_SpikeObj = Spikes[m_Cur];
-                        m_SpikeObj.SetActive(true);
                     }
                     else
                     {

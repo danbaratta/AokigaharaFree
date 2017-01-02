@@ -33,11 +33,16 @@ public class LevelLoader : MonoBehaviour
 
     }
 
-    public void LoadLevel(string LevelName = "", int LevelIndex = -1)
+    static public void LoadLevel(string LevelName = "")
     {
         if (LevelName.Length != 0)
             SceneManager.LoadScene(LevelName);
-        else if(LevelIndex!=-1)
-            SceneManager.LoadScene(LevelName);
+        //
+    }
+    static public void LoadLevel(int LevelIndex = -1)
+    {
+        if (LevelIndex != -1)
+            SceneManager.LoadScene(LevelIndex);
+        //
     }
 }

@@ -52,11 +52,15 @@ public class Abilities : MonoBehaviour
     void Awake()
     {
         if (GameObject.Find("PoolManager") != null)
+        {
             m_PoolManager = GameObject.Find("PoolManager").GetComponent<PoolManager>();
+        }
         else
         {
-            m_Teleport = ((GameObject)Instantiate(Resources.Load("Abilities/PoolManager"))).GetComponent<Teleport>();
+            m_PoolManager = ((GameObject)Instantiate(Resources.Load("Abilities/PoolManager"))).GetComponent<PoolManager>();
             Debug.Log("Forgot create PoolManager prefab in level");
+            m_PoolManager.gameObject.name = "PoolManager";
+
         }
 
         if (GameObject.Find("Teleport") != null)
@@ -65,6 +69,7 @@ public class Abilities : MonoBehaviour
         {
             m_Teleport=((GameObject)Instantiate(Resources.Load("Abilities/Teleport"))).GetComponent<Teleport>();
             Debug.Log("Forgot create Teleport prefab in level");
+            m_Teleport.gameObject.name = "Teleport";
 
         }
 
@@ -92,6 +97,7 @@ public class Abilities : MonoBehaviour
         {
             m_FloorBlast = ((GameObject)Instantiate(Resources.Load("Abilities/TripleBlast"))).GetComponent<Triple_Floor_Blast>();
             Debug.Log("Forgot TripleBlast Teleport prefab in level");
+            m_FloorBlast.gameObject.name = "TripleBlast";
         }
 
     }

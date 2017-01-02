@@ -26,10 +26,13 @@ public class Base_Enemy : MonoBehaviour
     public int Max_Damage;
     public int Damage;
     // Animator ref
+    [HideInInspector]
     public Animator anim;
 
     //Attacking player variables
+    [HideInInspector]
     public GameObject Morgan;
+    [HideInInspector]
     public PlayerHealth playerHealth;
 
     // Movement variables
@@ -41,6 +44,7 @@ public class Base_Enemy : MonoBehaviour
     //state
     public EnemyState curState;
     //Use for checking if enemie should look other direction
+    [HideInInspector]
     public bool Mirror = false;
 
     public Dictionary<EnemyState, Action> States = new Dictionary<EnemyState, Action>();
@@ -52,6 +56,7 @@ public class Base_Enemy : MonoBehaviour
     public float m_ChanceOfDrop;
 
     // Script References
+    [HideInInspector]
     public MorganStateMachine msm;
     //pool manger ref
     PoolManager m_PoolManager;
@@ -201,7 +206,11 @@ public class Base_Enemy : MonoBehaviour
 
     public void PlayerReset()
     {
-        m_PoolManager.Remove(gameObject, Type);
+        if (!NotSpawned)
+        {
+            m_PoolManager.Remove(gameObject, Type);
+        }
+
     }
 
     public PoolManager GetPoolManager()
@@ -227,7 +236,7 @@ public class Base_Enemy : MonoBehaviour
             return true;
         }
         
-        //Destroy(gameObject);
+        Destroy(gameObject);
         return false;
     }
 

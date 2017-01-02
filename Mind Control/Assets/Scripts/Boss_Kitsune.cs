@@ -64,16 +64,27 @@ public class Boss_Kitsune : Base_Enemy
     float m_TeleportTimer;
 
     public float DelayBetweenDash = 1;
+    public float DelayBetweenDashEvade = 2;
     float m_DashTimer;
+    float m_DashEvadeTimer;
 
     public float DashTimeLength = 1;
+    public float DashEvadeTimeLength = 1;
     public float DashSpeed = 35;
     bool m_Dash;
+    bool m_DashEvade;
     bool DashAttacked;
+
     public Collider2D BlockingCollider;
     public Collider2D RangeCollider;
 
-    int DashDmg=10,SpinAttackDmg=15, BulletDmg=5;
+    public float TeleportEffectTimer=0;
+    bool m_TeleportEffect;
+    public int DashDmg = 10, SpinAttackDmg = 15, BulletDmg = 5, HanyaDmg=50;
+
+    //
+    public float DelayBetweenHanyaAttack = 8;
+    float m_HanyaAttackTimer;
 
     // Use this for initialization
     public override void Start()
@@ -170,7 +181,7 @@ public class Boss_Kitsune : Base_Enemy
     public override void WalkState()
     {
         AttackState();
-        if (!m_Dash)
+        if (!m_Dash && !m_DashEvade)
         {
             if (!anim.GetBool("Attack") && AttackMode)
             {
@@ -243,6 +254,10 @@ public class Boss_Kitsune : Base_Enemy
                 Invoke("DashOff", .1f);
             }
         }
+        else if (other.tag == "Player" && m_DashEvade)
+        {
+            Invoke("DashOff", .1f);
+        }
         else if (other.tag == "Player")
         {
             playerHealth.TakeDamage(Damage);
@@ -270,7 +285,8 @@ public class Boss_Kitsune : Base_Enemy
 
     public override void TakeDamage(int dmg)
     {
-        base.TakeDamage(dmg);
+        if (!m_DashEvade)
+            base.TakeDamage(dmg);
         if ((float)Health / (float)Max_Health > .75) // 100%
         {
             if (curHealthState != HealthStats.Full)
@@ -305,7 +321,7 @@ public class Boss_Kitsune : Base_Enemy
         }
         else //25%
         {
-
+            curHealthState = HealthStats.SuperLow;
         }
 
 
@@ -325,14 +341,26 @@ public class Boss_Kitsune : Base_Enemy
         {
             Dash();
         }
+        else if (m_MeleeTimer <= 0 && m_TeleportTimer <= 0&& !m_TeleportEffect)
+        {
+            TeleportEffects("AttackTeleport");
+        }
         else if (m_MeleeTimer <= 0 && Dis <= AttackRange)
         {
             SwordSlash();
         }
+        else if (m_MeleeTimer > 0 && m_DashTimer > 0 && m_TeleportTimer <= 0&& !m_TeleportEffect)
+        {
+            TeleportEffects("FleeTeleport");
+        }
     }
     public void HighHealth()
     {
-
+        if(m_HanyaAttackTimer<=0)
+        {
+            HanyaAttack();
+            FleeTeleport();
+        }
     }
 
     public void MidHealth()
@@ -354,6 +382,8 @@ public class Boss_Kitsune : Base_Enemy
         m_TeleportTimer -= Time.deltaTime;
         m_MeleeTimer -= Time.deltaTime;
         m_DashTimer -= Time.deltaTime;
+        m_DashEvadeTimer -= Time.deltaTime;
+        m_HanyaAttackTimer -= Time.deltaTime;
         if (m_MeleeTimer <= 0 || m_DashTimer <= 0)
         {
             AttackMode = true;
@@ -422,14 +452,47 @@ public class Boss_Kitsune : Base_Enemy
         Invoke("DashOff", DashTimeLength);
         anim.SetBool("Attack", true);
     }
+    void DashEvasive()
+    {
+        GetComponent<Rigidbody2D>().gravityScale = 0;
+        //GetComponent<Rigidbody2D>().velocity = new Vector2();
+
+        float direction = gameObject.transform.position.x - Morgan.transform.position.x;
+        if (direction <= 0)
+        {
+            gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(DashSpeed, 0);
+            Flip(true);
+        }
+        else
+        {
+            gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(-DashSpeed, 0);
+            Flip(false);
+        }
+        Physics2D.IgnoreCollision(Morgan.GetComponent<Collider2D>(), BlockingCollider, true);
+        m_DashEvade = true;
+
+        m_DashEvadeTimer = DashEvadeTimeLength + DelayBetweenDashEvade;
+        anim.Play("Run");
+        Invoke("DashOff", DashEvadeTimeLength);
+    }
 
     void DashOff()
     {
         gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2();
         m_Dash = false;
         GetComponent<Rigidbody2D>().gravityScale = 1;
-        if (m_DashTimer <= 0)
-            m_DashTimer = DelayBetweenDash;
+
+        if (m_Dash)
+        {
+            m_Dash = false;
+            if (m_DashTimer <= 0)
+                m_DashTimer = DelayBetweenDash;
+        }
+        if (m_DashEvade)
+        {
+            if (m_DashEvadeTimer <= 0)
+                m_DashEvadeTimer = DelayBetweenDashEvade;
+        }
         BlockingCollider.enabled = true;
         DashAttacked = false;
         Physics2D.IgnoreCollision(Morgan.GetComponent<Collider2D>(), BlockingCollider, false);
@@ -462,21 +525,119 @@ public class Boss_Kitsune : Base_Enemy
 
     }
 
-    void TeleportEffects()
+    void HanyaAttack()
     {
-        TurnOffCollision();
+        GameObject TempBullet = GetPoolManager().FindClass(PoolManager.EnemiesType.Hanya_Bullet);
+        TempBullet.transform.position = gameObject.transform.position;
+        TempBullet.transform.rotation = Quaternion.identity;
+        if (!Mirror)
+            TempBullet.SendMessage("FlipAxisLeft");
+        else
+            TempBullet.SendMessage("FlipAxisRight");
 
-        //Change for later
-        Invoke("Teleport", 1);
+        TempBullet.GetComponent<Enemy_Projectile>().Damage = HanyaDmg;
+
+        m_HanyaAttackTimer = DelayBetweenHanyaAttack;
+
     }
 
-    void Teleport()
+
+    void TeleportEffects(string FunctionCall)
     {
+        TurnOffCollision();
+        m_TeleportEffect = true;
+        //Change for later
+        Invoke(FunctionCall, TeleportEffectTimer);
+    }
+
+    void RandomTeleport()
+    {
+        TurnOnCollision();
+
+        m_TeleportEffect = false;
+        m_TeleportTimer = DelayBetweenTeleport;
         //Safe Check
         if (TeleportLocations.Length != 0)
         {
             int Loc = UnityEngine.Random.Range(0, TeleportLocations.Length - 1);
-            gameObject.transform.position = TeleportLocations[Loc].transform.position;
+            if (TeleportLocations[Loc])
+                gameObject.transform.position = TeleportLocations[Loc].transform.position;
+            else
+                Debug.Log("Boss Kitsume Does teleport locations are NULL!");
+
+        }
+        else
+            Debug.Log("Boss Kitsume Does not have any teleport locations");
+    }
+
+    void AttackTeleport()
+    {
+        TurnOnCollision();
+        m_TeleportEffect = false;
+        m_TeleportTimer = DelayBetweenTeleport;
+        //Safe Check
+        if (TeleportLocations.Length != 0)
+        {
+            GameObject Target = null;
+            float Distance = float.MaxValue;
+            if (TeleportLocations[0])
+            {
+                Target = TeleportLocations[0];
+                Distance = Vector2.Distance(transform.position, Target.transform.position);
+            }
+            else
+            {
+                Debug.Log("Boss Kitsume Does teleport locations are NULL!");
+                return;
+            }
+
+            for (int i = 1; i < TeleportLocations.Length; i++)
+            {
+                if (Vector2.Distance(transform.position, TeleportLocations[i].transform.position) < Distance)
+                {
+                    Distance = Vector2.Distance(transform.position, TeleportLocations[i].transform.position);
+                    Target = TeleportLocations[i];
+                }
+            }
+            gameObject.transform.position = Target.transform.position;
+
+        }
+        else
+            Debug.Log("Boss Kitsume Does not have any teleport locations");
+    }
+
+    void FleeTeleport()
+    {
+        TurnOnCollision();
+
+        m_TeleportEffect = true;
+        m_TeleportTimer = DelayBetweenTeleport;
+        //Safe Check
+        if (TeleportLocations.Length != 0)
+        {
+            GameObject Target = null;
+            float Distance = 0;
+            if (TeleportLocations[0])
+            {
+                Target = TeleportLocations[0];
+                Distance = Vector2.Distance(transform.position, Target.transform.position);
+            }
+            else
+            {
+                Debug.Log("Boss Kitsume Does teleport locations are NULL!");
+                return;
+            }
+
+            for (int i = 1; i < TeleportLocations.Length; i++)
+            {
+                if (Vector2.Distance(transform.position, TeleportLocations[i].transform.position) > Distance)
+                {
+                    Distance = Vector2.Distance(transform.position, TeleportLocations[i].transform.position);
+                    Target = TeleportLocations[i];
+                }
+            }
+            gameObject.transform.position = Target.transform.position;
+
         }
         else
             Debug.Log("Boss Kitsume Does not have any teleport locations");
