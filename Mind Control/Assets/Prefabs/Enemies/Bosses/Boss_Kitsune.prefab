@@ -199,6 +199,7 @@ MonoBehaviour:
   DashTimeLength: 10
   DashSpeed: 35
   BlockingCollider: {fileID: 70191644781639442}
+  RangeCollider: {fileID: 0}
 --- !u!212 &212000012900772626
 SpriteRenderer:
   m_ObjectHideFlags: 1

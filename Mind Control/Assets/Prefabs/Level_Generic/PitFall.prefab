@@ -16,13 +16,13 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000010076194168}
-  - 61: {fileID: 61000010983782542}
-  - 61: {fileID: 61000013204726432}
-  - 61: {fileID: 61000012939618822}
-  - 114: {fileID: 114000012150572936}
+  - component: {fileID: 4000010076194168}
+  - component: {fileID: 61000010983782542}
+  - component: {fileID: 61000013204726432}
+  - component: {fileID: 61000012939618822}
+  - component: {fileID: 114000012150572936}
   m_Layer: 0
   m_Name: PitFall
   m_TagString: Pitfall
@@ -39,10 +39,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 146.6246, y: -11.829247, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &61000010983782542
 BoxCollider2D:
   m_ObjectHideFlags: 1

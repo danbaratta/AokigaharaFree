@@ -177,6 +177,7 @@ MonoBehaviour:
   playerHealth: {fileID: 0}
   MoveSpeed: 2
   Speed: 0
+  NotSpawned: 0
   curState: 0
   Mirror: 0
   m_ItemToDrop: {fileID: 0}
