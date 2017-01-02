@@ -13,7 +13,7 @@ public class LevelLoader : MonoBehaviour
     {
         var test = GameObject.Find("LevelLoader");
         if (LastForever)
-            DontDestroyOnLoad(this);
+            DontDestroyOnLoad(this.gameObject);
 
         if (test)
             Destroy(this.gameObject);
