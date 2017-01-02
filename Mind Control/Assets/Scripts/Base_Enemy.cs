@@ -75,7 +75,7 @@ public class Base_Enemy : MonoBehaviour
 
         msm = GameObject.Find("Morgan").GetComponent<MorganStateMachine>();
         m_PoolManager = GameObject.Find("PoolManager").GetComponent<PoolManager>();
-        Damage= Max_Damage;
+        Damage = Max_Damage;
 
     }
     void Stub()
@@ -226,7 +226,8 @@ public class Base_Enemy : MonoBehaviour
             m_PoolManager.Remove(gameObject, Type);
             return true;
         }
-	Destroy(gameObject);
+        
+        //Destroy(gameObject);
         return false;
     }
 
