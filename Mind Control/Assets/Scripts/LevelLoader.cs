@@ -37,7 +37,7 @@ public class LevelLoader : MonoBehaviour
     {
         if (LevelName.Length != 0)
             SceneManager.LoadScene(LevelName);
-        else
+        else if(LevelIndex!=-1)
             SceneManager.LoadScene(LevelName);
     }
 }
