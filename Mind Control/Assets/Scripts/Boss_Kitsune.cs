@@ -86,6 +86,10 @@ public class Boss_Kitsune : Base_Enemy
     public float DelayBetweenHanyaAttack = 8;
     float m_HanyaAttackTimer;
 
+    //
+    bool m_SwordSlash;
+    bool m_SwordSlashSpin;
+
     // Use this for initialization
     public override void Start()
     {
@@ -265,6 +269,7 @@ public class Boss_Kitsune : Base_Enemy
                 msm.GetThrown(false);
             else
                 msm.GetThrown(true);
+            anim.Play("Melee");
         }
 
         if (other.tag == "Bullet")
@@ -461,12 +466,12 @@ public class Boss_Kitsune : Base_Enemy
         if (direction <= 0)
         {
             gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(DashSpeed, 0);
-            Flip(true);
+            Flip(false);
         }
         else
         {
             gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(-DashSpeed, 0);
-            Flip(false);
+            Flip(true);
         }
         Physics2D.IgnoreCollision(Morgan.GetComponent<Collider2D>(), BlockingCollider, true);
         m_DashEvade = true;
@@ -514,7 +519,7 @@ public class Boss_Kitsune : Base_Enemy
             msm.GetThrown(true);
         anim.Play("Melee");
         anim.SetBool("Attack", true);
-
+        m_SwordSlash = true;
         m_MeleeTimer = DelayBetweenMeleeAttack;
         // 
         Invoke("SetWalkStateInvoke", .4f);
@@ -530,7 +535,7 @@ public class Boss_Kitsune : Base_Enemy
         GameObject TempBullet = GetPoolManager().FindClass(PoolManager.EnemiesType.Hanya_Bullet);
         TempBullet.transform.position = gameObject.transform.position;
         TempBullet.transform.rotation = Quaternion.identity;
-        if (!Mirror)
+        if (Mirror)
             TempBullet.SendMessage("FlipAxisLeft");
         else
             TempBullet.SendMessage("FlipAxisRight");
@@ -651,11 +656,16 @@ public class Boss_Kitsune : Base_Enemy
         else
             anim.Play("Idle");
         anim.SetBool("Attack", false);
+        if(m_SwordSlash)
+        m_SwordSlash = false;
+        if (m_SwordSlashSpin)
+            m_SwordSlashSpin = false;
     }
 
-    void PlayAnimation()
+    public void AttackOff()
     {
-
+        if(!m_SwordSlash||!m_SwordSlashSpin)
+        anim.SetBool("Attack", false);
     }
 
 }

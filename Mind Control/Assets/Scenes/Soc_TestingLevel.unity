@@ -19301,6 +19301,16 @@ Prefab:
       propertyPath: TeleportLocations.Array.data[2]
       value: 
       objectReference: {fileID: 1010799035}
+    - target: {fileID: 114573771236549874, guid: 3565030cfaf9d8f49823e33521dad9b6,
+        type: 2}
+      propertyPath: DelayBetweenTeleport
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 114573771236549874, guid: 3565030cfaf9d8f49823e33521dad9b6,
+        type: 2}
+      propertyPath: AttackRange
+      value: 1.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3565030cfaf9d8f49823e33521dad9b6, type: 2}
   m_IsPrefabParent: 0
