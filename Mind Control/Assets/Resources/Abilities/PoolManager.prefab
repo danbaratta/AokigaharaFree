@@ -65,7 +65,8 @@ MonoBehaviour:
     m_GameObject: {fileID: 142134, guid: b2f7ae5624c661f4fa2298958c27a04c, type: 2}
     Count: 10
   - Type: 7
-    m_GameObject: {fileID: 171898, guid: caa1472da978e4cd589afa1102335ee3, type: 2}
+    m_GameObject: {fileID: 1520584474239374, guid: df8e0b3688b160e4ca67d72fb7e7725e,
+      type: 2}
     Count: 25
   - Type: 8
     m_GameObject: {fileID: 171898, guid: b30586f3b17591046893330cbe351c0e, type: 2}
@@ -82,3 +83,6 @@ MonoBehaviour:
     m_GameObject: {fileID: 1000013089102222, guid: 77dc22d0ec71b934cbe411c15c2ecbe9,
       type: 2}
     Count: 10
+  - Type: 10
+    m_GameObject: {fileID: 171898, guid: b30586f3b17591046893330cbe351c0e, type: 2}
+    Count: 4

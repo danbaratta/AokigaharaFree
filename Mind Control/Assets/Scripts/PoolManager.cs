@@ -75,6 +75,7 @@ public class PoolManager : MonoBehaviour
         PlayerBullets,
         EnemyBullets,
         Boss,
+        Hanya_Bullet,
     }
     // public List<PoolDataType> Enemies = new List<PoolDataType>();
     public PoolDataType[] m_AllObjects;
@@ -84,7 +85,9 @@ public class PoolManager : MonoBehaviour
     {
         for (int i = 0; i < m_AllObjects.Length; i++)
         {
-            m_AllObjects[i].Create(m_AllObjects[i].Count);
+            int amount = m_AllObjects[i].Count;
+            m_AllObjects[i].Count = 0;
+            m_AllObjects[i].Create(amount);
         }
 
     }

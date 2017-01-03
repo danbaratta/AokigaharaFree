@@ -125,7 +125,7 @@ public class OniLevel1 : Base_Enemy
     public override void AttackState()
     {
         WalkState();
-        if (Vector2.Distance(Morgan.transform.position, transform.position) > 5)
+        if (Vector2.Distance(Morgan.transform.position, transform.position) > m_Distance)
         {
             SetState(EnemyState.Idle);
         }
@@ -164,7 +164,7 @@ public class OniLevel1 : Base_Enemy
             timer = ConstTimer;
         }
 
-        if (Vector2.Distance(Morgan.transform.position, transform.position) < 5)
+        if (Vector2.Distance(Morgan.transform.position, transform.position) < m_Distance)
         {
             SetState(EnemyState.Attack);
         }

@@ -20,7 +20,8 @@ public class CameraFollow : MonoBehaviour
 
 		maxXAndY = worldTopRight.transform.position;
 		minXAndY = worldBottomLeft.transform.position;
-	}
+        player = GameObject.Find("Morgan").transform;
+    }
 	
 	bool CheckXMargin()
 	{

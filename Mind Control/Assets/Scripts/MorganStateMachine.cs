@@ -112,10 +112,13 @@ public class MorganStateMachine : MonoBehaviour
     void Awake()
     {
         if (GameObject.Find("Abilities") != null)
+        {
             m_Abilities = GameObject.Find("Abilities").GetComponent<Abilities>();
+        }
         else
         {
             m_Abilities = ((GameObject)Instantiate(Resources.Load("Abilities/Abilities"))).GetComponent<Abilities>();
+            m_Abilities.gameObject.name = "Abilities";
             Debug.Log("Did not create Abilties prefab in level but i'll create it this once");
         }
 
