@@ -81,7 +81,8 @@ public class PoolManager : MonoBehaviour
     public PoolDataType[] m_AllObjects;
     //public List<List<GameObject>> Pool;
     // Use this for initialization
-    void Start()
+
+    void Awake()
     {
         for (int i = 0; i < m_AllObjects.Length; i++)
         {
@@ -89,6 +90,11 @@ public class PoolManager : MonoBehaviour
             m_AllObjects[i].Count = 0;
             m_AllObjects[i].Create(amount);
         }
+    }
+
+    void Start()
+    {
+       
 
     }
 

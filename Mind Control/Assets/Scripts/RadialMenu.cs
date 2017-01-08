@@ -15,11 +15,16 @@ public class RadialMenu : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        if (Input.GetJoystickNames().Length != 0)
+
+        var InputTest = Input.GetJoystickNames();
+        if (InputTest != null && InputTest.Length>1)
         {
-            for (int i = 0; i < m_Buttons.Length; i++)
+            if (Input.GetJoystickNames().Length != 0)
             {
-                m_Buttons[i].enabled = false;
+                for (int i = 0; i < m_Buttons.Length; i++)
+                {
+                    m_Buttons[i].enabled = false;
+                }
             }
         }
     }

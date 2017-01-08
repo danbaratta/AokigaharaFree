@@ -78,9 +78,9 @@ public class Boss_Kitsune : Base_Enemy
     public Collider2D BlockingCollider;
     public Collider2D RangeCollider;
 
-    public float TeleportEffectTimer=0;
+    public float TeleportEffectTimer = 0;
     bool m_TeleportEffect;
-    public int DashDmg = 10, SpinAttackDmg = 15, BulletDmg = 5, HanyaDmg=50;
+    public int DashDmg = 10, SpinAttackDmg = 15, BulletDmg = 5, HanyaDmg = 50;
 
     //
     public float DelayBetweenHanyaAttack = 8;
@@ -89,6 +89,8 @@ public class Boss_Kitsune : Base_Enemy
     //
     bool m_SwordSlash;
     bool m_SwordSlashSpin;
+
+    bool m_IdleAttack;
 
     // Use this for initialization
     public override void Start()
@@ -107,7 +109,7 @@ public class Boss_Kitsune : Base_Enemy
         StartLocation = transform.position;
         intervalTimer = 10;
         m_AttackTimer = m_ConstAttackTimer;
-        SetState(EnemyState.Walk);
+        SetState(EnemyState.Attack);
 
         Physics2D.IgnoreCollision(Morgan.GetComponent<Collider2D>(), RangeCollider, true);
     }
@@ -184,31 +186,54 @@ public class Boss_Kitsune : Base_Enemy
 
     public override void WalkState()
     {
-        AttackState();
-        if (!m_Dash && !m_DashEvade)
+        float direction = gameObject.transform.position.x - Morgan.transform.position.x;
+        float Dis = direction * direction;
+        Dis = Mathf.Sqrt(Dis);
+        if (!m_Dash && !m_DashEvade && AttackMode)
         {
-            if (!anim.GetBool("Attack") && AttackMode)
+            if (!anim.GetBool("Attack"))
             {
-                anim.Play("Walk");
+                if (!anim.GetBool("Walk"))
+                {
+                    anim.Play("Walk");
+                    anim.SetBool("Walk", true);
+                }
             }
-            float direction = gameObject.transform.position.x - Morgan.transform.position.x;
-            if (direction <= 0)
+            if (direction <= 0 && Dis>1)
             {
                 Flip(true);
-                if (AttackMode)
-                    GetComponent<Rigidbody2D>().velocity = new Vector2(MoveSpeed * 25 * Time.deltaTime, GetComponent<Rigidbody2D>().velocity.y);
-                else
-                    GetComponent<Rigidbody2D>().velocity = new Vector2();
+                GetComponent<Rigidbody2D>().velocity = new Vector2(MoveSpeed * 25 * Time.deltaTime, GetComponent<Rigidbody2D>().velocity.y);
+            }
+            else if(Dis>1)
+            {
+                Flip(false);
+                GetComponent<Rigidbody2D>().velocity = new Vector2(-MoveSpeed * 25 * Time.deltaTime, GetComponent<Rigidbody2D>().velocity.y);
+            }
+            // Debug.Log(GetComponent<Rigidbody2D>().velocity); 
+        }
+        else
+        {
+            //GetComponent<Rigidbody2D>().velocity = new Vector2();
+            if (anim.GetBool("Walk"))
+            {
+                anim.SetBool("Walk", false);              
+            }
+            if (direction <= 0)
+                Flip(true);
+            else
+                Flip(false);
+        }
+
+        if(m_Dash)
+        {
+            if (!Mirror)
+            {              
+                gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(DashSpeed, 0);
             }
             else
             {
-                Flip(false);
-                if (AttackMode)
-                    GetComponent<Rigidbody2D>().velocity = new Vector2(-MoveSpeed * 25 * Time.deltaTime, GetComponent<Rigidbody2D>().velocity.y);
-                else
-                    GetComponent<Rigidbody2D>().velocity = new Vector2();
+                gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(-DashSpeed, 0);
             }
-            // Debug.Log(GetComponent<Rigidbody2D>().velocity); 
         }
     }
     public override void Jump()
@@ -229,6 +254,7 @@ public class Boss_Kitsune : Base_Enemy
     public override void AttackState()
     {
         BossStates[curHealthState].Invoke();
+        WalkState();
     }
 
 
@@ -274,16 +300,16 @@ public class Boss_Kitsune : Base_Enemy
 
         if (other.tag == "Bullet")
         {
-            if (direction <= 0)
-            {
-                Flip(false);
-                GetComponent<Rigidbody2D>().velocity = new Vector2(MoveSpeed * 25 * Time.deltaTime, 0);
-            }
-            else
-            {
-                Flip(true);
-                GetComponent<Rigidbody2D>().velocity = new Vector2(-MoveSpeed * 25 * Time.deltaTime, 0);
-            }
+            //if (direction <= 0)
+            //{
+            //    Flip(false);
+            //    GetComponent<Rigidbody2D>().velocity = new Vector2(MoveSpeed * 25 * Time.deltaTime, 0);
+            //}
+            //else
+            //{
+            //    Flip(true);
+            //    GetComponent<Rigidbody2D>().velocity = new Vector2(-MoveSpeed * 25 * Time.deltaTime, 0);
+            //}
         }
     }
 
@@ -346,7 +372,7 @@ public class Boss_Kitsune : Base_Enemy
         {
             Dash();
         }
-        else if (m_MeleeTimer <= 0 && m_TeleportTimer <= 0&& !m_TeleportEffect)
+        else if (m_MeleeTimer <= 0 && m_TeleportTimer <= 0 && !m_TeleportEffect)
         {
             TeleportEffects("AttackTeleport");
         }
@@ -354,14 +380,14 @@ public class Boss_Kitsune : Base_Enemy
         {
             SwordSlash();
         }
-        else if (m_MeleeTimer > 0 && m_DashTimer > 0 && m_TeleportTimer <= 0&& !m_TeleportEffect)
+        else if (m_MeleeTimer > 0 && m_DashTimer > 0 && m_TeleportTimer <= 0 && !m_TeleportEffect)
         {
             TeleportEffects("FleeTeleport");
         }
     }
     public void HighHealth()
     {
-        if(m_HanyaAttackTimer<=0)
+        if (m_HanyaAttackTimer <= 0)
         {
             HanyaAttack();
             FleeTeleport();
@@ -456,6 +482,7 @@ public class Boss_Kitsune : Base_Enemy
         anim.Play("Run");
         Invoke("DashOff", DashTimeLength);
         anim.SetBool("Attack", true);
+        anim.SetBool("Walk", false);
     }
     void DashEvasive()
     {
@@ -479,6 +506,7 @@ public class Boss_Kitsune : Base_Enemy
         m_DashEvadeTimer = DashEvadeTimeLength + DelayBetweenDashEvade;
         anim.Play("Run");
         Invoke("DashOff", DashEvadeTimeLength);
+        anim.SetBool("Walk", false);
     }
 
     void DashOff()
@@ -650,22 +678,22 @@ public class Boss_Kitsune : Base_Enemy
 
     void SetWalkStateInvoke()
     {
-        SetState(EnemyState.Walk);
+        //SetState(EnemyState.Walk);
         if (m_MeleeTimer <= 0 || m_DashTimer <= 0)
             anim.Play("Walk");
         else
             anim.Play("Idle");
         anim.SetBool("Attack", false);
-        if(m_SwordSlash)
-        m_SwordSlash = false;
+        if (m_SwordSlash)
+            m_SwordSlash = false;
         if (m_SwordSlashSpin)
             m_SwordSlashSpin = false;
     }
 
     public void AttackOff()
     {
-        if(!m_SwordSlash||!m_SwordSlashSpin)
-        anim.SetBool("Attack", false);
+        if (!m_SwordSlash || !m_SwordSlashSpin)
+            anim.SetBool("Attack", false);
     }
 
 }
