@@ -71,7 +71,7 @@ public class YureiLevl2ReDone : Base_Enemy
         }
         else if ((other.tag == "Player") && (msm.isPossessing == true))
         {
-            msm.TransitionFromYurei();
+            msm.TransitionFrom();
             SetState(EnemyState.Death);
             anim.SetBool("Dead", true);
             anim.Play("Death");

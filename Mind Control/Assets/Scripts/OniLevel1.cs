@@ -187,7 +187,7 @@ public class OniLevel1 : Base_Enemy
                 msm.Right(true);
             }
 
-            msm.IsYurei(true);
+            msm.IsOni(true);
 
             msm.GetTargetX(transform.position.x);
             msm.GetTargetY(transform.position.y);
@@ -196,7 +196,7 @@ public class OniLevel1 : Base_Enemy
         }
         else if ((other.tag == "Player") && (msm.isPossessing == true))
         {
-            msm.TransitionFromYurei();
+            msm.TransitionFrom();
             SetState(EnemyState.Death);
             anim.SetBool("Dead", true);
             anim.Play("Death");

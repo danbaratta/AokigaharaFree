@@ -29,8 +29,7 @@ public class MorganStateMachine : MonoBehaviour
     Morgan Morgan;  // Data Model
     Rigidbody2D MorganBody2D;
 
-    public GameObject Yurei1;
-
+    //Sprite OniSprite;
     Sprite YureiSprite;
     Sprite MorganSprite;
 
@@ -76,6 +75,8 @@ public class MorganStateMachine : MonoBehaviour
 
     // Animation Variables
     Animator a;
+    RuntimeAnimatorController OniAnimator;
+    RuntimeAnimatorController MorganAnimator;
     public bool right = true;
     private float playerXAnim;
     bool ground = false;
@@ -132,7 +133,9 @@ public class MorganStateMachine : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load("Kodama_iddle9") as Sprite;                                                   // change the sprite
+        YureiSprite = Resources.Load<Sprite>("Sprites/Kodama_pass11_edit");                                                   // change the sprite
+
+        OniAnimator = Resources.Load<RuntimeAnimatorController>("Sprites/Katana");
 
         canControl = true;
         mindCanFire = true;
@@ -143,9 +146,9 @@ public class MorganStateMachine : MonoBehaviour
         Morgan = GetComponent<Morgan>();                                                    // get Data Model reference
         MorganBody2D = gameObject.GetComponent<Rigidbody2D>();
         MorganSprite = GetComponent<SpriteRenderer>().sprite;
-        YureiSprite = GetComponent<SpriteRenderer>().sprite;
-        a = GetComponent<Animator>();                                                   // get Animator reference
 
+        a = GetComponent<Animator>();                                                   // get Animator reference
+        MorganAnimator = a.runtimeAnimatorController;
         psm.Add(PlayerStateMachine.IDLE, StateIdle);        // adding states to the dictionary
         psm.Add(PlayerStateMachine.WALK, StateWalk);
         psm.Add(PlayerStateMachine.ENTER_JUMP, StateEnterJump);
@@ -157,6 +160,19 @@ public class MorganStateMachine : MonoBehaviour
         SetState(PlayerStateMachine.IDLE);                  // setting default state to Idle
 
         m_PoolManager = GameObject.Find("PoolManager").GetComponent<PoolManager>();
+
+        //Safe Check
+        if (bulletIcon == null)
+        {
+            Debug.Log("Bullet icon is not linked in Morgan Going to Crash!");
+        }
+        if (PowerSlider == null)
+        {
+            Debug.Log("PowerSlider is not linked in morgan going to crash!");
+
+        }
+
+
     }
 
     // Update is called once per frame
@@ -297,10 +313,48 @@ public class MorganStateMachine : MonoBehaviour
     {
         //		gameObject.GetComponent<SpriteRenderer> ().sprite = Resources.Load<Sprite>("Sprites/Kodama_pass11_edit"); 
 
-        CheckForGround();
-        CheckForJump();
+        onGround = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, walkableLayer);
 
+        if (!onGround)
+        {
+            canJump = false;
+        }
+        else
+            canJump=true;
 
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("joystick button 0")) && canJump && !m_RadialBool)
+        {
+            canJump = false;
+            GetComponent<Rigidbody2D>().velocity += new Vector2(GetComponent<Rigidbody2D>().velocity.x, Morgan.InitJumpSpeed());
+        }
+
+        playerXAnim = Input.GetAxis("Horizontal");
+
+        if (Input.GetAxis("Horizontal") > 0)
+        {
+            if (Reflect != true)
+            {
+                Flip(false);
+                Reflect = true;
+            }
+        }
+        else if (Input.GetAxis("Horizontal") < 0)
+        {
+            if (Reflect == true)
+            {
+                Flip(true);
+                Reflect = false;
+            }
+        }
+
+        a.SetFloat("Speed", playerXAnim);
+        GetComponent<Rigidbody2D>().velocity = new Vector2(playerXAnim * Morgan.WalkSpeed(), GetComponent<Rigidbody2D>().velocity.y);
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            TransitionFromOni();
+            SetState(PlayerStateMachine.IDLE);
+        }
         //		oniMove.x = Input.GetAxisRaw ("Horizontal") * Time.deltaTime * oniMoveSpeed;
         //		GetComponent<Rigidbody2D> ().velocity = new Vector2 (oniMove.x * oniMoveSpeed, GetComponent<Rigidbody2D> ().velocity.y);
     }
@@ -312,15 +366,20 @@ public class MorganStateMachine : MonoBehaviour
         SetState(PlayerStateMachine.STATE_ONI);
         Debug.Log("made it this far... setstate.state_oni");
         GetComponent<Rigidbody2D>().velocity = new Vector2();
+        a.runtimeAnimatorController = OniAnimator;
 
     }
 
     void TransitionFromOni()
     {
-        isPossessing = false;
+       isPossessing = false;
         SetState(PlayerStateMachine.IDLE);
         a.SetBool("Walk", false);
         GetComponent<Rigidbody2D>().gravityScale = 1;
+        a.runtimeAnimatorController = MorganAnimator;
+        possess = false;
+        isOni = false;
+        possessTimer = 0f;
 
     }
 
@@ -328,7 +387,7 @@ public class MorganStateMachine : MonoBehaviour
     {
         GetComponent<Rigidbody2D>().velocity = new Vector2();
 
-        gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/Kodama_pass11_edit");
+        //gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/Kodama_pass11_edit");
 
         yureiMove.x = Input.GetAxisRaw("Horizontal") * Time.deltaTime * yureiMoveSpeed;
         gameObject.transform.Translate(yureiMove);
@@ -351,6 +410,10 @@ public class MorganStateMachine : MonoBehaviour
         SetLocationToTarget();
         //gameObject.GetComponent<Rigidbody2D>().isKinematic = true;
         SetState(PlayerStateMachine.STATE_YUREI);
+        gameObject.GetComponent<SpriteRenderer>().sprite = YureiSprite;
+        a.enabled = false;
+
+
     }
 
     public void TransitionFromYurei()
@@ -362,6 +425,18 @@ public class MorganStateMachine : MonoBehaviour
         isYurei = false;
         possessTimer = 0f;
         GetComponent<Rigidbody2D>().gravityScale = 1;
+
+        gameObject.GetComponent<SpriteRenderer>().sprite = MorganSprite;
+        a.enabled = true;
+
+    }
+
+    public void TransitionFrom()
+    {
+        if (curState == PlayerStateMachine.STATE_YUREI)
+            TransitionFromYurei();
+        else
+            TransitionFromOni();
 
     }
 
@@ -560,9 +635,9 @@ public class MorganStateMachine : MonoBehaviour
         {
             Debug.Log("possess = " + possess + "\n isYurei = " + isYurei);
             possessTimer += Time.deltaTime;                 // The IF statements here will decide which enemy you possessed
-            GetComponent<Rigidbody2D>().gravityScale = 0;
             if (isYurei == true)
             {
+                GetComponent<Rigidbody2D>().gravityScale = 0;
                 TransitionToYurei();
                 possess = false;
             }
@@ -581,6 +656,14 @@ public class MorganStateMachine : MonoBehaviour
             if (possessTimer >= possessLimit)
             {
                 TransitionFromYurei();
+            }
+        }
+        if (curState == PlayerStateMachine.STATE_ONI)
+        {
+            possessTimer += Time.deltaTime;
+            if (possessTimer >= possessLimit)
+            {
+                TransitionFromOni();
             }
         }
     }

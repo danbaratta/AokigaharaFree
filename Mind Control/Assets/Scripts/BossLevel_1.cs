@@ -233,7 +233,7 @@ public class BossLevel_1 : Base_Enemy
         if (other.tag == "Player" && msm.isPossessing)
         {
             TakeDamage(10);
-            msm.TransitionFromYurei();
+            msm.TransitionFrom();
             float direction = gameObject.transform.position.x - Morgan.transform.position.x;
             if (direction <= 0)
                 msm.GetThrown(false);

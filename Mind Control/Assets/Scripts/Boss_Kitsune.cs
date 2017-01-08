@@ -209,9 +209,14 @@ public class Boss_Kitsune : Base_Enemy
                 Flip(false);
                 GetComponent<Rigidbody2D>().velocity = new Vector2(-MoveSpeed * 25 * Time.deltaTime, GetComponent<Rigidbody2D>().velocity.y);
             }
+            else
+            {
+                GetComponent<Rigidbody2D>().velocity = new Vector2(0, GetComponent<Rigidbody2D>().velocity.y);
+
+            }
             // Debug.Log(GetComponent<Rigidbody2D>().velocity); 
         }
-        else
+        else if(!m_Dash && !m_DashEvade)
         {
             //GetComponent<Rigidbody2D>().velocity = new Vector2();
             if (anim.GetBool("Walk"))
@@ -267,7 +272,7 @@ public class Boss_Kitsune : Base_Enemy
         {
             // May need change
             TakeDamage(Damage);
-            msm.TransitionFromYurei();
+            msm.TransitionFrom();
 
             if (direction <= 0)
                 msm.GetThrown(false);
@@ -460,29 +465,43 @@ public class Boss_Kitsune : Base_Enemy
 
     void Dash()
     {
-        GetComponent<Rigidbody2D>().gravityScale = 0;
-        //GetComponent<Rigidbody2D>().velocity = new Vector2();
-
         float direction = gameObject.transform.position.x - Morgan.transform.position.x;
-        if (direction <= 0)
+
+        int Bits = 1 << 8;
+        RaycastHit2D Ray= Physics2D.Raycast(gameObject.transform.position, new Vector2(-direction, 0), 25, Bits);
+        Debug.DrawRay(gameObject.transform.position, new Vector2(-direction, 0) * 25);
+        if (Ray.collider != null)
         {
-            gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(DashSpeed, 0);
-            Flip(true);
+            if (Ray.collider.gameObject.tag == "Player")
+            {
+                GetComponent<Rigidbody2D>().gravityScale = 0;
+                //GetComponent<Rigidbody2D>().velocity = new Vector2();
+
+                if (direction <= 0)
+                {
+                    gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(DashSpeed, 0);
+                    Flip(true);
+                }
+                else
+                {
+                    gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(-DashSpeed, 0);
+                    Flip(false);
+                }
+                Physics2D.IgnoreCollision(Morgan.GetComponent<Collider2D>(), BlockingCollider, true);
+                m_Dash = true;
+
+                DashAttacked = false;
+                m_DashTimer = DashTimeLength + DelayBetweenDash;
+                anim.Play("Run");
+                Invoke("DashOff", DashTimeLength);
+                anim.SetBool("Attack", true);
+                anim.SetBool("Walk", false);
+            }
+            else
+                m_DashTimer = 1;
         }
         else
-        {
-            gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(-DashSpeed, 0);
-            Flip(false);
-        }
-        Physics2D.IgnoreCollision(Morgan.GetComponent<Collider2D>(), BlockingCollider, true);
-        m_Dash = true;
-
-        DashAttacked = false;
-        m_DashTimer = DashTimeLength + DelayBetweenDash;
-        anim.Play("Run");
-        Invoke("DashOff", DashTimeLength);
-        anim.SetBool("Attack", true);
-        anim.SetBool("Walk", false);
+            m_DashTimer = 1;
     }
     void DashEvasive()
     {

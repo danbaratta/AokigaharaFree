@@ -5533,6 +5533,12 @@ SpriteRenderer:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
+--- !u!114 &406777688 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114235216811411072, guid: 55b7184ab1e7fc74cb871b144436fe95,
+    type: 2}
+  m_PrefabInternal: {fileID: 1553556586}
+  m_Script: {fileID: -113659843, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 --- !u!1001 &411091008
 Prefab:
   m_ObjectHideFlags: 0
@@ -8912,7 +8918,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 468186, guid: 8c0ff0e3f7f4f480a81c25c1c644467b, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 184.26
+      value: -4.2
       objectReference: {fileID: 0}
     - target: {fileID: 468186, guid: 8c0ff0e3f7f4f480a81c25c1c644467b, type: 2}
       propertyPath: m_LocalPosition.y
@@ -8946,7 +8952,7 @@ Prefab:
         type: 2}
       propertyPath: healthSlider
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 899151023}
     - target: {fileID: 11426916, guid: 8c0ff0e3f7f4f480a81c25c1c644467b, type: 2}
       propertyPath: SpawnPoint
       value: 
@@ -8971,6 +8977,10 @@ Prefab:
       propertyPath: Dash
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11426916, guid: 8c0ff0e3f7f4f480a81c25c1c644467b, type: 2}
+      propertyPath: PowerSlider
+      value: 
+      objectReference: {fileID: 406777688}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8c0ff0e3f7f4f480a81c25c1c644467b, type: 2}
   m_IsPrefabParent: 0
@@ -20765,6 +20775,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 114000014238236538, guid: 55b7184ab1e7fc74cb871b144436fe95,
+        type: 2}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1165565862}
     - target: {fileID: 224000011058232514, guid: 55b7184ab1e7fc74cb871b144436fe95,
         type: 2}
       propertyPath: m_AnchorMax.x
@@ -20775,21 +20790,16 @@ Prefab:
       propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 20000013390343738, guid: 55b7184ab1e7fc74cb871b144436fe95,
+    - target: {fileID: 224751467187956204, guid: 55b7184ab1e7fc74cb871b144436fe95,
         type: 2}
-      propertyPath: orthographic size
-      value: 8
+      propertyPath: m_AnchorMax.x
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114000014238236538, guid: 55b7184ab1e7fc74cb871b144436fe95,
+    - target: {fileID: 224751467187956204, guid: 55b7184ab1e7fc74cb871b144436fe95,
         type: 2}
-      propertyPath: player
-      value: 
-      objectReference: {fileID: 1165565862}
-    - target: {fileID: 114000011519751940, guid: 55b7184ab1e7fc74cb871b144436fe95,
-        type: 2}
-      propertyPath: healthSlider
-      value: 
-      objectReference: {fileID: 899151023}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 55b7184ab1e7fc74cb871b144436fe95, type: 2}
   m_IsPrefabParent: 0
@@ -26959,6 +26969,11 @@ Prefab:
         type: 2}
       propertyPath: TimeMax
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012635149720, guid: 3972b3c05f686234da2f6ab6660b2faa,
+        type: 2}
+      propertyPath: EnemyTypes.Array.data[0]
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3972b3c05f686234da2f6ab6660b2faa, type: 2}
