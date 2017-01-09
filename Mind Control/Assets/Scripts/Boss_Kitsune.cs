@@ -55,7 +55,6 @@ public class Boss_Kitsune : Base_Enemy
 
     // New Stuff
     public float AttackRange = 10;
-
     public GameObject[] TeleportLocations;
 
     public float DelayBetweenMeleeAttack = 1;
@@ -79,15 +78,8 @@ public class Boss_Kitsune : Base_Enemy
     public Collider2D BlockingCollider;
     public Collider2D RangeCollider;
 
-    public float TeleportEffectTimerStage1 = 0;
-    public float TeleportEffectTimerStage2 = 3;
-
-    float m_TeleportTimerStage2;
-
+    public float TeleportEffectTimer = 0;
     bool m_TeleportEffect;
-    bool m_Teleport;
-    Vector2 m_TeleportLoc2D;
-
     public int DashDmg = 10, SpinAttackDmg = 15, BulletDmg = 5, HanyaDmg = 50;
 
     //
@@ -197,7 +189,7 @@ public class Boss_Kitsune : Base_Enemy
         float direction = gameObject.transform.position.x - Morgan.transform.position.x;
         float Dis = direction * direction;
         Dis = Mathf.Sqrt(Dis);
-        if (!m_Dash && !m_DashEvade && AttackMode && !m_Teleport)
+        if (!m_Dash && !m_DashEvade && AttackMode)
         {
             if (!anim.GetBool("Attack"))
             {
@@ -207,12 +199,12 @@ public class Boss_Kitsune : Base_Enemy
                     anim.SetBool("Walk", true);
                 }
             }
-            if (direction <= 0 && Dis > 1)
+            if (direction <= 0 && Dis>1)
             {
                 Flip(true);
                 GetComponent<Rigidbody2D>().velocity = new Vector2(MoveSpeed * 25 * Time.deltaTime, GetComponent<Rigidbody2D>().velocity.y);
             }
-            else if (Dis > 1)
+            else if(Dis>1)
             {
                 Flip(false);
                 GetComponent<Rigidbody2D>().velocity = new Vector2(-MoveSpeed * 25 * Time.deltaTime, GetComponent<Rigidbody2D>().velocity.y);
@@ -224,24 +216,23 @@ public class Boss_Kitsune : Base_Enemy
             }
             // Debug.Log(GetComponent<Rigidbody2D>().velocity); 
         }
-        else if (!m_Dash && !m_DashEvade)
+        else if(!m_Dash && !m_DashEvade)
         {
             //GetComponent<Rigidbody2D>().velocity = new Vector2();
             if (anim.GetBool("Walk"))
             {
-                anim.SetBool("Walk", false);
+                anim.SetBool("Walk", false);              
             }
             if (direction <= 0)
                 Flip(true);
             else
                 Flip(false);
-            GetComponent<Rigidbody2D>().velocity = new Vector2(0, GetComponent<Rigidbody2D>().velocity.y);
-
         }
-        if (m_Dash)
+
+        if(m_Dash)
         {
             if (!Mirror)
-            {
+            {              
                 gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(DashSpeed, 0);
             }
             else
@@ -382,8 +373,11 @@ public class Boss_Kitsune : Base_Enemy
     public void FullHealth()
     {
         float Dis = Vector2.Distance(gameObject.transform.position, Morgan.transform.position);
-
-        if (m_MeleeTimer <= 0 && m_TeleportTimer <= 0 && !m_TeleportEffect)
+        if (m_DashTimer <= 0 && Dis >= AttackRange)
+        {
+            Dash();
+        }
+        else if (m_MeleeTimer <= 0 && m_TeleportTimer <= 0 && !m_TeleportEffect)
         {
             TeleportEffects("AttackTeleport");
         }
@@ -391,67 +385,23 @@ public class Boss_Kitsune : Base_Enemy
         {
             SwordSlash();
         }
-        else if (m_MeleeTimer > 0 && m_DashEvadeTimer > 0 && m_TeleportTimer <= 0 && !m_TeleportEffect&& Dis < AttackRange*2.5f)
+        else if (m_MeleeTimer > 0 && m_DashTimer > 0 && m_TeleportTimer <= 0 && !m_TeleportEffect)
         {
             TeleportEffects("FleeTeleport");
         }
-        else if (m_DashEvadeTimer <= 0 && Dis <= AttackRange*1.5f)
-        {
-            DashEvasive();
-        }
-
     }
     public void HighHealth()
     {
-        float Dis = Vector2.Distance(gameObject.transform.position, Morgan.transform.position);
-        if (Dis < 5 && m_HanyaAttackTimer > 0 && !m_Teleport && m_TeleportTimerStage2 <= 0)
-            TeleportStage2Display();
-        else if (m_HanyaAttackTimer <= 0)
+        if (m_HanyaAttackTimer <= 0)
         {
             HanyaAttack();
+            FleeTeleport();
         }
     }
 
     public void MidHealth()
     {
-        float Dis = Vector2.Distance(gameObject.transform.position, Morgan.transform.position);
-        float PlayerHealth = (float)playerHealth.currentHealth / (float)playerHealth.startingHealth;
-        if (PlayerHealth < .5)
-        {
-            if (m_DashTimer <= 0 && Dis >= AttackRange*1.5f)
-            {
-                Dash();
-            }
-            else if (m_MeleeTimer <= 0 && m_TeleportTimer <= 0 && !m_TeleportEffect)
-            {
-                TeleportEffects("AttackTeleport");
-            }
-            else if (m_MeleeTimer <= 0 && Dis <= AttackRange)
-            {
-                SwordSlash();
-            }
-        }
-        else
-        {
-            if (m_DashEvadeTimer <= 0 && Dis >= AttackRange && Dis < AttackRange * 2.5f)
-            {
-                DashEvasive();
-            }
-           else if (m_MeleeTimer > 0 && m_DashTimer > 0 && m_TeleportTimer <= 0 && !m_TeleportEffect)
-            {
-                TeleportEffects("FleeTeleport");
-            }
-            else if (m_MeleeTimer <= 0 && Dis <= AttackRange)
-            {
-                SwordSlash();
-            }
-            else if (m_DashTimer <= 0 && Dis >= AttackRange*1.5f)
-            {
-                Dash();
-            }
-        }
-        
-        
+
     }
     public void LowHeath()
     {
@@ -470,7 +420,6 @@ public class Boss_Kitsune : Base_Enemy
         m_DashTimer -= Time.deltaTime;
         m_DashEvadeTimer -= Time.deltaTime;
         m_HanyaAttackTimer -= Time.deltaTime;
-        m_TeleportTimerStage2 -= Time.deltaTime;
         if (m_MeleeTimer <= 0 || m_DashTimer <= 0)
         {
             AttackMode = true;
@@ -519,7 +468,7 @@ public class Boss_Kitsune : Base_Enemy
         float direction = gameObject.transform.position.x - Morgan.transform.position.x;
 
         int Bits = 1 << 8;
-        RaycastHit2D Ray = Physics2D.Raycast(gameObject.transform.position, new Vector2(-direction, 0), 25, Bits);
+        RaycastHit2D Ray= Physics2D.Raycast(gameObject.transform.position, new Vector2(-direction, 0), 25, Bits);
         Debug.DrawRay(gameObject.transform.position, new Vector2(-direction, 0) * 25);
         if (Ray.collider != null)
         {
@@ -562,13 +511,13 @@ public class Boss_Kitsune : Base_Enemy
         float direction = gameObject.transform.position.x - Morgan.transform.position.x;
         if (direction <= 0)
         {
-            gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(-DashSpeed, 0);
-            Flip(true);
+            gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(DashSpeed, 0);
+            Flip(false);
         }
         else
         {
-            gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(DashSpeed, 0);
-            Flip(false);
+            gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(-DashSpeed, 0);
+            Flip(true);
         }
         Physics2D.IgnoreCollision(Morgan.GetComponent<Collider2D>(), BlockingCollider, true);
         m_DashEvade = true;
@@ -595,7 +544,6 @@ public class Boss_Kitsune : Base_Enemy
         {
             if (m_DashEvadeTimer <= 0)
                 m_DashEvadeTimer = DelayBetweenDashEvade;
-            m_DashEvade = false;
         }
         BlockingCollider.enabled = true;
         DashAttacked = false;
@@ -651,7 +599,7 @@ public class Boss_Kitsune : Base_Enemy
         TurnOffCollision();
         m_TeleportEffect = true;
         //Change for later
-        Invoke(FunctionCall, TeleportEffectTimerStage1);
+        Invoke(FunctionCall, TeleportEffectTimer);
     }
 
     void RandomTeleport()
@@ -767,55 +715,4 @@ public class Boss_Kitsune : Base_Enemy
             anim.SetBool("Attack", false);
     }
 
-
-    void TeleportStage2Display()
-    {
-        if (TeleportLocations.Length > 0)
-        {
-            m_Teleport = true;
-            List<GameObject> Temp = new List<GameObject>();
-            for (int i = 0; i < TeleportLocations.Length; i++)
-            {
-                Temp.Add(TeleportLocations[i]);
-            }
-            GameObject Selected1 = null, Selected2 = null;
-
-            int Range = UnityEngine.Random.Range(0, TeleportLocations.Length - 1);
-            Temp[Range].SetActive(true);
-            Selected1 = Temp[Range];
-            Temp.RemoveAt(Range);
-
-            if (Temp.Count > 0)
-            {
-                Range = UnityEngine.Random.Range(0, TeleportLocations.Length - 1);
-                Temp[Range].SetActive(true);
-                Selected2 = Temp[Range];
-                Temp.RemoveAt(Range);
-            }
-
-            if (Selected1 && Selected2)
-            {
-                Range = UnityEngine.Random.Range(0, 1);
-                if (Range != 0)
-                    m_TeleportLoc2D = Selected1.transform.position;
-                else
-                    m_TeleportLoc2D = Selected2.transform.position;
-            }
-            else
-                m_TeleportLoc2D = Selected1.transform.position;
-        }
-    }
-
-
-    void Teleport()
-    {
-        m_TeleportTimerStage2 = TeleportEffectTimerStage2;
-        transform.position = m_TeleportLoc2D;
-        m_Teleport = false;
-
-        for (int i = 0; i < TeleportLocations.Length; i++)
-        {
-            TeleportLocations[i].SetActive(false);
-        }
-    }
 }
