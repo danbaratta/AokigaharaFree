@@ -29,10 +29,7 @@ public class MorganStateMachine : MonoBehaviour
     Morgan Morgan;  // Data Model
     Rigidbody2D MorganBody2D;
 
-<<<<<<< Updated upstream
     //Sprite OniSprite;
-=======
->>>>>>> Stashed changes
     Sprite YureiSprite;
     Sprite MorganSprite;
 
@@ -45,10 +42,13 @@ public class MorganStateMachine : MonoBehaviour
     PlayerStateMachine curState;
     bool possess = false;
     bool isYurei = false;
+    [SerializeField]
     bool isOni = false;
     public bool isPossessing = false;                               // used to determine, in other scripts, if the player is possessing an enemy or not
     float possessTimer = 0f;
     float possessLimit = 6f;
+    // next enemy bool here
+    //public GameObject MindBullet;
 
     // Ground Check Variables    
     public Transform groundCheck;
@@ -70,10 +70,8 @@ public class MorganStateMachine : MonoBehaviour
     Vector2 m_CheckPoint;
 
     // Jumping Variables
-	[SerializeField]
+    [SerializeField]
     bool canJump = true;
-	[SerializeField]
-	bool isJumping = false;
 
     // Animation Variables
     Animator a;
@@ -109,7 +107,7 @@ public class MorganStateMachine : MonoBehaviour
     public int m_CurrentPower = 0;
 
     //RaidalMenu
-    public GameObject RadialCanvas;
+    public GameObject RadialCanvus;
     bool m_RadialBool;
 
     void Awake()
@@ -125,9 +123,9 @@ public class MorganStateMachine : MonoBehaviour
             Debug.Log("Did not create Abilties prefab in level but i'll create it this once");
         }
 
-        if (RadialCanvas == null)
+        if (RadialCanvus == null)
         {
-            RadialCanvas = ((GameObject)Instantiate(Resources.Load("Abilities/RadialMenu")));
+            RadialCanvus = ((GameObject)Instantiate(Resources.Load("Abilities/RadialMenu")));
             Debug.Log("Did not create RadialMenu prefab in level but i'll create it this once");
         }
     }
@@ -214,7 +212,7 @@ public class MorganStateMachine : MonoBehaviour
             m_RadialBool = true;
             RadialMenu();
         }
-        if (RadialCanvas && !RadialCanvas.activeSelf)
+        if (RadialCanvus && !RadialCanvus.activeSelf)
         {
             m_RadialBool = false;
         }
@@ -273,44 +271,18 @@ public class MorganStateMachine : MonoBehaviour
 
     void StateEnterJump()
     {
-		Debug.Log ("Entering: StateEnterJump()");
-		CheckForJump (); // Continue checking for jump press
-		isJumping = true; // Begin jumping
-		canJump = false; // Not allowed to jump again once you enter jump
-		Debug.Log ("isJumping = " + isJumping + ". /n canJump = " + canJump);
-		Vector2 morganInitJump = new Vector2 ((GetComponent<Rigidbody2D> ().velocity.x), Morgan.InitJumpSpeed()); // setting initial jump vector
+        canJump = false;
+        GetComponent<Rigidbody2D>().velocity += new Vector2(GetComponent<Rigidbody2D>().velocity.x, Morgan.InitJumpSpeed());
+        SetState(PlayerStateMachine.IN_AIR);
+        Debug.Log(GetComponent<Rigidbody2D>().velocity.y);
 
-		GetComponent<Rigidbody2D>().AddForce (morganInitJump,ForceMode2D.Impulse); // initial jump (low jump)
-        SetState(PlayerStateMachine.IN_AIR); // next state is StateInAir
-//		Debug.Log(GetComponent<Rigidbody2D>().velocity.y);
     }
 
     void StateInAir()
     {
-		Debug.Log ("Entering: StateInAir()");
-        HandleMorganControls(); // continue awaiting control input while in the air
+        HandleMorganControls();
         a.speed = 1;
-		Vector2 morganContJump = new Vector2 ((GetComponent<Rigidbody2D> ().velocity.x), Morgan.JumpAccel ()); // setting jump accel vector 
-		float jumpTimer = Morgan.JumpTimer(); 
-
-		if ((Input.GetKey (KeyCode.Space) || Input.GetButton ("joystick button 0")) && isJumping && !m_RadialBool) // are we still holding the jump key?
-		{
-			Morgan.IncrementJumpTimer (); // continue timer for holding down jump key
-			GetComponent<Rigidbody2D> ().AddForce (morganContJump, ForceMode2D.Force); // add constant force in the jump accel vector
-
-			if (jumpTimer >= Morgan.MaxJumpTimer ()) // once the timer runs out, turn off isJumping bool to discontinue jump accel vector, reset timer
-			{
-				isJumping = false;
-				Morgan.resetJumpTimer ();
-			}
-		} 
-		else // if we AREN'T holding the jump key...
-		{
-
-		Morgan.resetJumpTimer (); // we want to keep the timer at 0 if we aren't pressing the jump key
-		
-		}
-	}
+    }
 
     void StateDash()
     {
@@ -480,8 +452,13 @@ public class MorganStateMachine : MonoBehaviour
         CheckForFiring();
 
         ground = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, walkableLayer);
+        /*
+		float moveMorganX = Input.GetAxis("Horizontal") * Morgan.WalkSpeed() * 100f;
 
-		if (canControl)
+		Vector2 movement = new Vector2 (moveMorganX, 0f);
+		MorganBody2D.AddForce(movement);
+*/
+        if (canControl)
         {
             a.SetBool("Ground", ground);
             a.SetFloat("VerticalSpeed", GetComponent<Rigidbody2D>().velocity.y);
@@ -564,11 +541,10 @@ public class MorganStateMachine : MonoBehaviour
 
     void CheckForJump()
     {
-		if ((Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("joystick button 0")) && canJump && !m_RadialBool)
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("joystick button 0")) && canJump && !m_RadialBool)
         {
             SetState(PlayerStateMachine.ENTER_JUMP);
         }
-
     }
 
     void CheckForGround()
@@ -580,6 +556,7 @@ public class MorganStateMachine : MonoBehaviour
             canJump = false;
             a.Play("Jump");
             SetState(PlayerStateMachine.IN_AIR);
+
         }
         else if (onGround)
         {
@@ -851,14 +828,14 @@ public class MorganStateMachine : MonoBehaviour
 
     void RadialMenu()
     {
-        if (RadialCanvas)
+        if (RadialCanvus)
         {
-            RadialCanvas.SetActive(true);
+            RadialCanvus.SetActive(true);
             Time.timeScale = .001f;
         }
         else
         {
-            Debug.Log("Forgot to Add RadialCanvas error ;)");
+            Debug.Log("Forgot to Add RadialCanvus error ;)");
             m_RadialBool = false;
         }
     }
