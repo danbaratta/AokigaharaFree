@@ -208,7 +208,7 @@ public class Abilities : MonoBehaviour
     public void DashOff(GameObject Player)
     {
         Player.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
-        Player.GetComponent<Rigidbody2D>().gravityScale = 1;
+        Player.GetComponent<Rigidbody2D>().gravityScale = Player.GetComponent<MorganStateMachine>().GetDefaultGravity();
     }
 
 

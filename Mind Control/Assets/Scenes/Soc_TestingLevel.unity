@@ -8084,10 +8084,6 @@ Prefab:
       propertyPath: bulletIcon
       value: 
       objectReference: {fileID: 1403996902}
-    - target: {fileID: 11426916, guid: 8c0ff0e3f7f4f480a81c25c1c644467b, type: 2}
-      propertyPath: RadialCanvus
-      value: 
-      objectReference: {fileID: 2094547626}
     - target: {fileID: 114000012123050816, guid: 8c0ff0e3f7f4f480a81c25c1c644467b,
         type: 2}
       propertyPath: healthSlider
@@ -25093,11 +25089,6 @@ SpriteRenderer:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
---- !u!1 &2094547626 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1076526468526304, guid: d5d498639f6b8ae44a480d6833319e9e,
-    type: 2}
-  m_PrefabInternal: {fileID: 1961434098}
 --- !u!1 &2101387902
 GameObject:
   m_ObjectHideFlags: 0
