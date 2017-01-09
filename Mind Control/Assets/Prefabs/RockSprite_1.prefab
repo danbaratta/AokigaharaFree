@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 212847309364388700}
   - component: {fileID: 61326815354536398}
   m_Layer: 0
-  m_Name: New Sprite
+  m_Name: RockSprite_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

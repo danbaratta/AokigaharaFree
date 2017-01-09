@@ -45,7 +45,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 116454}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.35, y: -1.15, z: -1}
+  m_LocalPosition: {x: -2.57, y: -1.9, z: -1}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_Children:
   - {fileID: 474886}
@@ -76,8 +76,8 @@ Rigidbody2D:
   m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 1
-  m_Mass: 2.562885
+  m_UseAutoMass: 0
+  m_Mass: 4
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -128,10 +128,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cea6bc428b8ba94c8d5be4081770474, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dashSpeed: 35
-  dashTimer: 0.25
-  ConstDashTimer: 0.25
+  walkSpeed: 5
+  walkAccel: 1
+  dashSpeed: 30
+  dashTimer: 0.3
+  ConstDashTimer: 0.3
   Dash: 0
+  jumpAccel: 7
+  initJumpSpeed: 0
 --- !u!114 &11426916
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -143,9 +147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8715284f883bd4013ba0528b830446b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Yurei1: {fileID: 0}
   curState: 0
-  isOni: 0
   isPossessing: 0
   groundCheck: {fileID: 474886}
   walkableLayer:
@@ -154,7 +156,6 @@ MonoBehaviour:
   groundCheckRadius: 0.1
   onGround: 0
   canControl: 1
-  canJump: 1
   right: 1
   bulletTimer: 0
   bulletTimeMax: 0.15
@@ -166,7 +167,7 @@ MonoBehaviour:
   PowerSlider: {fileID: 0}
   m_MaxPowerBar: 100
   m_CurrentPower: 100
-  RadialCanvus: {fileID: 0}
+  RadialCanvas: {fileID: 0}
 --- !u!212 &21247398
 SpriteRenderer:
   m_ObjectHideFlags: 1

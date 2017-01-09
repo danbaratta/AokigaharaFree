@@ -3,7 +3,9 @@ using System.Collections;
 
 public class Morgan : MonoBehaviour {
 
+	[SerializeField]
 	private float walkSpeed = 5f;
+	[SerializeField]
 	private float walkAccel = 1f;
 
 	public float dashSpeed = 20f;
@@ -11,9 +13,13 @@ public class Morgan : MonoBehaviour {
     public float ConstDashTimer;
     public bool Dash;
 
+	[SerializeField]
 	private float jumpAccel = 0.5f;
+	[SerializeField]
 	private float initJumpSpeed = 8.5f;
+	[SerializeField]
 	private float jumpTimer = 0f;
+	[SerializeField]
 	private float maxJumpTimer = 0.1f;
 
 	private SpriteRenderer morganSprite;
@@ -62,5 +68,15 @@ public class Morgan : MonoBehaviour {
 	public SpriteRenderer MorganSprite()
 	{
 		return morganSprite;
+	}
+
+	public void IncrementJumpTimer()
+	{
+		jumpTimer += Time.deltaTime;
+	}
+
+	public void resetJumpTimer()
+	{
+		jumpTimer = 0;
 	}
 }
