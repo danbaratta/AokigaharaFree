@@ -203,7 +203,10 @@ public class Base_Enemy : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    /// If was spawn by Pool Manager will be re used later but removed so player does not see it
+    /// See PoolManager if confused
+    /// </summary>
     public void PlayerReset()
     {
         if (!NotSpawned)
@@ -227,7 +230,10 @@ public class Base_Enemy : MonoBehaviour
         SetState(EnemyState.Idle);
     }
 
-
+    /// <summary>
+    /// If was spawn by Pool Manager will be re used later but removed so player does not see it
+    /// See PoolManager if confused
+    /// </summary>
     public bool RemoveThis()
     {
         if (!NotSpawned)

@@ -113,6 +113,7 @@ public class MorganStateMachine : MonoBehaviour
 
     void Awake()
     {
+        // Check if object in level if not create it ( Should be set in level this is safe catch)
         if (GameObject.Find("Abilities") != null)
         {
             m_Abilities = GameObject.Find("Abilities").GetComponent<Abilities>();
@@ -124,6 +125,7 @@ public class MorganStateMachine : MonoBehaviour
             Debug.Log("Did not create Abilties prefab in level but i'll create it this once");
         }
 
+        // Check if object in level if not create it ( this does not need be set in level craeted own its own)
         if (RadialCanvas == null)
         {
             RadialCanvas = ((GameObject)Instantiate(Resources.Load("Abilities/RadialMenu")));
@@ -172,19 +174,20 @@ public class MorganStateMachine : MonoBehaviour
             Debug.Log("PowerSlider is not linked in morgan going to crash!");
 
         }
-
+        //Save the Gravity since some level will have different gravity
         m_DefaultGravityScale = GetComponent<Rigidbody2D>().gravityScale;
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Safe Check just in case player fall though level some house will teleport player to safe area
         if(transform.position.y <-15)
         {
             SpawnPlayer();
             Debug.Log("Player has fallen though a hole in the level Fix that. Most likly forgot put pitfall prefab in");
         }
-
+        // If we are teleporting we dont update
         if (!m_Teleport)
         {
             psm[curState].Invoke();
@@ -204,6 +207,7 @@ public class MorganStateMachine : MonoBehaviour
         //        m_Abilities.TelekinesisOff();
         //}
 
+        //Test
         if (Input.GetKeyDown(KeyCode.O))
         {
             if (m_Abilities.Teleport())
@@ -224,6 +228,10 @@ public class MorganStateMachine : MonoBehaviour
             m_RadialBool = false;
         }
     }
+
+    /// <summary>
+    /// Flip the Character around
+    /// </summary>
 
     void Flip(bool Turn)
     {
@@ -317,6 +325,9 @@ public class MorganStateMachine : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// After player uses dash will count down to timelimt is hit and turn off dash
+    /// </summary>
     void StateDash()
     {
         Morgan.Dash = false;
@@ -399,8 +410,8 @@ public class MorganStateMachine : MonoBehaviour
         SetState(PlayerStateMachine.STATE_ONI);
         Debug.Log("made it this far... setstate.state_oni");
         GetComponent<Rigidbody2D>().velocity = new Vector2();
-        a.runtimeAnimatorController = OniAnimator;
-
+        a.runtimeAnimatorController = OniAnimator;// Use oni controller to do oni animations
+        GetComponent<Rigidbody2D>().gravityScale = m_DefaultGravityScale;
     }
 
     void TransitionFromOni()
@@ -409,7 +420,7 @@ public class MorganStateMachine : MonoBehaviour
         SetState(PlayerStateMachine.IDLE);
         a.SetBool("Walk", false);
         GetComponent<Rigidbody2D>().gravityScale = m_DefaultGravityScale;
-        a.runtimeAnimatorController = MorganAnimator;
+        a.runtimeAnimatorController = MorganAnimator; // Use morgan animation controller
         possess = false;
         isOni = false;
         possessTimer = 0f;
@@ -452,7 +463,7 @@ public class MorganStateMachine : MonoBehaviour
     public void TransitionFromYurei()
     {
         isPossessing = false;
-        gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
+        //gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
         SetState(PlayerStateMachine.IN_AIR);
         possess = false;
         isYurei = false;
@@ -538,8 +549,6 @@ public class MorganStateMachine : MonoBehaviour
                                     }
                                 }
                             }
-                            break;
-                        case Abilities.m_Abilities.Telekinesis:
                             break;
                         case Abilities.m_Abilities.Teleport:
                             {
@@ -696,6 +705,7 @@ public class MorganStateMachine : MonoBehaviour
         }
     }
 
+
     public void IsYurei(bool _IsYurei)      // lets Possession function know which state to enter when possessing
     {
         isYurei = _IsYurei;
@@ -705,11 +715,13 @@ public class MorganStateMachine : MonoBehaviour
     {
         isOni = _IsOni;
     }
+    // Orgainal Code  Base not sure still being used
 
     public void GetTargetX(float _GetTargetX)
     {
         possessedLocX = _GetTargetX;
     }
+    // Orgainal Code  Base not sure still being used
 
     public void GetTargetY(float _GetTargetY)
     {
@@ -720,6 +732,7 @@ public class MorganStateMachine : MonoBehaviour
     {
         possess = _Possess;
     }
+    // Orgainal Code  Base not sure still being used
 
     public void Right(bool _Right)
     {
@@ -738,6 +751,11 @@ public class MorganStateMachine : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Default throw them in X and Y direction
+    /// See code
+    /// </summary>
+    /// <param name="Direction"></param>
     public void GetThrown(bool Direction)
     {
         //		gameObject.GetComponent<Rigidbody2D> ().velocity += new Vector2 (GetComponent<Rigidbody2D> ().velocity.x * -20f, 0f);	
@@ -789,7 +807,10 @@ public class MorganStateMachine : MonoBehaviour
         GamePad.SetVibration(PlayerIndex.One, 1, 1);
     }
 
-
+    /// <summary>
+    /// When player Died Grab last CheckPoint pass
+    /// When player respawned all Enemies that were spawn get reset
+    /// </summary>
     public void SpawnPlayer()
     {
         //transform.position = SpawnPoint.transform.position;
@@ -804,11 +825,17 @@ public class MorganStateMachine : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// OutSide Script (Checkpoint script) Call this function sending it location
+    /// </summary>
     public void CheckPointUpdate(Vector3 location)
     {
         m_CheckPoint = new Vector2(location.x, location.y);
     }
-
+    /// <summary>
+    /// Update  player power level and UI element
+    /// </summary>
+    /// <param name="PowerBar"></param>
     public void PowerBar(int PowerBar)
     {
         m_CurrentPower += PowerBar;
@@ -819,7 +846,10 @@ public class MorganStateMachine : MonoBehaviour
         if (PowerSlider)
             PowerSlider.value = (float)m_CurrentPower / (float)m_MaxPowerBar;
     }
-
+    /// <summary>
+    /// Check if have enough power to use a skill
+    /// If you have power will update values
+    /// </summary>
     public bool CanUseAbilbity(int Power)
     {
         int temp = m_CurrentPower - Power;
@@ -836,6 +866,9 @@ public class MorganStateMachine : MonoBehaviour
         m_Teleport = false;
     }
 
+    /// <summary>
+    /// Hide player and turn off sprite, gravity and colliders
+    /// </summary>
     public void TeleportOn()
     {
         GetComponent<BoxCollider2D>().enabled = false;
@@ -845,6 +878,9 @@ public class MorganStateMachine : MonoBehaviour
         m_Teleport = true;
     }
 
+    /// <summary>
+    /// Un-Hide player and turn on sprite, gravity and colliders
+    /// </summary>
     public void TeleportOff()
     {
         GetComponent<BoxCollider2D>().enabled = true;
@@ -853,7 +889,11 @@ public class MorganStateMachine : MonoBehaviour
         m_Teleport = false;
     }
 
-
+    /// <summary>
+    /// Turn on Radial Menu and slow down game time
+    /// Game wil still update but super slow like game it pause but not
+    /// (If set 0 no game object will update. Dont set to 0)
+    /// </summary>
     void RadialMenu()
     {
         if (RadialCanvas)

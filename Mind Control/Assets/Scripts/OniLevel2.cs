@@ -28,7 +28,7 @@ public class OniLevel2 : Base_Enemy
         AttackBox.enabled = false;
         if (m_UseNavMesh)
         {
-            Agent = gameObject.AddComponent<UnityEngine.AI.NavMeshAgent>();
+            Agent = gameObject.AddComponent<UnityEngine.AI.NavMeshAgent>();// Use when want more advance AI like jump on jump pads and really following the player
             if (!Agent.isOnNavMesh)
                 m_UseNavMesh = false;
             Agent.updateRotation = false;
@@ -66,13 +66,13 @@ public class OniLevel2 : Base_Enemy
         {
             if (Vector2.Distance(Morgan.transform.position, transform.position) > m_Distance)
             {
-                if (!NotSpawned)
+                if (!NotSpawned)// If pool manager did not spawn this delete itself
                     RemoveThis();
                 GetComponent<Rigidbody2D>().velocity = new Vector2();
             }
             else
             {
-                base.Update();
+                base.Update(); // call base update See Base_enemy Script
             }
         }
     }

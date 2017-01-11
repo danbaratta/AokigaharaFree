@@ -43,7 +43,10 @@ public class PlayerHealth : MonoBehaviour
         damaged = false;
     }
 
-
+    /// <summary>
+    /// AI send message to this script and update damage taken to player
+    /// </summary>
+    /// <param name="amount"></param>
     public void TakeDamage(int amount)
     {
         if (Sheild && Sheild.activeSelf)

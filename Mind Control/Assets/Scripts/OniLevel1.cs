@@ -22,9 +22,8 @@ public class OniLevel1 : Base_Enemy
         base.Start();
         Health = Max_Health;
         AttackBox.enabled = false;
-        if (m_UseNavMesh)
+        if (m_UseNavMesh) // Use when want more advance AI like jump on jump pads and really following the player
         {
- //FindObjectOfType< UnityEngine.AI.NavMesh > ();
             Agent = gameObject.AddComponent<UnityEngine.AI.NavMeshAgent>();
             if (!Agent.isOnNavMesh)
                 m_UseNavMesh = false;
@@ -55,20 +54,18 @@ public class OniLevel1 : Base_Enemy
             x = GetComponent<Rigidbody2D>().velocity.x;
             y = GetComponent<Rigidbody2D>().velocity.y;
             Agent.velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, GetComponent<Rigidbody2D>().velocity.y);
-
-            y = 5;
         }
         else
         {
             if (Vector2.Distance(Morgan.transform.position, transform.position) > m_Distance)
             {
-                if (!NotSpawned)
+                if (!NotSpawned) // If pool manager did not spawn this delete itself
                     RemoveThis();
                 GetComponent<Rigidbody2D>().velocity = new Vector2();
             }
             else
             {
-                base.Update();
+                base.Update(); // call base update See Base_enemy Script
             }
         }
     }
@@ -139,6 +136,8 @@ public class OniLevel1 : Base_Enemy
         temp.y = 0;
         temp.x = -temp.x * MoveSpeed;
 
+
+        // Update which way to face
         if (temp.x <= 0)
             Flip(true);
         else if (temp.x > 0)
