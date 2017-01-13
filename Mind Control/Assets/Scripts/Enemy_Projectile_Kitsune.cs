@@ -1,33 +1,39 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Enemy_Projectile : MonoBehaviour
+public class Enemy_Projectile_Kitsune : MonoBehaviour
 {
 
-    float moveSpeed = 9.0f;
+    public float moveSpeed = 9.0f;
 
-    public GameObject bullet;
+
     bool DirectionRight = true;
 
     public int Damage = 5;
     //pool manger ref
     PoolManager m_PoolManager;
-    PoolManager.EnemiesType Type = PoolManager.EnemiesType.EnemyBullets;
-    float LifeTimer = 3;
+    PoolManager.EnemiesType Type = PoolManager.EnemiesType.Hanya_Bullet;
+    public float LifeTimer = 3;
+    float m_LifeTimer;
+
+    public bool Fire = false;
     // Use this for initialization
     void Start()
     {
-        bullet = gameObject;
         m_PoolManager = GameObject.Find("PoolManager").GetComponent<PoolManager>();
+        m_LifeTimer = LifeTimer;
     }
 
     // Update is called once per frame
     void Update()
     {
-        MoveProjectile();
-        LifeTimer -= Time.deltaTime;
-        if (LifeTimer <= 0)
-            m_PoolManager.Remove(gameObject, Type);
+        if (Fire)
+        {
+            MoveProjectile();
+            m_LifeTimer -= Time.deltaTime;
+            if (m_LifeTimer <= 0)
+                m_PoolManager.Remove(gameObject, Type);
+        }
     }
 
     void MoveProjectile()
@@ -47,11 +53,11 @@ public class Enemy_Projectile : MonoBehaviour
         if (other.tag == "Player")
         {
             other.gameObject.SendMessage("TakeDamage", Damage, SendMessageOptions.DontRequireReceiver);
-            m_PoolManager.Remove(gameObject, Type);
+            if (Fire)
+                m_PoolManager.Remove(gameObject, Type);
         }
-       else if (other.tag == "Bullet")
+        else if (other.tag == "Bullet")
         {
-            m_PoolManager.Remove(gameObject, Type);
             m_PoolManager.Remove(other.gameObject, PoolManager.EnemiesType.PlayerBullets);
         }
     }
@@ -82,6 +88,11 @@ public class Enemy_Projectile : MonoBehaviour
 
     public void Reset()
     {
-        LifeTimer = 3;
+        m_LifeTimer = LifeTimer;
+        Fire = false;
+    }
+    public void FireBullet()
+    {
+        Fire = true;
     }
 }

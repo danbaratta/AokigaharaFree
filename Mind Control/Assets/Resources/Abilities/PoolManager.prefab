@@ -84,5 +84,5 @@ MonoBehaviour:
       type: 2}
     Count: 10
   - Type: 10
-    m_GameObject: {fileID: 171898, guid: b30586f3b17591046893330cbe351c0e, type: 2}
+    m_GameObject: {fileID: 171898, guid: 674ce3c480acb794593786c38dd5e9e3, type: 2}
     Count: 4

@@ -51,10 +51,10 @@ public class Projectile : MonoBehaviour
             other.gameObject.SendMessage("TakeDamage", Damage, SendMessageOptions.DontRequireReceiver);
             m_PoolManager.Remove(gameObject, Type);
         }
-      else  if(other.tag == "Bullet")
-        {
-            m_PoolManager.Remove(gameObject, Type);
-        }
+      //else  if(other.tag == "Bullet")
+      //  {
+      //      m_PoolManager.Remove(gameObject, Type);
+      //  }
     }
 
     public void FlipAxisLeft()

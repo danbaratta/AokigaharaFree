@@ -92,6 +92,19 @@ public class Boss_Kitsune : Base_Enemy
 
     bool m_IdleAttack;
 
+    public float DelayBetweenHanyaTripleAttack = 15;
+    public float DelayBetweenHanyaTripleEffect = 8;
+    public float DelayBetweenHanyaTripleFire = 2;
+    public float BulletSpacing = 1.5f;
+
+    float m_DelayBetweenHanyaTripleEffectTimer;
+    float m_DelayBetweenHanyaTripleFireTimer;
+    float m_HanyaTripleAttackTimer;
+    bool m_HanyaTripleAttack = false;
+
+    public int HowManyHanyaBullets = 3;
+    GameObject[] m_HanyaBullets;
+    float[] m_HanyaBulletsAngles;
     // Use this for initialization
     public override void Start()
     {
@@ -112,6 +125,11 @@ public class Boss_Kitsune : Base_Enemy
         SetState(EnemyState.Attack);
 
         Physics2D.IgnoreCollision(Morgan.GetComponent<Collider2D>(), RangeCollider, true);
+        m_HanyaBullets = new GameObject[HowManyHanyaBullets];
+        m_HanyaBulletsAngles = new float[HowManyHanyaBullets];
+        //HanyaTripleAttackOn();
+        m_DelayBetweenHanyaTripleEffectTimer = DelayBetweenHanyaTripleEffect;
+        m_DelayBetweenHanyaTripleFireTimer = .1f;
     }
 
     // Update is called once per frame
@@ -189,7 +207,7 @@ public class Boss_Kitsune : Base_Enemy
         float direction = gameObject.transform.position.x - Morgan.transform.position.x;
         float Dis = direction * direction;
         Dis = Mathf.Sqrt(Dis);
-        if (!m_Dash && !m_DashEvade && AttackMode)
+        if (!m_Dash && !m_DashEvade && AttackMode && !m_HanyaTripleAttack)
         {
             if (!anim.GetBool("Attack"))
             {
@@ -199,12 +217,12 @@ public class Boss_Kitsune : Base_Enemy
                     anim.SetBool("Walk", true);
                 }
             }
-            if (direction <= 0 && Dis>1)
+            if (direction <= 0 && Dis > 1)
             {
                 Flip(true);
                 GetComponent<Rigidbody2D>().velocity = new Vector2(MoveSpeed * 25 * Time.deltaTime, GetComponent<Rigidbody2D>().velocity.y);
             }
-            else if(Dis>1)
+            else if (Dis > 1)
             {
                 Flip(false);
                 GetComponent<Rigidbody2D>().velocity = new Vector2(-MoveSpeed * 25 * Time.deltaTime, GetComponent<Rigidbody2D>().velocity.y);
@@ -216,12 +234,12 @@ public class Boss_Kitsune : Base_Enemy
             }
             // Debug.Log(GetComponent<Rigidbody2D>().velocity); 
         }
-        else if(!m_Dash && !m_DashEvade)
+        else if (!m_Dash && !m_DashEvade && m_HanyaTripleAttack)
         {
             //GetComponent<Rigidbody2D>().velocity = new Vector2();
             if (anim.GetBool("Walk"))
             {
-                anim.SetBool("Walk", false);              
+                anim.SetBool("Walk", false);
             }
             if (direction <= 0)
                 Flip(true);
@@ -229,10 +247,10 @@ public class Boss_Kitsune : Base_Enemy
                 Flip(false);
         }
 
-        if(m_Dash)
+        if (m_Dash)
         {
             if (!Mirror)
-            {              
+            {
                 gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(DashSpeed, 0);
             }
             else
@@ -401,7 +419,12 @@ public class Boss_Kitsune : Base_Enemy
 
     public void MidHealth()
     {
-
+        if (m_HanyaTripleAttackTimer <= 0 && !m_HanyaTripleAttack)
+        {
+            HanyaTripleAttackOn();
+        }
+        else if (m_HanyaTripleAttack)
+            HanyaTripleAttack();
     }
     public void LowHeath()
     {
@@ -420,6 +443,7 @@ public class Boss_Kitsune : Base_Enemy
         m_DashTimer -= Time.deltaTime;
         m_DashEvadeTimer -= Time.deltaTime;
         m_HanyaAttackTimer -= Time.deltaTime;
+        m_HanyaTripleAttackTimer -= Time.deltaTime;
         if (m_MeleeTimer <= 0 || m_DashTimer <= 0)
         {
             AttackMode = true;
@@ -468,7 +492,7 @@ public class Boss_Kitsune : Base_Enemy
         float direction = gameObject.transform.position.x - Morgan.transform.position.x;
 
         int Bits = 1 << 8;
-        RaycastHit2D Ray= Physics2D.Raycast(gameObject.transform.position, new Vector2(-direction, 0), 25, Bits);
+        RaycastHit2D Ray = Physics2D.Raycast(gameObject.transform.position, new Vector2(-direction, 0), 25, Bits);
         Debug.DrawRay(gameObject.transform.position, new Vector2(-direction, 0) * 25);
         if (Ray.collider != null)
         {
@@ -586,8 +610,8 @@ public class Boss_Kitsune : Base_Enemy
             TempBullet.SendMessage("FlipAxisLeft");
         else
             TempBullet.SendMessage("FlipAxisRight");
-
-        TempBullet.GetComponent<Enemy_Projectile>().Damage = HanyaDmg;
+        TempBullet.SendMessage("FireBullet");
+        TempBullet.GetComponent<Enemy_Projectile_Kitsune>().Damage = HanyaDmg;
 
         m_HanyaAttackTimer = DelayBetweenHanyaAttack;
 
@@ -715,4 +739,74 @@ public class Boss_Kitsune : Base_Enemy
             anim.SetBool("Attack", false);
     }
 
+
+
+    void HanyaTripleAttackOn()
+    {
+        anim.Play("Idle");
+
+        GetComponent<Rigidbody2D>().velocity = new Vector2();
+        m_HanyaTripleAttack = true;
+
+        for (int i = 0; i < HowManyHanyaBullets; i++)
+        {
+            m_HanyaBullets[i] = GetPoolManager().FindClass(PoolManager.EnemiesType.Hanya_Bullet);
+            m_HanyaBullets[i].transform.parent = gameObject.transform;
+            m_HanyaBullets[i].transform.localPosition = new Vector3(0, 8, 0);
+            m_HanyaBullets[i].transform.RotateAround(transform.position, new Vector3(1, 1, 1), (float)i * (float)(360 / HowManyHanyaBullets));
+            m_HanyaBullets[i].transform.rotation = Quaternion.identity;
+            m_HanyaBulletsAngles[i] = (float)i * (float)(360 / HowManyHanyaBullets);
+
+        }
+
+    }
+
+    void HanyaTripleAttack()
+    {
+        m_DelayBetweenHanyaTripleEffectTimer -= Time.deltaTime;
+        m_DelayBetweenHanyaTripleFireTimer -= Time.deltaTime;
+
+        if (m_DelayBetweenHanyaTripleEffectTimer > 0 && m_DelayBetweenHanyaTripleFireTimer > 0)
+        {
+            for (int i = 0; i < HowManyHanyaBullets; i++)
+            {
+                if (m_HanyaBullets[i] == null)
+                    continue;
+                m_HanyaBulletsAngles[i] += Time.deltaTime;
+                if (m_HanyaBulletsAngles[i] >= 360)
+                    m_HanyaBulletsAngles[i] = m_HanyaBulletsAngles[i] - 360;
+                m_HanyaBullets[i].transform.RotateAround(transform.position, new Vector3(1, 1, 1),Time.deltaTime*50);
+                m_HanyaBullets[i].transform.rotation = Quaternion.identity;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < HowManyHanyaBullets; i++)
+            {
+                if (m_HanyaBullets[i])
+                {
+                    m_HanyaBullets[i].transform.localPosition = new Vector3(0, -3 + i * BulletSpacing, 0);
+                    m_HanyaBullets[i].transform.parent = null;
+                    if (Mirror)
+                        m_HanyaBullets[i].SendMessage("FlipAxisLeft");
+                    else
+                        m_HanyaBullets[i].SendMessage("FlipAxisRight");
+                    m_DelayBetweenHanyaTripleFireTimer = DelayBetweenHanyaTripleFire;
+                    m_HanyaBullets[i].SendMessage("FireBullet");
+                    m_HanyaBullets[i] = null;
+                    if (i == HowManyHanyaBullets - 1)
+                        HanyaTripleAttackOff();
+                    break;
+                }
+            }
+        }
+    }
+
+    void HanyaTripleAttackOff()
+    {
+        m_DelayBetweenHanyaTripleFireTimer = DelayBetweenHanyaTripleFire;
+        m_DelayBetweenHanyaTripleEffectTimer = DelayBetweenHanyaTripleEffect;
+        m_HanyaTripleAttackTimer = DelayBetweenHanyaTripleAttack;
+        m_HanyaTripleAttack = false;
+    }
 }
