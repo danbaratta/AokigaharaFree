@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4043002254273594}
   - component: {fileID: 212615924689092896}
+  - component: {fileID: 61110759369948618}
   m_Layer: 13
   m_Name: Platform_Rock_1
   m_TagString: Walkable
@@ -51,7 +52,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1374088018610208}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.26001072, y: -3.026357, z: 35.03}
+  m_LocalPosition: {x: 11.96, y: 1.83, z: 0}
   m_LocalScale: {x: 5.9916086, y: 0.5645636, z: 1}
   m_Children:
   - {fileID: 4114735355594248}
@@ -71,6 +72,20 @@ Transform:
   m_Father: {fileID: 4043002254273594}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &61110759369948618
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1374088018610208}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
 --- !u!61 &61758012934505132
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -82,9 +97,9 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_Offset: {x: -0.0019121378, y: 0.10077399}
+  m_Offset: {x: 0.004646584, y: 0.019269824}
   serializedVersion: 2
-  m_Size: {x: 1.022946, y: 0.79845184}
+  m_Size: {x: 1.0622944, y: 0.96146023}
 --- !u!114 &114309592067501100
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -126,7 +141,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 9b9db1c661140184abce4107f8d743ff, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
