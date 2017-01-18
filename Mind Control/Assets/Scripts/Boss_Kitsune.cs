@@ -54,14 +54,21 @@ public class Boss_Kitsune : Base_Enemy
 
 
     // New Stuff
+    bool m_SkillBeingUsed;
+
+
     public float AttackRange = 10;
     public GameObject[] TeleportLocations;
 
     public float DelayBetweenMeleeAttack = 1;
     float m_MeleeTimer;
 
-    public float DelayBetweenTeleport = 1;
-    float m_TeleportTimer;
+    public float DelayBetweenAttackTeleport = 1;
+    public float DelayBetweenFleeTeleport = 1;
+    public float DelayBetweenRandomTeleport = 1;
+    float m_TeleportAttackTimer;
+    float m_TeleportFleeTimer;
+    float m_TeleportRandomTimer;
 
     public float DelayBetweenDash = 1;
     public float DelayBetweenDashEvade = 2;
@@ -89,6 +96,11 @@ public class Boss_Kitsune : Base_Enemy
     //
     bool m_SwordSlash;
     bool m_SwordSlashSpin;
+    public float SwordSlashSpinLength;
+    public float SwordSlashSpinDelay = 10;
+    float m_SwordSlashSpinDelay;
+    float m_SwordSlashSpinLengthTimer;
+    Vector2 m_SowrdSlashStartLocation;
 
     bool m_IdleAttack;
 
@@ -207,11 +219,11 @@ public class Boss_Kitsune : Base_Enemy
         float direction = gameObject.transform.position.x - Morgan.transform.position.x;
         float Dis = direction * direction;
         Dis = Mathf.Sqrt(Dis);
-        if (!m_Dash && !m_DashEvade && AttackMode && !m_HanyaTripleAttack)
+        if (!m_Dash && !m_DashEvade && AttackMode && !m_HanyaTripleAttack && !m_SwordSlashSpin)
         {
             if (!anim.GetBool("Attack"))
             {
-                if (!anim.GetBool("Walk"))
+                if (!anim.GetBool("Walk") && !m_SwordSlashSpin)
                 {
                     anim.Play("Walk");
                     anim.SetBool("Walk", true);
@@ -245,6 +257,14 @@ public class Boss_Kitsune : Base_Enemy
                 Flip(true);
             else
                 Flip(false);
+        }
+        else if (m_SwordSlashSpin)
+        {
+            anim.Play("SpinAttack");
+            if(m_SwordSlashSpinLengthTimer < 0)
+            {
+                m_SwordSlashSpin = false;
+            }
         }
 
         if (m_Dash)
@@ -311,7 +331,7 @@ public class Boss_Kitsune : Base_Enemy
         {
             Invoke("DashOff", .1f);
         }
-        else if (other.tag == "Player")
+        else if (other.tag == "Player" && !m_SwordSlashSpin)
         {
             playerHealth.TakeDamage(Damage);
             if (direction <= 0)
@@ -320,8 +340,19 @@ public class Boss_Kitsune : Base_Enemy
                 msm.GetThrown(true);
             anim.Play("Melee");
         }
-
-        if (other.tag == "Bullet")
+        else if (other.tag == "Player" && !m_SwordSlashSpin)
+        {
+            playerHealth.TakeDamage(Damage);
+            if (direction <= 0)
+                msm.GetThrown(false);
+            else
+                msm.GetThrown(true);
+            anim.Play("Idle");
+            transform.position = m_SowrdSlashStartLocation;
+            m_SwordSlashSpin = false;
+            m_SwordSlashSpinDelay = SwordSlashSpinDelay;
+        }
+            if (other.tag == "Bullet")
         {
             //if (direction <= 0)
             //{
@@ -395,15 +426,15 @@ public class Boss_Kitsune : Base_Enemy
         {
             Dash();
         }
-        else if (m_MeleeTimer <= 0 && m_TeleportTimer <= 0 && !m_TeleportEffect)
+        else if (!m_SkillBeingUsed && m_TeleportAttackTimer <= 0 && !m_TeleportEffect)
         {
             TeleportEffects("AttackTeleport");
         }
-        else if (m_MeleeTimer <= 0 && Dis <= AttackRange)
+        else if (!m_SkillBeingUsed &&m_MeleeTimer <= 0 && Dis <= AttackRange)
         {
             SwordSlash();
         }
-        else if (m_MeleeTimer > 0 && m_DashTimer > 0 && m_TeleportTimer <= 0 && !m_TeleportEffect)
+        else if (!m_SkillBeingUsed && m_TeleportFleeTimer <= 0 && !m_TeleportEffect)
         {
             TeleportEffects("FleeTeleport");
         }
@@ -419,16 +450,68 @@ public class Boss_Kitsune : Base_Enemy
 
     public void MidHealth()
     {
-        if (m_HanyaTripleAttackTimer <= 0 && !m_HanyaTripleAttack)
+
+        float Dis = Vector2.Distance(gameObject.transform.position, Morgan.transform.position);
+        if (!m_SkillBeingUsed&&m_HanyaAttackTimer <= 0)
+        {
+            HanyaAttack();
+        }
+        else if (m_DashTimer <= 0 && Dis >= AttackRange && !m_SkillBeingUsed)
+        {
+            Dash();
+        }
+        else if (!m_SkillBeingUsed && m_TeleportAttackTimer <= 0 && !m_TeleportEffect)
+        {
+            TeleportEffects("AttackTeleport");
+        }
+        else if (!m_SkillBeingUsed && m_MeleeTimer <= 0 && Dis <= AttackRange)
+        {
+            SwordSlash();
+        }
+        else if (!m_SkillBeingUsed && m_TeleportRandomTimer <= 0 && !m_TeleportEffect)
+        {
+            TeleportEffects("FleeTeleport");
+        }
+        else if (m_DashEvadeTimer < 0 && !m_DashEvade)
+        {
+            DashEvasive();
+        }
+    }
+    public void LowHeath()
+    {
+
+        float Dis = Vector2.Distance(gameObject.transform.position, Morgan.transform.position);
+
+        if (!m_SkillBeingUsed &&m_HanyaTripleAttackTimer <= 0 && !m_HanyaTripleAttack)
         {
             HanyaTripleAttackOn();
         }
         else if (m_HanyaTripleAttack)
             HanyaTripleAttack();
-    }
-    public void LowHeath()
-    {
-
+        else if (!m_SkillBeingUsed &&m_SwordSlashSpinDelay <= 0 && !m_SwordSlashSpin)
+        {
+            SwordSlashSpin();
+        }
+        else if (m_DashTimer <= 0 && Dis >= AttackRange && !m_SkillBeingUsed)
+        {
+            Dash();
+        }
+        else if (!m_SkillBeingUsed && m_TeleportAttackTimer <= 0 && !m_TeleportEffect)
+        {
+            TeleportEffects("AttackTeleport");
+        }
+        else if (!m_SkillBeingUsed && m_MeleeTimer <= 0 && Dis <= AttackRange)
+        {
+            SwordSlash();
+        }
+        else if (!m_SkillBeingUsed && m_TeleportRandomTimer <= 0 && !m_TeleportEffect)
+        {
+            TeleportEffects("FleeTeleport");
+        }
+        else if (m_DashEvadeTimer < 0 && !m_DashEvade)
+        {
+            DashEvasive();
+        }
     }
 
     public void SuperLowHealth()
@@ -438,12 +521,15 @@ public class Boss_Kitsune : Base_Enemy
 
     void TimerUpdate()
     {
-        m_TeleportTimer -= Time.deltaTime;
+        m_TeleportAttackTimer -= Time.deltaTime;
+        m_TeleportFleeTimer -= Time.deltaTime;
+        m_TeleportRandomTimer -= Time.deltaTime;
         m_MeleeTimer -= Time.deltaTime;
         m_DashTimer -= Time.deltaTime;
         m_DashEvadeTimer -= Time.deltaTime;
         m_HanyaAttackTimer -= Time.deltaTime;
         m_HanyaTripleAttackTimer -= Time.deltaTime;
+        m_SwordSlashSpinDelay -= Time.deltaTime;
         if (m_MeleeTimer <= 0 || m_DashTimer <= 0)
         {
             AttackMode = true;
@@ -520,6 +606,8 @@ public class Boss_Kitsune : Base_Enemy
                 Invoke("DashOff", DashTimeLength);
                 anim.SetBool("Attack", true);
                 anim.SetBool("Walk", false);
+                m_SkillBeingUsed = true;
+
             }
             else
                 m_DashTimer = 1;
@@ -550,6 +638,8 @@ public class Boss_Kitsune : Base_Enemy
         anim.Play("Run");
         Invoke("DashOff", DashEvadeTimeLength);
         anim.SetBool("Walk", false);
+        m_SkillBeingUsed = true;
+
     }
 
     void DashOff()
@@ -577,6 +667,8 @@ public class Boss_Kitsune : Base_Enemy
         else
             anim.Play("Idle");
         anim.SetBool("Attack", false);
+        m_SkillBeingUsed = false;
+
     }
 
     void SwordSlash()
@@ -592,17 +684,23 @@ public class Boss_Kitsune : Base_Enemy
         anim.SetBool("Attack", true);
         m_SwordSlash = true;
         m_MeleeTimer = DelayBetweenMeleeAttack;
+
         // 
         Invoke("SetWalkStateInvoke", .4f);
     }
 
     void SwordSlashSpin()
     {
+        m_SwordSlashSpin = true;
+        anim.Play("SpinAttack");
+        m_SowrdSlashStartLocation = gameObject.transform.position;
+        m_SwordSlashSpinLengthTimer = SwordSlashSpinLength;
 
     }
 
     void HanyaAttack()
     {
+        anim.Play("Shoot");
         GameObject TempBullet = GetPoolManager().FindClass(PoolManager.EnemiesType.Hanya_Bullet);
         TempBullet.transform.position = gameObject.transform.position;
         TempBullet.transform.rotation = Quaternion.identity;
@@ -614,6 +712,7 @@ public class Boss_Kitsune : Base_Enemy
         TempBullet.GetComponent<Enemy_Projectile_Kitsune>().Damage = HanyaDmg;
 
         m_HanyaAttackTimer = DelayBetweenHanyaAttack;
+        m_SkillBeingUsed = false;
 
     }
 
@@ -622,6 +721,8 @@ public class Boss_Kitsune : Base_Enemy
     {
         TurnOffCollision();
         m_TeleportEffect = true;
+        m_SkillBeingUsed = true;
+
         //Change for later
         Invoke(FunctionCall, TeleportEffectTimer);
     }
@@ -631,7 +732,7 @@ public class Boss_Kitsune : Base_Enemy
         TurnOnCollision();
 
         m_TeleportEffect = false;
-        m_TeleportTimer = DelayBetweenTeleport;
+        m_TeleportRandomTimer = DelayBetweenRandomTeleport;
         //Safe Check
         if (TeleportLocations.Length != 0)
         {
@@ -644,13 +745,14 @@ public class Boss_Kitsune : Base_Enemy
         }
         else
             Debug.Log("Boss Kitsume Does not have any teleport locations");
+        m_SkillBeingUsed = false;
     }
 
     void AttackTeleport()
     {
         TurnOnCollision();
         m_TeleportEffect = false;
-        m_TeleportTimer = DelayBetweenTeleport;
+        m_TeleportAttackTimer = DelayBetweenAttackTeleport;
         //Safe Check
         if (TeleportLocations.Length != 0)
         {
@@ -680,6 +782,7 @@ public class Boss_Kitsune : Base_Enemy
         }
         else
             Debug.Log("Boss Kitsume Does not have any teleport locations");
+        m_SkillBeingUsed = false;
     }
 
     void FleeTeleport()
@@ -687,7 +790,7 @@ public class Boss_Kitsune : Base_Enemy
         TurnOnCollision();
 
         m_TeleportEffect = true;
-        m_TeleportTimer = DelayBetweenTeleport;
+        m_TeleportFleeTimer = DelayBetweenFleeTeleport;
         //Safe Check
         if (TeleportLocations.Length != 0)
         {
@@ -717,6 +820,8 @@ public class Boss_Kitsune : Base_Enemy
         }
         else
             Debug.Log("Boss Kitsume Does not have any teleport locations");
+        m_SkillBeingUsed = false;
+
     }
 
     void SetWalkStateInvoke()
@@ -728,9 +833,18 @@ public class Boss_Kitsune : Base_Enemy
             anim.Play("Idle");
         anim.SetBool("Attack", false);
         if (m_SwordSlash)
+        {
             m_SwordSlash = false;
+            m_SkillBeingUsed = false;
+
+        }
         if (m_SwordSlashSpin)
+        {
             m_SwordSlashSpin = false;
+            m_SkillBeingUsed = false;
+
+        }
+
     }
 
     public void AttackOff()
@@ -775,7 +889,7 @@ public class Boss_Kitsune : Base_Enemy
                 m_HanyaBulletsAngles[i] += Time.deltaTime;
                 if (m_HanyaBulletsAngles[i] >= 360)
                     m_HanyaBulletsAngles[i] = m_HanyaBulletsAngles[i] - 360;
-                m_HanyaBullets[i].transform.RotateAround(transform.position, new Vector3(1, 1, 1),Time.deltaTime*50);
+                m_HanyaBullets[i].transform.RotateAround(transform.position, new Vector3(1, 1, 1), Time.deltaTime * 50);
                 m_HanyaBullets[i].transform.rotation = Quaternion.identity;
             }
         }
@@ -794,6 +908,7 @@ public class Boss_Kitsune : Base_Enemy
                     m_DelayBetweenHanyaTripleFireTimer = DelayBetweenHanyaTripleFire;
                     m_HanyaBullets[i].SendMessage("FireBullet");
                     m_HanyaBullets[i] = null;
+                    anim.Play("Shoot");
                     if (i == HowManyHanyaBullets - 1)
                         HanyaTripleAttackOff();
                     break;
@@ -808,5 +923,7 @@ public class Boss_Kitsune : Base_Enemy
         m_DelayBetweenHanyaTripleEffectTimer = DelayBetweenHanyaTripleEffect;
         m_HanyaTripleAttackTimer = DelayBetweenHanyaTripleAttack;
         m_HanyaTripleAttack = false;
+        m_SkillBeingUsed = false;
+
     }
 }
