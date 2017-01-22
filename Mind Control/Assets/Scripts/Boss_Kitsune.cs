@@ -117,6 +117,10 @@ public class Boss_Kitsune : Base_Enemy
     public int HowManyHanyaBullets = 3;
     GameObject[] m_HanyaBullets;
     float[] m_HanyaBulletsAngles;
+
+    bool m_RedFoxSpawn;
+    float m_DamageTaken = 0;
+
     // Use this for initialization
     public override void Start()
     {
@@ -153,28 +157,22 @@ public class Boss_Kitsune : Base_Enemy
         if (!m_BossLowHealth)
         {
             base.Update();
-
         }
         else
         {
-            //bool temp = false;
-            //for (int i = 0; i < m_SpawnEnemies.Count; i++)
-            //{
-            //    if (m_SpawnEnemies[i].activeSelf)
-            //        temp = true;
-            //}
-            //if (!temp)
-            //{
-            m_BossLowHealth = false;
-            //    Health = Max_Health / 2;
-            //    bossHealthSlider.value = Health;
-            //    TakeDamage(0);
-            //    m_Finish = true;
-            //    TurnOnCollision();
-            //    AttackBox.enabled = false;
-            //    GetComponent<Renderer>().enabled = true;
-            //    m_SpawnEnemies.Clear();
-            //}
+            bool temp = false;
+            for (int i = 0; i < m_SpawnEnemies.Count; i++)
+            {
+                if (m_SpawnEnemies[i].activeSelf)
+                    temp = true;
+            }
+            if (m_RedFoxSpawn && !temp)
+            {
+                m_RedFoxSpawn = false;
+                m_BossLowHealth = false;
+                TurnOnCollision();
+                GetComponent<Renderer>().enabled = true;
+            }
         }
     }
 
@@ -261,7 +259,7 @@ public class Boss_Kitsune : Base_Enemy
         else if (m_SwordSlashSpin)
         {
             anim.Play("SpinAttack");
-            if(m_SwordSlashSpinLengthTimer < 0)
+            if (m_SwordSlashSpinLengthTimer < 0)
             {
                 m_SwordSlashSpin = false;
             }
@@ -352,7 +350,7 @@ public class Boss_Kitsune : Base_Enemy
             m_SwordSlashSpin = false;
             m_SwordSlashSpinDelay = SwordSlashSpinDelay;
         }
-            if (other.tag == "Bullet")
+        if (other.tag == "Bullet")
         {
             //if (direction <= 0)
             //{
@@ -406,7 +404,10 @@ public class Boss_Kitsune : Base_Enemy
         }
         else //25%
         {
-            curHealthState = HealthStats.SuperLow;
+            if (curHealthState != HealthStats.SuperLow)
+                curHealthState = HealthStats.SuperLow;
+
+            m_DamageTaken += dmg;
         }
 
 
@@ -430,7 +431,7 @@ public class Boss_Kitsune : Base_Enemy
         {
             TeleportEffects("AttackTeleport");
         }
-        else if (!m_SkillBeingUsed &&m_MeleeTimer <= 0 && Dis <= AttackRange)
+        else if (!m_SkillBeingUsed && m_MeleeTimer <= 0 && Dis <= AttackRange)
         {
             SwordSlash();
         }
@@ -452,7 +453,7 @@ public class Boss_Kitsune : Base_Enemy
     {
 
         float Dis = Vector2.Distance(gameObject.transform.position, Morgan.transform.position);
-        if (!m_SkillBeingUsed&&m_HanyaAttackTimer <= 0)
+        if (!m_SkillBeingUsed && m_HanyaAttackTimer <= 0)
         {
             HanyaAttack();
         }
@@ -482,13 +483,13 @@ public class Boss_Kitsune : Base_Enemy
 
         float Dis = Vector2.Distance(gameObject.transform.position, Morgan.transform.position);
 
-        if (!m_SkillBeingUsed &&m_HanyaTripleAttackTimer <= 0 && !m_HanyaTripleAttack)
+        if (!m_SkillBeingUsed && m_HanyaTripleAttackTimer <= 0 && !m_HanyaTripleAttack)
         {
             HanyaTripleAttackOn();
         }
         else if (m_HanyaTripleAttack)
             HanyaTripleAttack();
-        else if (!m_SkillBeingUsed &&m_SwordSlashSpinDelay <= 0 && !m_SwordSlashSpin)
+        else if (!m_SkillBeingUsed && m_SwordSlashSpinDelay <= 0 && !m_SwordSlashSpin)
         {
             SwordSlashSpin();
         }
@@ -516,7 +517,11 @@ public class Boss_Kitsune : Base_Enemy
 
     public void SuperLowHealth()
     {
-
+        if (m_DamageTaken >= 20 && !m_RedFoxSpawn)
+        {
+            SpawnLastBossMinions();
+            m_DamageTaken = 0;
+        }
     }
 
     void TimerUpdate()
@@ -557,20 +562,20 @@ public class Boss_Kitsune : Base_Enemy
 
     void SpawnLastBossMinions()
     {
+        m_RedFoxSpawn = true;
         GameObject temp = GetPoolManager().FindClass(m_Enemy);
         temp.transform.position = gameObject.transform.position + new Vector3(3, 0, 0);
         temp.transform.rotation = Quaternion.identity;
         m_SpawnEnemies.Add(temp);
 
-        temp = GetPoolManager().FindClass(m_Enemy);
-        temp.transform.position = gameObject.transform.position + new Vector3(0, 0, 0);
-        temp.transform.rotation = Quaternion.identity;
-        m_SpawnEnemies.Add(temp);
 
-        temp = GetPoolManager().FindClass(m_Enemy);
-        temp.transform.position = gameObject.transform.position + new Vector3(-3, 0, 0);
-        temp.transform.rotation = Quaternion.identity;
-        m_SpawnEnemies.Add(temp);
+        // Add Teleport or jump function/action here
+
+        //Hide Boss
+        m_BossLowHealth = true;
+        GetComponent<Renderer>().enabled = false;
+        TurnOffCollision();
+
     }
 
     void Dash()
