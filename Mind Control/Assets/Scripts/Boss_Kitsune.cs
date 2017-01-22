@@ -172,6 +172,7 @@ public class Boss_Kitsune : Base_Enemy
                 m_BossLowHealth = false;
                 TurnOnCollision();
                 GetComponent<Renderer>().enabled = true;
+                m_SkillBeingUsed = false;
             }
         }
     }
@@ -517,11 +518,18 @@ public class Boss_Kitsune : Base_Enemy
 
     public void SuperLowHealth()
     {
-        if (m_DamageTaken >= 20 && !m_RedFoxSpawn)
+        if (!m_SkillBeingUsed && m_DamageTaken >= 20 && !m_RedFoxSpawn)
         {
             SpawnLastBossMinions();
             m_DamageTaken = 0;
+            m_SkillBeingUsed = true;
         }
+        else if (!m_SkillBeingUsed && m_HanyaTripleAttackTimer <= 0 && !m_HanyaTripleAttack)
+        {
+            HanyaTripleAttackOn();
+        }
+        else if (m_HanyaTripleAttack)
+            HanyaTripleAttack();
     }
 
     void TimerUpdate()
