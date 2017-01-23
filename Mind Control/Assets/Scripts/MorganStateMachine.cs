@@ -321,6 +321,7 @@ public class MorganStateMachine : MonoBehaviour
         {
 
             Morgan.resetJumpTimer(); // we want to keep the timer at 0 if we aren't pressing the jump key
+			Debug.Log("Morgan Jump Timer was reset");
             isJumping = false;
         }
     }
