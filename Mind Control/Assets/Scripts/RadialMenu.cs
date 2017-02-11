@@ -19,7 +19,7 @@ public class RadialMenu : MonoBehaviour
         var InputTest = Input.GetJoystickNames();
         if (InputTest != null && InputTest.Length>1)
         {
-            if (Input.GetJoystickNames().Length != 0)
+            if (InputTest[0].Length != 0)
             {
                 for (int i = 0; i < m_Buttons.Length; i++)
                 {
@@ -89,6 +89,7 @@ public class RadialMenu : MonoBehaviour
                 m_CurBtn.colors = myColor;
                 m_CurBtn.enabled = false;
                 m_PrevBtn = m_CurBtn;
+
             }
             else if (m_PrevBtn != null && m_CurBtn)
                 m_PrevBtn = m_CurBtn;
@@ -100,6 +101,12 @@ public class RadialMenu : MonoBehaviour
     }
 
     void MouseUpdate()
+    {
+
+    }
+
+
+    void OnMouseOver()
     {
 
     }
