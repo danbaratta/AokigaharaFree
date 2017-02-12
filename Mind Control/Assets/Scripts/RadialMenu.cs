@@ -17,7 +17,7 @@ public class RadialMenu : MonoBehaviour
     {
 
         var InputTest = Input.GetJoystickNames();
-        if (InputTest != null && InputTest.Length>1)
+        if (InputTest != null && InputTest.Length > 1)
         {
             if (InputTest[0].Length != 0)
             {
@@ -78,25 +78,31 @@ public class RadialMenu : MonoBehaviour
             float buffer = 360 / m_Buttons.Length;
 
             // Debug.Log("CurrentBtnOn = "+(int)((temp / 360) * 6));
-            m_Buttons[(int)((temp / 360) * m_Buttons.Length)].enabled = true;
+            if (m_Buttons[(int)((temp / 360) * m_Buttons.Length)].gameObject.GetComponent<RadialBtn>().Type != Abilities.m_Abilities.MaxSize)
 
-            m_CurrentButtonNum = (int)((temp / 360) * m_Buttons.Length);
-            ColorBlock myColor;
-            if (m_CurBtn != null && m_PrevBtn != m_Buttons[m_CurrentButtonNum])
             {
-                myColor = m_CurBtn.colors;
-                myColor.normalColor = m_NormalColor;
-                m_CurBtn.colors = myColor;
-                m_CurBtn.enabled = false;
-                m_PrevBtn = m_CurBtn;
+                m_Buttons[(int)((temp / 360) * m_Buttons.Length)].gameObject.GetComponent<RadialBtn>().EnterText();
+                m_Buttons[(int)((temp / 360) * m_Buttons.Length)].enabled = true;
 
+                m_CurrentButtonNum = (int)((temp / 360) * m_Buttons.Length);
+                ColorBlock myColor;
+                if (m_CurBtn != null && m_PrevBtn != m_Buttons[m_CurrentButtonNum])
+                {
+                    myColor = m_CurBtn.colors;
+                    myColor.normalColor = m_NormalColor;
+                    m_CurBtn.colors = myColor;
+                    m_CurBtn.enabled = false;
+                    m_CurBtn.gameObject.GetComponent<RadialBtn>().ExitText();
+                    m_PrevBtn = m_CurBtn;
+
+                }
+                else if (m_PrevBtn != null && m_CurBtn)
+                    m_PrevBtn = m_CurBtn;
+                m_CurBtn = m_Buttons[(int)((temp / 360) * m_Buttons.Length)];
+                myColor = m_CurBtn.colors;
+                myColor.normalColor = m_HighlighColor;
+                m_CurBtn.colors = myColor;
             }
-            else if (m_PrevBtn != null && m_CurBtn)
-                m_PrevBtn = m_CurBtn;
-            m_CurBtn = m_Buttons[(int)((temp / 360) * m_Buttons.Length)];
-            myColor = m_CurBtn.colors;
-            myColor.normalColor = m_HighlighColor;
-            m_CurBtn.colors = myColor;
         }
     }
 
