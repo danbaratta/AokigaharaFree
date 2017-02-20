@@ -36,8 +36,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4772280019954992}
   - component: {fileID: 212569424015980986}
-  - component: {fileID: 61064653586055220}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: RockSprite_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53,8 +52,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4837466119552824}
   - component: {fileID: 212451443558878888}
-  - component: {fileID: 61270171402655332}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: RockSprite_1 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69,7 +67,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4054852451148906}
-  m_Layer: 0
+  - component: {fileID: 61562724809067882}
+  m_Layer: 13
   m_Name: Plat_Small (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,7 +85,7 @@ GameObject:
   - component: {fileID: 4255848372271156}
   - component: {fileID: 61827736784582642}
   - component: {fileID: 114825144929877906}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Trigger (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,7 +99,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1946769143776314}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 83.81, y: 4.863, z: 0}
+  m_LocalPosition: {x: 66.63, y: -1.18, z: 12.83}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4837466119552824}
@@ -117,8 +116,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1947543648245686}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.7471695, y: -2.2008648, z: 39.0625}
-  m_LocalScale: {x: 3.9744196, y: 0.9450001, z: 1}
+  m_LocalPosition: {x: 0, y: 1.18, z: 0}
+  m_LocalScale: {x: 3.0441566, y: 0.9450001, z: 1}
   m_Children: []
   m_Father: {fileID: 4054852451148906}
   m_RootOrder: 3
@@ -130,8 +129,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1374504480426120}
   m_LocalRotation: {x: -0, y: -0, z: -0.99999994, w: 0.0004008675}
-  m_LocalPosition: {x: -5.6772003, y: -1.8730338, z: 39.0625}
-  m_LocalScale: {x: 0.27986252, y: 0.6673163, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.27986276, y: 0.66731656, z: 1}
   m_Children: []
   m_Father: {fileID: 4054852451148906}
   m_RootOrder: 1
@@ -143,7 +142,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1397170242684392}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6.36499, y: -1.7044137, z: 39.0625}
+  m_LocalPosition: {x: 0.68, y: 0, z: 0}
   m_LocalScale: {x: 1.4840158, y: 0.50041413, z: 1}
   m_Children: []
   m_Father: {fileID: 4054852451148906}
@@ -156,40 +155,26 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1462815787314384}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.0049896, y: -1.7044135, z: 39.0625}
+  m_LocalPosition: {x: -0.69, y: 0, z: 0}
   m_LocalScale: {x: 1.484016, y: 0.50041413, z: 1}
   m_Children: []
   m_Father: {fileID: 4054852451148906}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &61064653586055220
+--- !u!61 &61562724809067882
 BoxCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1397170242684392}
+  m_GameObject: {fileID: 1946769143776314}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.21}
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
---- !u!61 &61270171402655332
-BoxCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1462815787314384}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2.86, y: 0.46}
 --- !u!61 &61827736784582642
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -201,7 +186,7 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_Offset: {x: 0.0026452437, y: 0.122216135}
+  m_Offset: {x: 0, y: -1.61}
   serializedVersion: 2
   m_Size: {x: 0.99354446, y: 0.80001074}
 --- !u!114 &114825144929877906
