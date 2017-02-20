@@ -69,6 +69,7 @@ public class OniLevel3 : Base_Enemy
                 if (!NotSpawned)
                     RemoveThis();
                 GetComponent<Rigidbody2D>().velocity = new Vector2();
+                anim.Play("Idle");
             }
             else
             {

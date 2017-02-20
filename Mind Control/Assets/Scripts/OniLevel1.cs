@@ -62,6 +62,7 @@ public class OniLevel1 : Base_Enemy
                 if (!NotSpawned) // If pool manager did not spawn this delete itself
                     RemoveThis();
                 GetComponent<Rigidbody2D>().velocity = new Vector2();
+                anim.Play("Idle");
             }
             else
             {
