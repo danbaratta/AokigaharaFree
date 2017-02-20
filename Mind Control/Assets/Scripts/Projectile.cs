@@ -11,6 +11,9 @@ public class Projectile : MonoBehaviour
 
     public int Damage = 5;
 
+    public AudioClip FireSound;
+    public AudioClip HitSound;
+    AudioSource sound = new AudioSource();
     //pool manger ref
     PoolManager m_PoolManager;
     PoolManager.EnemiesType Type = PoolManager.EnemiesType.PlayerBullets;
@@ -50,6 +53,12 @@ public class Projectile : MonoBehaviour
         {
             other.gameObject.SendMessage("TakeDamage", Damage, SendMessageOptions.DontRequireReceiver);
             m_PoolManager.Remove(gameObject, Type);
+            if (HitSound)
+            {
+                sound.Stop();
+                sound.clip = HitSound;
+                sound.Play();
+            }
         }
       //else  if(other.tag == "Bullet")
       //  {
@@ -64,6 +73,11 @@ public class Projectile : MonoBehaviour
         Vector3 scale = transform.localScale;
         scale.x = -Mathf.Abs(scale.x);
         transform.localScale = scale;
+        if (FireSound)
+        {
+            sound.clip = FireSound;
+            sound.Play();
+        }
     }
 
     public void FlipAxisRight()
@@ -72,6 +86,11 @@ public class Projectile : MonoBehaviour
         Vector3 scale = transform.localScale;
         scale.x = Mathf.Abs(scale.x);
         transform.localScale = scale;
+        if (FireSound)
+        {
+            sound.clip = FireSound;
+            sound.Play();
+        }
     }
     // bullets may not want to be destory if it not in camera view
     //void OnBecameInvisible ()

@@ -116,6 +116,12 @@ public class YureiLevl3 : Base_Enemy
     public override void DeathState()
     {
         base.DeathState();
+        if (DeathSound)
+        {
+            sound.Stop();
+            sound.clip = DeathSound;
+            sound.Play();
+        }
     }
 
 
@@ -134,6 +140,12 @@ public class YureiLevl3 : Base_Enemy
             msm.GetTargetY(transform.position.y);
 
              RemoveThis();
+            if (HitSound)
+            {
+                sound.Stop();
+                sound.clip = HitSound;
+                sound.Play();
+            }
         }
         else if ((other.tag == "Player") && (msm.isPossessing == true))
         {
@@ -145,6 +157,12 @@ public class YureiLevl3 : Base_Enemy
             Color GhostColor = GetComponent<Renderer>().material.color;
             GhostColor.a = 1;
             GetComponent<Renderer>().material.color = GhostColor;
+            if (HitSound)
+            {
+                sound.Stop();
+                sound.clip = HitSound;
+                sound.Play();
+            }
         }
 
         else if (other.tag == "Player")
@@ -166,6 +184,12 @@ public class YureiLevl3 : Base_Enemy
                 Color GhostColor = GetComponent<Renderer>().material.color;
                 GhostColor.a = 1;
                 GetComponent<Renderer>().material.color = GhostColor;
+                if (HitSound)
+                {
+                    sound.Stop();
+                    sound.clip = HitSound;
+                    sound.Play();
+                }
             }
         }
     }

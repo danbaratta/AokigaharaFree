@@ -6,6 +6,9 @@ public class Enemy_Projectile : MonoBehaviour
 
     float moveSpeed = 9.0f;
 
+    public AudioClip FireSound;
+    public AudioClip HitSound;
+    AudioSource sound = new AudioSource();
     public GameObject bullet;
     bool DirectionRight = true;
 
@@ -48,11 +51,23 @@ public class Enemy_Projectile : MonoBehaviour
         {
             other.gameObject.SendMessage("TakeDamage", Damage, SendMessageOptions.DontRequireReceiver);
             m_PoolManager.Remove(gameObject, Type);
+            if (HitSound)
+            {
+                sound.Stop();
+                sound.clip = HitSound;
+                sound.Play();
+            }
         }
        else if (other.tag == "Bullet")
         {
             m_PoolManager.Remove(gameObject, Type);
             m_PoolManager.Remove(other.gameObject, PoolManager.EnemiesType.PlayerBullets);
+            if (HitSound)
+            {
+                sound.Stop();
+                sound.clip = HitSound;
+                sound.Play();
+            }
         }
     }
 
@@ -63,6 +78,11 @@ public class Enemy_Projectile : MonoBehaviour
         Vector3 scale = transform.localScale;
         scale.x = -Mathf.Abs(scale.x);
         transform.localScale = scale;
+        if (FireSound)
+        {
+            sound.clip = FireSound;
+            sound.Play();
+        }
     }
 
     public void FlipAxisRight()
@@ -71,6 +91,11 @@ public class Enemy_Projectile : MonoBehaviour
         Vector3 scale = transform.localScale;
         scale.x = Mathf.Abs(scale.x);
         transform.localScale = scale;
+        if (FireSound)
+        {
+            sound.clip = FireSound;
+            sound.Play();
+        }
     }
 
     // bullets may not want to be destory if it not in camera view
