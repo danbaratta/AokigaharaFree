@@ -188,6 +188,12 @@ public class OniLevel2 : Base_Enemy
     public override void DeathState()
     {
         RemoveThis();
+        if (DeathSound)
+        {
+            sound.Stop();
+            sound.clip = DeathSound;
+            sound.Play();
+        }
     }
 
 

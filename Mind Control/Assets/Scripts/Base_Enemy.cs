@@ -16,6 +16,12 @@ public class Base_Enemy : MonoBehaviour
 
         MaxStates,
     }
+
+    public AudioClip DeathSound;
+    public AudioClip HitSound;
+    [HideInInspector]
+    public AudioSource sound = new AudioSource();
+
     // Use this for initialization
     public int Max_Health;
     public int Health;
@@ -137,6 +143,12 @@ public class Base_Enemy : MonoBehaviour
             anim.SetBool("Dead", true);
             anim.Play("Death");
             GetComponent<Rigidbody2D>().velocity = new Vector2();
+            if (HitSound)
+            {
+                sound.Stop();
+                sound.clip = HitSound;
+                sound.Play();
+            }
         }
     }
 
@@ -241,7 +253,7 @@ public class Base_Enemy : MonoBehaviour
             m_PoolManager.Remove(gameObject, Type);
             return true;
         }
-        
+
         Destroy(gameObject);
         return false;
     }

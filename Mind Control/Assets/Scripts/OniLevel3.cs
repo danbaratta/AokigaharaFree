@@ -193,6 +193,12 @@ public class OniLevel3 : Base_Enemy
     public override void DeathState()
     {
          RemoveThis();
+        if (DeathSound)
+        {
+            sound.Stop();
+            sound.clip = DeathSound;
+            sound.Play();
+        }
     }
 
 
@@ -221,6 +227,12 @@ public class OniLevel3 : Base_Enemy
             anim.Play("Death");
             GetComponent<Rigidbody2D>().velocity = new Vector2();
             DashOff();
+            if (HitSound)
+            {
+                sound.Stop();
+                sound.clip = HitSound;
+                sound.Play();
+            }
 
         }
 

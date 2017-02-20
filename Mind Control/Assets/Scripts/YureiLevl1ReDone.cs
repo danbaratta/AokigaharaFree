@@ -49,6 +49,12 @@ public class YureiLevl1ReDone : Base_Enemy
     public override void DeathState()
     {
         base.DeathState();
+        if (DeathSound)
+        {
+            sound.Stop();
+            sound.clip = DeathSound;
+            sound.Play();
+        }
     }
 
 
@@ -66,7 +72,7 @@ public class YureiLevl1ReDone : Base_Enemy
             msm.GetTargetX(transform.position.x);
             msm.GetTargetY(transform.position.y);
 
-             RemoveThis();
+            RemoveThis();
         }
         else if ((other.tag == "Player") && (msm.isPossessing == true))
         {
